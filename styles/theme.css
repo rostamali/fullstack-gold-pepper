@@ -49,6 +49,9 @@
 	/* ============================= */
 	/* Typography */
 	/* ============================= */
+	.heading-2 {
+		@apply text-[30px] font-semibold text-primary-black-dark dark:text-white;
+	}
 	.heading-3 {
 		@apply text-[25px] font-semibold text-primary-black-dark dark:text-white;
 	}
@@ -76,6 +79,9 @@
 	/* ============================= */
 	.btn-primary {
 		@apply primary-gradient text-white rounded-md h-[40px] text-[13px] font-medium leading-4 px-[12px] flex items-center justify-center;
+	}
+	.btn-ghost {
+		@apply border rounded-md bg-white bg-opacity-5 border-primary-dark-100 h-[40px] text-[14px] font-medium leading-4 px-[12px] flex items-center justify-center text-white;
 	}
 	/* ============================= */
 	/* Dark Light Utilities */

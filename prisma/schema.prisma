@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Prisma models ENUM values
+enum AccountStatus {
+  INACTIVE
+  ACTIVE
+}
+
+enum Role {
+  USER
+  USERPLUS
+  ADMIN
+}
+
+enum InvestmentStatus {
+  ACCEPT
+  NOT_ACCEPT
+  PENDING
+  CANCELED
+}
+
+enum DocumentStatus {
+  PUBLIC
+  PRIVATE
+}
+
+enum ProjectStatus {
+  COMPLETED
+  CANCELED
+  ACTIVE
+  DRAFT
+  CLOSED
+  PRIVATE
+}
+
+// Start design user prisma models
+model User {
+  id                String        @id @unique @default(uuid())
+  name              String        @db.Char(50)
+  email             String        @unique
+  phoneNumber       String?
+  password          String
+  passwordChangedAt DateTime?
+  country           String?
+  company           String?
+  state             String?
+  bio               String?
+  avatar            Avatar?
+  projects          Project[]
+  investments       Investment[]
+  isVerified        Boolean       @default(false)
+  role              Role          @default(USER)
+  status            AccountStatus @default(INACTIVE)
+  lastLogin         DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+// Start design File/Avatar prisma models
+model Avatar {
+  id        String   @id @unique @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  name      String
+  url       String
+  size      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model File {
+  id        String     @id @unique @default(uuid())
+  fileType  String
+  name      String     @unique
+  title     String
+  url       String
+  size      String
+  metaInfo  String
+  gallery   Gallery?   @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  galleryId String?
+  projects  Project[]
+  document  Document[]
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Gallery {
+  id        String   @id @unique @default(uuid())
+  files     File[]
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  projectId String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Document {
+  id          String         @id @unique @default(uuid())
+  name        String
+  description String?
+  file        File           @relation(fields: [fileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  fileId      String
+  project     Project        @relation(fields: [projectId], references: [id])
+  projectId   String
+  status      DocumentStatus @default(PRIVATE)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+// Start design Project prisma models
+
+model Project {
+  id            String        @id @unique @default(uuid())
+  name          String
+  slug          String        @unique
+  location      String?
+  description   String?
+  thumbnail     File?         @relation(fields: [thumbnailId], references: [id], onDelete: SetNull)
+  thumbnailId   String?
+  gallery       Gallery?
+  documents     Document[]
+  status        ProjectStatus @default(DRAFT)
+  industry      String
+  targetAmount  String?
+  minInvestment String?
+  capex         String?
+  totalRevenue  String?
+  totalCost     String?
+  roi           String?
+  totalTurnover String?
+  year          String
+  investments   Investment[]
+  author        User          @relation(fields: [authorId], references: [id])
+  authorId      String
+  closeDate     DateTime
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Investment {
+  id              String           @id @unique @default(uuid())
+  amount          String?
+  equity          String?
+  ownerShip       String?
+  status          InvestmentStatus @default(PENDING)
+  project         Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId       String
+  projectName     String
+  projectIndustry String
+  user            User             @relation(fields: [userId], references: [id])
+  userId          String
+  name            String
+  email           String
+  phoneNumber     String?
+  agreeTerm       Boolean          @default(true)
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model Track {
+  id           String   @id @unique @default(uuid())
+  date         DateTime @default(now())
+  totalRevenue Float
+  totalCOGS    Float
+  netProfit    Float
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

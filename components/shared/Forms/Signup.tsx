@@ -4,9 +4,13 @@ import { Label } from '@/components/ui/label';
 import TogglePass from './TogglePass';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { registerUser } from '@/lib/actions/auth.action';
 
 const Signup = () => {
 	const [showPass, setShowPass] = useState(false);
+	const handleRegisterUser = () => {
+		registerUser({});
+	};
 
 	return (
 		<form className="auth-form__input-space">
@@ -52,7 +56,13 @@ const Signup = () => {
 				</div>
 			</div>
 			<div className="auth-input__group">
-				<Button className="auth-form__btn">Continue</Button>
+				<Button
+					type="button"
+					onClick={handleRegisterUser}
+					className="auth-form__btn"
+				>
+					Continue
+				</Button>
 			</div>
 		</form>
 	);
