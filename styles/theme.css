@@ -37,7 +37,7 @@
 		@apply h-[40px] focus:ring-primary-orange-light focus:ring-1 focus:ring-opacity-60 border-primary-black-thin;
 	}
 	.auth-form__btn {
-		@apply primary-gradient text-white w-full rounded-md h-[40px] block text-[13px] font-medium uppercase leading-4;
+		@apply primary-gradient text-white w-full rounded-md h-[40px] text-[13px] font-medium uppercase leading-4 flex items-center;
 	}
 	.form__error {
 		@apply text-base-4 !text-primary-orange-dark;

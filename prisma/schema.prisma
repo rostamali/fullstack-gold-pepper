@@ -43,7 +43,8 @@ enum ProjectStatus {
 // Start design user prisma models
 model User {
   id                String        @id @unique @default(uuid())
-  name              String        @db.Char(50)
+  firstName         String        @db.Char(50)
+  lastName          String?       @db.Char(50)
   email             String        @unique
   phoneNumber       String?
   password          String

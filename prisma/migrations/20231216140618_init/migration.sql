@@ -1,7 +1,8 @@
 -- CreateTable
 CREATE TABLE `User` (
     `id` VARCHAR(191) NOT NULL,
-    `name` CHAR(50) NOT NULL,
+    `firstName` CHAR(50) NOT NULL,
+    `lastName` CHAR(50) NULL,
     `email` VARCHAR(191) NOT NULL,
     `phoneNumber` VARCHAR(191) NULL,
     `password` VARCHAR(191) NOT NULL,
