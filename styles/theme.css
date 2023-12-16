@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+	/* ============================= */
+	/* Form Utilities */
+	/* ============================= */
+	.auth-light-bg {
+		background-image: url('../assets/images/auth-light.png');
+	}
+	.auth-dark-bg {
+		background-image: url('../assets/images/auth-dark.png');
+	}
+	.box-shadow {
+		box-shadow: rgba(0, 0, 0, 0.16) 0px 24px 48px;
+	}
+	.primary-gradient {
+		background: linear-gradient(129deg, #ff7000, #e2995f);
+	}
+	.auth-form__wrap {
+		@apply min-h-screen flex items-center justify-center w-full;
+	}
+	.auth-input__group {
+		@apply flex flex-col items-start gap-[12px];
+	}
+	.auth-form {
+		@apply box-shadow xm:w-[400px] w-[95%] px-[32px] py-[38px] rounded-xl bg-white;
+	}
+	.auth-form__input-space {
+		@apply flex flex-col gap-[25px] my-[30px];
+	}
+	.input-input__label {
+		@apply text-[14px] font-medium text-primary-black-light;
+	}
+	.auth-input__field {
+		@apply h-[40px] focus:ring-primary-orange-light focus:ring-1 focus:ring-opacity-60 border-primary-black-thin;
+	}
+	.auth-form__btn {
+		@apply primary-gradient text-white w-full rounded-md h-[40px] block text-[13px] font-medium uppercase leading-4;
+	}
+	.form__error {
+		@apply text-base-4 !text-primary-orange-dark;
+	}
+	.passfield-right__space {
+		@apply pr-[30px];
+	}
+
+	/* ============================= */
+	/* Typography */
+	/* ============================= */
+	.heading-3 {
+		@apply text-[25px] font-semibold text-primary-black-dark dark:text-white;
+	}
+	.heading-4 {
+		@apply text-[16px] font-semibold text-primary-black-dark dark:text-white;
+	}
+	.text-base-2 {
+		@apply text-[15px] font-normal text-primary-black-dark;
+	}
+	.text-base-3 {
+		@apply text-[14px] font-normal text-primary-black-dark;
+	}
+	.text-base-4 {
+		@apply text-[13px] font-normal text-primary-black-dark;
+	}
+	.text-link {
+		@apply text-primary-orange-light hover:text-primary-orange-dark;
+	}
+	.nav-link {
+		@apply text-[15px] text-primary-black-dark dark:text-white font-medium;
+	}
+
+	/* ============================= */
+	/* Button Utilities */
+	/* ============================= */
+	.btn-primary {
+		@apply primary-gradient text-white rounded-md h-[40px] text-[13px] font-medium leading-4 px-[12px] flex items-center justify-center;
+	}
+	/* ============================= */
+	/* Dark Light Utilities */
+	/* ============================= */
+	.bg-dark__100-light__white {
+		@apply bg-white dark:bg-primary-dark-100;
+	}
+	.bg-dark__200-light__white {
+		@apply bg-white dark:bg-primary-dark-200;
+	}
+	.link-dark__black-light__white {
+		@apply text-primary-black-dark duration-100 dark:text-white hover:text-primary-orange-dark dark:hover:text-primary-orange-dark;
+	}
+	/* ============================= */
+	/* Form Utilities */
+	/* ============================= */
+}
