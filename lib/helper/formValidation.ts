@@ -12,24 +12,41 @@ export const RegisterSchema = z.object({
 		.string()
 		.min(6, { message: 'Password must be atleast 6 characters' }),
 });
-
-// export const registerUserValidate = z.object().shape({
-// 	name: yup
-// 		.string()
-// 		.required('Name is required')
-// 		.min(2, 'Name must be at least 2 characters')
-// 		.max(30, 'Name must not exceed 30 characters'),
-// 	email: yup
-// 		.string()
-// 		.required('Email is required')
-// 		.matches(
-// 			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-// 			'Invalid email address',
-// 		),
-// 	password: yup
-// 		.string()
-// 		.required('Password is required')
-// 		.min(6, 'Password must be at least 6 characters')
-// 		.max(15, 'Password must not exceed 15 characters')
-// 		.matches(/^\S*$/, 'Empty space not allowed'),
-// });
+export const LoginSchema = z.object({
+	email: z
+		.string({
+			invalid_type_error: 'Email Must be valid',
+			required_error: 'Email is required',
+		})
+		.min(1, { message: 'Email is required' })
+		.email({
+			message: 'Email Must be valid',
+		}),
+	password: z
+		.string({ required_error: 'Password is required' })
+		.min(6, { message: 'Password must be atleast 6 characters' }),
+	remember: z.boolean(),
+});
+export const ContactFormSchema = z.object({
+	name: z
+		.string({
+			required_error: 'Name is required',
+		})
+		.min(1, { message: 'Name is required' })
+		.max(30, { message: 'Name must not exceed 30 characters' }),
+	email: z
+		.string({
+			invalid_type_error: 'Email Must be valid',
+			required_error: 'Email is required',
+		})
+		.min(1, { message: 'Email is required' })
+		.email({
+			message: 'Email Must be valid',
+		}),
+	message: z
+		.string({
+			required_error: 'Message is required',
+		})
+		.min(1, { message: 'Message is required' }),
+	acceptTerms: z.boolean(),
+});

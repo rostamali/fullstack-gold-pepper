@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import '../styles/theme.css';
 import { ThemeProvider } from '@/context/ThemeProvider';
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -29,6 +30,7 @@ export default function MainLayout({
 		<html lang="en">
 			<body className={`${inter.variable} ${spaceGrotesk.variable}`}>
 				<ThemeProvider>{children}</ThemeProvider>
+				<Toaster position="bottom-right" reverseOrder={false} />
 			</body>
 		</html>
 	);

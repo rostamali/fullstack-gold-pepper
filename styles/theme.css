@@ -4,14 +4,27 @@
 
 @layer utilities {
 	/* ============================= */
-	/* Form Utilities */
+	/* Background Image Utilities */
 	/* ============================= */
+	.cta-bg {
+		background-image: linear-gradient(129deg, #112240ad, #0a192f8f),
+			url('/images/home-cta-banner.jpg');
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		position: relative;
+	}
 	.auth-light-bg {
 		background-image: url('../assets/images/auth-light.png');
 	}
 	.auth-dark-bg {
 		background-image: url('../assets/images/auth-dark.png');
 	}
+
+	/* ============================= */
+	/* Form Utilities */
+	/* ============================= */
+
 	.box-shadow {
 		box-shadow: rgba(0, 0, 0, 0.16) 0px 24px 48px;
 	}
@@ -49,14 +62,20 @@
 	/* ============================= */
 	/* Typography */
 	/* ============================= */
+	.heading-1 {
+		@apply md:text-[40px] text-[30px] font-semibold text-primary-black-dark dark:text-white;
+	}
 	.heading-2 {
-		@apply text-[30px] font-semibold text-primary-black-dark dark:text-white;
+		@apply md:text-[30px] text-[22px] font-semibold text-primary-black-dark dark:text-white;
 	}
 	.heading-3 {
-		@apply text-[25px] font-semibold text-primary-black-dark dark:text-white;
+		@apply md:text-[25px] text-[20px] font-semibold text-primary-black-dark dark:text-white;
 	}
 	.heading-4 {
 		@apply text-[16px] font-semibold text-primary-black-dark dark:text-white;
+	}
+	.text-base-1 {
+		@apply md:text-[18px] text-[15px] font-normal text-primary-black-dark;
 	}
 	.text-base-2 {
 		@apply text-[15px] font-normal text-primary-black-dark;
@@ -80,8 +99,14 @@
 	.btn-primary {
 		@apply primary-gradient text-white rounded-md h-[40px] text-[13px] font-medium leading-4 px-[12px] flex items-center justify-center;
 	}
+	.btn-primary__ghost {
+		@apply border-2 border-primary-orange-dark text-primary-orange-dark hover:primary-gradient hover:text-white rounded-md h-[40px] text-[13px] font-medium leading-4 px-[12px] flex items-center justify-center;
+	}
 	.btn-ghost {
 		@apply border rounded-md bg-white bg-opacity-5 border-primary-dark-100 h-[40px] text-[14px] font-medium leading-4 px-[12px] flex items-center justify-center text-white;
+	}
+	.btn-text-icon {
+		@apply text-primary-black-dark dark:text-white dark:text-opacity-50 hover:text-primary-orange-dark dark:hover:text-primary-orange-dark flex items-center text-base-2;
 	}
 	/* ============================= */
 	/* Dark Light Utilities */
@@ -91,6 +116,9 @@
 	}
 	.bg-dark__200-light__white {
 		@apply bg-white dark:bg-primary-dark-200;
+	}
+	.bg-dark__black-light__white {
+		@apply bg-white dark:bg-primary-black-dark;
 	}
 	.link-dark__black-light__white {
 		@apply text-primary-black-dark duration-100 dark:text-white hover:text-primary-orange-dark dark:hover:text-primary-orange-dark;

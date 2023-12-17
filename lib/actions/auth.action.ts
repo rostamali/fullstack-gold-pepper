@@ -1,11 +1,14 @@
 'use server';
-import { bcryptPassword, compareCode } from '../helper/bcrypt';
+import { bcryptPassword, compareCode, comparePassword } from '../helper/bcrypt';
 import { verifyEmailTokenOptions } from '../helper/cookieOptions';
+import { verifyAuth } from '../helper/isAuthVerify';
 import {
 	createEmailVerifyToken,
+	sendToken,
 	verifyEmailVerifyToken,
 } from '../helper/jwtToken';
 import sendMail from '../helper/sendMail';
+import { handleResponse } from '../helper/serverResponse';
 import { prisma } from '../prisma';
 import { cookies } from 'next/headers';
 
@@ -117,5 +120,71 @@ export const verifyUserEmail = async (params: { code: string }) => {
 		};
 	} catch (error) {
 		throw new Error('Email verification failed');
+	}
+};
+export const loginUser = async (params: LoginUser) => {
+	try {
+		const { email, password, remember = false } = params as LoginUser;
+		const userExist = await prisma.user.findUnique({
+			where: {
+				email,
+				status: 'ACTIVE',
+				isVerified: true,
+			},
+			select: {
+				id: true,
+				email: true,
+				password: true,
+				role: true,
+			},
+		});
+		if (!userExist)
+			return handleResponse(false, 'Email or password is incorrect');
+		const isPasswordMatch = await comparePassword(
+			password,
+			userExist.password,
+		);
+		if (!isPasswordMatch)
+			return handleResponse(false, 'Email or password is incorrect');
+
+		await prisma.user.update({
+			where: { id: userExist.id },
+			data: {
+				lastLogin: new Date(),
+			},
+		});
+
+		return sendToken(userExist, remember, 'User logged in successfully');
+	} catch (error) {
+		throw new Error('Oops! Something went wrong');
+	}
+};
+export const authProfile = async (): Promise<{
+	success: boolean;
+	user: {
+		id: string;
+	};
+}> => {
+	try {
+		const cookie = cookies().get('gold_access_token');
+		if (!cookie) return handleResponse(false, 'Unauthorized user');
+		const token = cookie.value;
+		if (!token) return handleResponse(false, 'Unauthorized user');
+		const verifiedToken = await verifyAuth(token);
+		console.log(verifiedToken);
+		if (!verifiedToken) return handleResponse(false, 'Unauthorized user');
+
+		const userExist = await prisma.user.findUnique({
+			where: {
+				id: verifiedToken?.id,
+			},
+		});
+		if (!userExist) return handleResponse(false, 'User not exists');
+		return {
+			success: true,
+			user: userExist,
+		};
+	} catch (error) {
+		return handleResponse(false, 'Unauthorized user');
 	}
 };

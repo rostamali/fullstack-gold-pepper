@@ -5,6 +5,11 @@ interface RegisterUser {
 	email: string;
 	password: string;
 }
+interface LoginUser {
+	email: string;
+	password: string;
+	remember: boolean;
+}
 interface ITokenOptions {
 	expires: Date;
 	maxAge: number;

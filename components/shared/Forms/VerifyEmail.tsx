@@ -25,14 +25,14 @@ const VerifyEmail: React.FC<EmailVerifyProps> = ({ user }) => {
 		setIsPending(true);
 		try {
 			const result = await verifyUserEmail({ code: otpValue });
-			console.log(result);
+
 			setIsPending(false);
 			if (result) {
 				router.push('/sign-in');
 			}
 		} catch (error) {
 			setIsPending(false);
-			console.log(error);
+
 			setOtp('');
 		}
 	};

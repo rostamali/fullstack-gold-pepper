@@ -3,10 +3,7 @@ import Navlink from './Navlink';
 
 const Header = () => {
 	return (
-		<header
-			id="header"
-			className="border-b py-[20px] bg-dark__200-light__white"
-		>
+		<header id="header" className="py-[20px] bg-dark__200-light__white">
 			<div className="container">
 				<div className="flex items-center justify-between">
 					<Link
