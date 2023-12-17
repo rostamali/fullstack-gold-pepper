@@ -1,8 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-// import { verifyAuth } from './lib/auth';
+import { verifyEmailVerifyToken } from './lib/helper/tokenVerify';
 
 export async function middleware(req: NextRequest) {
-	// const token = req.cookies.get('auth_token')?.value;
+	// fetch email verify token
+	const emailVerifyToken = req.cookies.get('gold_verify_email')?.value;
+	const emailVerifiedTokenPayload =
+		emailVerifyToken && (await verifyEmailVerifyToken(emailVerifyToken));
+	console.log(emailVerifiedTokenPayload);
+	if (
+		req.nextUrl.pathname.startsWith('/sign-up/verify-email') &&
+		!emailVerifiedTokenPayload
+	) {
+		return NextResponse.redirect(new URL('/sign-in', req.url));
+	}
 	// const verifiedToken = token && (await verifyAuth(token));
 
 	// if (req.nextUrl.pathname.startsWith('/signin')) {
@@ -18,6 +28,8 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
 	matcher: [
+		'/sign-up/verify-email',
+		'/sign-up',
 		'/dashboard',
 		'/dashboard/profile',
 		'/dashboard/users',

@@ -1,12 +1,8 @@
 'use server';
 import { bcryptPassword, compareCode, comparePassword } from '../helper/bcrypt';
 import { verifyEmailTokenOptions } from '../helper/cookieOptions';
-import { verifyAuth } from '../helper/isAuthVerify';
-import {
-	createEmailVerifyToken,
-	sendToken,
-	verifyEmailVerifyToken,
-} from '../helper/jwtToken';
+import { verifyAuth, verifyEmailVerifyToken } from '../helper/tokenVerify';
+import { createEmailVerifyToken, sendToken } from '../helper/tokenCreate';
 import sendMail from '../helper/sendMail';
 import { handleResponse } from '../helper/serverResponse';
 import { prisma } from '../prisma';
@@ -20,7 +16,7 @@ export const registerUser = async (params: RegisterUser) => {
 				email,
 			},
 		});
-		if (userExist) throw new Error('User already exists');
+		if (userExist) return handleResponse(false, 'User already exists');
 		const bcryptPass = await bcryptPassword(password);
 		const user: RegisterUser = {
 			firstName,
@@ -42,33 +38,24 @@ export const registerUser = async (params: RegisterUser) => {
 			message: 'Verify your email now',
 		};
 	} catch (error) {
-		return { error };
+		return handleResponse(false, 'Oops! Something went wrong');
 	}
 };
 export const fetchVerifyEmailUser = async () => {
 	try {
 		const cookie = cookies().get('gold_verify_email');
-		if (!cookie) {
-			return {
-				success: false,
-				message: 'Unauthorized access',
-			};
-		}
+		if (!cookie) return;
+
 		const token = cookie.value;
-		if (!token) {
-			return {
-				success: false,
-				message: 'Unauthorized access',
-			};
-		}
 		const verifiedToken = await verifyEmailVerifyToken(token);
-		if (!verifiedToken) throw new Error('User verification token expired');
+		if (!verifiedToken) return;
+
 		return {
 			success: true,
 			data: verifiedToken,
 		};
 	} catch (error) {
-		throw new Error('User verification token expired');
+		return;
 	}
 };
 export const verifyUserEmail = async (params: { code: string }) => {
@@ -77,24 +64,18 @@ export const verifyUserEmail = async (params: { code: string }) => {
 			code: string;
 		};
 		const cookie = cookies().get('gold_verify_email');
-		if (!cookie) {
-			return {
-				success: false,
-				message: 'Unauthorized access',
-			};
-		}
+		if (!cookie) return handleResponse(false, 'Unauthorized access');
+
 		const token = cookie.value;
-		if (!token) {
-			return {
-				success: false,
-				message: 'Unauthorized access',
-			};
-		}
+		if (!token) return handleResponse(false, 'Unauthorized access');
+
 		const verifiedToken = await verifyEmailVerifyToken(token);
-		if (!verifiedToken) throw new Error('User verification token expired');
+		if (!verifiedToken)
+			return handleResponse(false, 'User verification token expired');
 
 		const checkCode = await compareCode(code, verifiedToken.code);
-		if (!checkCode) throw new Error('Email verification code not match');
+		if (!checkCode)
+			return handleResponse(false, 'Email verification code not match');
 
 		const { firstName, lastName, email, password } = verifiedToken;
 		const userExist = await prisma.user.findUnique({
@@ -102,7 +83,7 @@ export const verifyUserEmail = async (params: { code: string }) => {
 				email,
 			},
 		});
-		if (userExist) throw new Error('User already exists');
+		if (userExist) return handleResponse(false, 'User already exists');
 
 		await prisma.user.create({
 			data: {
@@ -114,12 +95,9 @@ export const verifyUserEmail = async (params: { code: string }) => {
 				status: 'ACTIVE',
 			},
 		});
-		return {
-			success: true,
-			message: 'Email successfully verified',
-		};
+		return handleResponse(true, 'Email verified successfully');
 	} catch (error) {
-		throw new Error('Email verification failed');
+		return handleResponse(false, 'Email verification failed');
 	}
 };
 export const loginUser = async (params: LoginUser) => {
@@ -153,38 +131,38 @@ export const loginUser = async (params: LoginUser) => {
 				lastLogin: new Date(),
 			},
 		});
-
 		return sendToken(userExist, remember, 'User logged in successfully');
 	} catch (error) {
-		throw new Error('Oops! Something went wrong');
+		return handleResponse(false, 'Oops! Something went wrong');
 	}
 };
-export const authProfile = async (): Promise<{
-	success: boolean;
-	user: {
-		id: string;
-	};
-}> => {
+export const authProfile = async () => {
 	try {
 		const cookie = cookies().get('gold_access_token');
-		if (!cookie) return handleResponse(false, 'Unauthorized user');
+		if (!cookie) return;
+
 		const token = cookie.value;
-		if (!token) return handleResponse(false, 'Unauthorized user');
+		if (!token) return;
+
 		const verifiedToken = await verifyAuth(token);
-		console.log(verifiedToken);
-		if (!verifiedToken) return handleResponse(false, 'Unauthorized user');
+		if (!verifiedToken) return;
 
 		const userExist = await prisma.user.findUnique({
 			where: {
 				id: verifiedToken?.id,
 			},
+			select: {
+				firstName: true,
+				lastName: true,
+				email: true,
+				role: true,
+			},
 		});
-		if (!userExist) return handleResponse(false, 'User not exists');
+		if (!userExist) return;
 		return {
-			success: true,
-			user: userExist,
+			...userExist,
 		};
 	} catch (error) {
-		return handleResponse(false, 'Unauthorized user');
+		return;
 	}
 };

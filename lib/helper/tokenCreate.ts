@@ -1,4 +1,4 @@
-import { jwtVerify, SignJWT } from 'jose';
+import { SignJWT } from 'jose';
 import bcrypt from 'bcryptjs';
 import { Role } from '@prisma/client';
 import { cookies } from 'next/headers';
@@ -10,7 +10,9 @@ import {
 
 const alg = 'HS256';
 
-// Create Email verification token
+/* ============================================= */
+// Get all the token secret keys
+/* ============================================= */
 export const getEmailVerifySecret = () => {
 	const secret = process.env.JWT_EMAIL_VERIFY_SECRET;
 	if (!secret || secret.length === 0) {
@@ -18,6 +20,24 @@ export const getEmailVerifySecret = () => {
 	}
 	return secret;
 };
+export const getAccessTokenSecret = () => {
+	const secret = process.env.JWT_ACCESS_TOKEN_SECRET;
+	if (!secret || secret.length === 0) {
+		throw new Error('Access token secret is required');
+	}
+	return secret;
+};
+export const getRefreshTokenSecret = () => {
+	const secret = process.env.JWT_REFRESH_TOKEN_SECRET;
+	if (!secret || secret.length === 0) {
+		throw new Error('Access token secret is required');
+	}
+	return secret;
+};
+
+/* ============================================= */
+// Create all the token using JOSE
+/* ============================================= */
 export const createEmailVerifyToken = async (user: RegisterUser) => {
 	const code = Math.floor(1000 + Math.random() * 9000).toString();
 	const hashedCode = bcrypt.hashSync(code, 10);
@@ -33,33 +53,7 @@ export const createEmailVerifyToken = async (user: RegisterUser) => {
 	return { token, code };
 };
 
-export const verifyEmailVerifyToken = async (token: string) => {
-	try {
-		const verified = await jwtVerify(
-			token,
-			new TextEncoder().encode(getEmailVerifySecret()),
-		);
-		return verified.payload as {
-			firstName: string;
-			lastName?: string;
-			email: string;
-			password: string;
-			code: string;
-		};
-	} catch (error) {
-		throw new Error('Email verification token expired');
-	}
-};
-
-// Send login access & refresh token
-export const getAccessTokenSecret = () => {
-	const secret = process.env.JWT_ACCESS_TOKEN_SECRET;
-	if (!secret || secret.length === 0) {
-		throw new Error('Access token secret is required');
-	}
-	return secret;
-};
-export const accessToken = async (id: string) => {
+export const createAccessToken = async (id: string) => {
 	return await new SignJWT({ id })
 		.setProtectedHeader({ alg })
 		.setIssuedAt()
@@ -68,7 +62,7 @@ export const accessToken = async (id: string) => {
 		)
 		.sign(new TextEncoder().encode(getAccessTokenSecret()));
 };
-export const rememberAccessToken = async (id: string) => {
+export const createRememberAccessToken = async (id: string) => {
 	return await new SignJWT({ id })
 		.setProtectedHeader({ alg })
 		.setIssuedAt()
@@ -77,14 +71,8 @@ export const rememberAccessToken = async (id: string) => {
 		)
 		.sign(new TextEncoder().encode(getAccessTokenSecret()));
 };
-export const getRefreshTokenSecret = () => {
-	const secret = process.env.JWT_REFRESH_TOKEN_SECRET;
-	if (!secret || secret.length === 0) {
-		throw new Error('Access token secret is required');
-	}
-	return secret;
-};
-export const refreshToken = async (id: string) => {
+
+export const createRefreshToken = async (id: string) => {
 	return await new SignJWT({ id })
 		.setProtectedHeader({ alg })
 		.setIssuedAt()
@@ -94,6 +82,9 @@ export const refreshToken = async (id: string) => {
 		.sign(new TextEncoder().encode(getAccessTokenSecret()));
 };
 
+/* ============================================= */
+// Send a refresh and access token
+/* ============================================= */
 export const sendToken = async (
 	user: {
 		id: string;
@@ -105,9 +96,9 @@ export const sendToken = async (
 	message: string,
 ) => {
 	const { id } = user;
-	const access_token = await accessToken(id);
-	const remember_access_token = await rememberAccessToken(id);
-	const refresh_token = await refreshToken(id);
+	const access_token = await createAccessToken(id);
+	const remember_access_token = await createRememberAccessToken(id);
+	const refresh_token = await createRefreshToken(id);
 
 	cookies().set(
 		'gold_access_token',
@@ -115,7 +106,6 @@ export const sendToken = async (
 		remember ? rememberAccessTokenOptions : accessTokenOptions,
 	);
 	cookies().set('gold_refresh_token', refresh_token, refreshTokenOptions);
-
 	return {
 		success: true,
 		message,

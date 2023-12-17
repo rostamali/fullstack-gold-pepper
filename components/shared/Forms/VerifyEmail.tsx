@@ -5,6 +5,7 @@ import { FaCircleUser } from 'react-icons/fa6';
 import OTPInput from 'react-otp-input';
 import ButtonLoader from '../Spinners/ButtonLoader';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 type EmailVerifyProps = {
 	user: RegisterUser;
@@ -25,15 +26,19 @@ const VerifyEmail: React.FC<EmailVerifyProps> = ({ user }) => {
 		setIsPending(true);
 		try {
 			const result = await verifyUserEmail({ code: otpValue });
-
 			setIsPending(false);
-			if (result) {
+
+			if (result.success) {
+				toast.success(result.message);
 				router.push('/sign-in');
+			} else {
+				toast.error(result.message);
+				setOtp('');
 			}
-		} catch (error) {
+		} catch (error: any) {
 			setIsPending(false);
-
 			setOtp('');
+			throw new Error('Email verification failed');
 		}
 	};
 

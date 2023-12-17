@@ -3,7 +3,14 @@ import VerifyEmail from '@/components/shared/Forms/VerifyEmail';
 import { fetchVerifyEmailUser } from '@/lib/actions/auth.action';
 
 const VerifyEmailPage = async () => {
-	const { data } = await fetchVerifyEmailUser();
+	const result:
+		| {
+				success: boolean;
+				data: RegisterUser;
+		  }
+		| undefined = await fetchVerifyEmailUser();
+	if (!result || !result.success)
+		throw new Error('Auth is required to access this resource');
 
 	return (
 		<div className="auth-page">
@@ -13,7 +20,7 @@ const VerifyEmailPage = async () => {
 						title={'Verify your email'}
 						subtitle={'to continue on Gold & Pepper'}
 					/>
-					{data && <VerifyEmail user={data} />}
+					{result && <VerifyEmail user={result.data} />}
 					<div className="auth-form__footer">
 						<p className="text-base-3 text-link">
 							Didn't receive a code? Resend

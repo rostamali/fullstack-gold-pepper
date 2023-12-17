@@ -6,7 +6,6 @@ import { authProfile } from '@/lib/actions/auth.action';
 
 const Navlink = async () => {
 	const data = await authProfile();
-	console.log(data);
 
 	return (
 		<div className="flex items-center gap-[10px] flex-1 justify-end">
@@ -20,8 +19,10 @@ const Navlink = async () => {
 				))}
 			</ul>
 			<Theme />
-			{data?.success ? (
-				<h2>{data?.user?.firstName}</h2>
+			{data ? (
+				<Link href="/sign-in" className="btn-primary">
+					My Account
+				</Link>
 			) : (
 				<div className="lg:block hidden">
 					<Link href="/sign-in" className="btn-primary">

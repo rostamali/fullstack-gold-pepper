@@ -10,6 +10,7 @@ import { RegisterSchema } from '@/lib/helper/formValidation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ButtonLoader from '../Spinners/ButtonLoader';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 const Signup = () => {
 	const [showPass, setShowPass] = useState(false);
@@ -24,10 +25,16 @@ const Signup = () => {
 	});
 	const handleRegisterUser = async (data: RegisterUser) => {
 		setIsPending(true);
-		const result = await registerUser(data);
-		setIsPending(false);
-		if (result.success) {
-			router.push('/sign-up/verify-email');
+		try {
+			const result = await registerUser(data);
+			setIsPending(false);
+			if (result.success) {
+				router.push('/sign-up/verify-email');
+			} else {
+				toast.error(result.message);
+			}
+		} catch (error) {
+			throw new Error('Failed to register. Please try again');
 		}
 	};
 
