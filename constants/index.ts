@@ -37,7 +37,7 @@ export const headerLinks = [
 	},
 	{
 		label: 'About Us',
-		url: '/about-us',
+		url: '/who-we-are',
 	},
 	{
 		label: 'Services',
@@ -115,5 +115,25 @@ export const homeContactInfo = [
 		title: 'Office',
 		link: '123 Sample St, Sydney NSW 2000 AU',
 		linkText: '123 Sample St, Sydney NSW 2000 AU',
+	},
+];
+export const teamMembers = [
+	{
+		icon: 'team-1.jpg',
+		name: 'Federico Castiello',
+		title: 'Founder',
+		description: `As the visionary architect behind Gold & Pepper, Federico Castiello brings to the table a rich tapestry of strategic acumen and entrepreneurial zeal. With nearly a decade of cross-industry expertise, Federico's leadership ensures that Gold & Pepper remains agile, innovative, and consistently aligned with global best practices.`,
+	},
+	{
+		icon: 'team-2.jpg',
+		name: 'Gianluca Corsi',
+		title: 'Principal',
+		description: `A seasoned strategist, Gianluca Corsi epitomizes the confluence of analytical prowess and market intuition. His extensive tenure in data analytics and account management positions him as a pivotal asset to Gold & Pepper's expansive portfolio of services.`,
+	},
+	{
+		icon: 'team-3.jpg',
+		name: 'Antonio Muto',
+		title: 'Principal',
+		description: `As the Founding Principal of AD Consulenza, Antonio Muto brings with him an illustrious legacy of banking and financial leadership. His vast reservoir of experience, combined with academic credentials, fortifies Gold & Pepper's strategic vision and execution capabilities.`,
 	},
 ];
