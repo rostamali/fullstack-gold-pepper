@@ -40,8 +40,8 @@ export const headerLinks = [
 		url: '/who-we-are',
 	},
 	{
-		label: 'Services',
-		url: '/services',
+		label: 'Connect us',
+		url: '/connect-with-us',
 	},
 	{
 		label: 'Contact Us',
@@ -135,5 +135,25 @@ export const teamMembers = [
 		name: 'Antonio Muto',
 		title: 'Principal',
 		description: `As the Founding Principal of AD Consulenza, Antonio Muto brings with him an illustrious legacy of banking and financial leadership. His vast reservoir of experience, combined with academic credentials, fortifies Gold & Pepper's strategic vision and execution capabilities.`,
+	},
+];
+export const globalFootprint = [
+	{
+		title: 'MENA',
+		location: 'Office 103, Building A2, DSO, Dubai, UAE',
+		telephone: '+971 58 642 1919',
+		email: 'info@goldandpepper.com',
+	},
+	{
+		title: 'EU',
+		location: 'Italy, Rome',
+		telephone: '+39 333 532 4977',
+		email: 'Gcorsi@vertitur.it',
+	},
+	{
+		title: 'Events Management ',
+		location: 'United Arab Emirates',
+		telephone: '+971 52 542 4638',
+		email: 'Corina.tene@goldandpepper.com',
 	},
 ];

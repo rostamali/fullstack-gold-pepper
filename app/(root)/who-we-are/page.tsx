@@ -48,7 +48,7 @@ const AboutUsPage = () => {
 			</section>
 			<section
 				id="about-us"
-				className="md:py-[80px] py-[60px] bg-dark__100-light__white"
+				className="py-[60px] bg-dark__100-light__white"
 			>
 				<div className="container">
 					<div className="section__header">
@@ -79,7 +79,7 @@ const AboutUsPage = () => {
 			</section>
 			<section
 				id="our-team"
-				className="md:pb-[80px] pb-[60px] bg-dark__100-light__white"
+				className="py-[60px] bg-dark__100-light__white"
 			>
 				<div className="container">
 					<div className="section-header">
@@ -112,7 +112,7 @@ const AboutUsPage = () => {
 			</section>
 			<section
 				id="networks"
-				className="md:py-[80px] py-[60px] bg-dark__100-light__white"
+				className="py-[60px] bg-dark__100-light__white"
 			>
 				<div className="container">
 					<div className="grid lg:grid-cols-2 grid-cols-1 gap-[40px] items-center">
