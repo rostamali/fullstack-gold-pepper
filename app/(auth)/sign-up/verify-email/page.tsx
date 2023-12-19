@@ -1,6 +1,11 @@
 import AuthHeader from '@/components/shared/Auth/AuthHeader';
 import VerifyEmail from '@/components/shared/Forms/VerifyEmail';
 import { fetchVerifyEmailUser } from '@/lib/actions/auth.action';
+export const metadata = {
+	title: 'Verify Your Email | Gold & Pepper',
+	description:
+		'Complete the email verification process for Gold & Pepper. Ensure the security of your account and enjoy full access to our services.',
+};
 
 const VerifyEmailPage = async () => {
 	const result:

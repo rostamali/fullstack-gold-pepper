@@ -89,7 +89,7 @@ const ConnectWithUs = () => {
 					<div className="grid lg:grid-cols-2 grid-cols-1 gap-[40px] items-center">
 						<div className="flex flex-col gap-[25px]">
 							<span className="text-base-2 !text-primary-orange-light">
-								Our Network
+								Our Journey
 							</span>
 							<div className="flex flex-col gap-[15px]">
 								<h3 className="heading-3">
@@ -120,10 +120,10 @@ const ConnectWithUs = () => {
 							</div>
 						</div>
 						<Image
-							src={'/images/home-hero-banner.jpg'}
+							src={'/images/our-journey.jpg'}
 							alt={'The Genesis of Gold & Pepper'}
-							width={2560}
-							height={1440}
+							width={1279}
+							height={854}
 							priority={true}
 							className="object-cover w-full h-[300px] rounded-lg"
 						/>

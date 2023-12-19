@@ -1,8 +1,16 @@
 'use server';
 import { bcryptPassword, compareCode, comparePassword } from '../helper/bcrypt';
 import { verifyEmailTokenOptions } from '../helper/cookieOptions';
-import { verifyAuth, verifyEmailVerifyToken } from '../helper/tokenVerify';
-import { createEmailVerifyToken, sendToken } from '../helper/tokenCreate';
+import {
+	verifyAuth,
+	verifyEmailVerifyToken,
+	verifyForgotPasswordToken,
+} from '../helper/tokenVerify';
+import {
+	createEmailVerifyToken,
+	createForgotPasswordToken,
+	sendToken,
+} from '../helper/tokenCreate';
 import sendMail from '../helper/sendMail';
 import { handleResponse } from '../helper/serverResponse';
 import { prisma } from '../prisma';
@@ -165,4 +173,131 @@ export const authProfile = async () => {
 	} catch (error) {
 		return;
 	}
+};
+export const forgotPassword = async (params: { email: string }) => {
+	try {
+		const { email } = params;
+		if (!email) return handleResponse(false, 'Email is required');
+		const userExist = await prisma.user.findUnique({
+			where: {
+				email,
+				status: 'ACTIVE',
+				isVerified: true,
+			},
+			select: {
+				id: true,
+				email: true,
+				passwordChangedAt: true,
+			},
+		});
+		if (!userExist)
+			return handleResponse(false, `We couldn't find your email`);
+		if (!checkPasswordChangedAt(userExist.passwordChangedAt))
+			return handleResponse(
+				false,
+				`Please wait 20 minutes before trying again`,
+			);
+
+		const forgotPasswordToken = await createForgotPasswordToken(email);
+		await sendMail({
+			email,
+			subject: 'Forgot password email',
+			template: `<h1>Forgot reset URL: ${forgotPasswordToken}</h1>`,
+		});
+		cookies().delete('gold_access_token');
+		cookies().delete('gold_refresh_token');
+		return {
+			success: true,
+			message: 'Password Reset Email Sent',
+		};
+	} catch (error) {
+		return handleResponse(false, 'Oops! Something went wrong');
+	}
+};
+export const fetchForgotPasswordToken = async (token: string) => {
+	try {
+		const verifiedToken = await verifyForgotPasswordToken(token);
+		if (!verifiedToken) return;
+		const userExist = await prisma.user.findUnique({
+			where: {
+				email: verifiedToken.email,
+				status: 'ACTIVE',
+				isVerified: true,
+			},
+			select: {
+				id: true,
+				email: true,
+			},
+		});
+		if (!userExist) return;
+		return handleResponse(true, 'Authorized user');
+	} catch (error) {
+		return;
+	}
+};
+export const resetForgotPassword = async (params: {
+	token: string;
+	newPassword: string;
+	confirmPassword: string;
+}) => {
+	try {
+		const { token, newPassword, confirmPassword } = params;
+
+		const verifiedToken = await verifyForgotPasswordToken(token);
+		if (!verifiedToken)
+			return handleResponse(false, 'Password reset token expired');
+		const userExist = await prisma.user.findUnique({
+			where: {
+				email: verifiedToken.email,
+				status: 'ACTIVE',
+				isVerified: true,
+			},
+			select: {
+				id: true,
+				email: true,
+				password: true,
+				passwordChangedAt: true,
+			},
+		});
+		if (!userExist)
+			return handleResponse(false, `We couldn't find your email`);
+		if (!checkPasswordChangedAt(userExist.passwordChangedAt))
+			return handleResponse(
+				false,
+				`Please wait 20 minutes before trying again`,
+			);
+		const compareNewPass = await comparePassword(
+			newPassword,
+			userExist.password,
+		);
+		if (compareNewPass)
+			return handleResponse(false, 'Choose a different password');
+
+		const bcryptPass = await bcryptPassword(newPassword);
+		await prisma.user.update({
+			where: {
+				id: userExist.id,
+			},
+			data: {
+				password: bcryptPass,
+				passwordChangedAt: new Date(),
+			},
+		});
+		cookies().delete('gold_access_token');
+		cookies().delete('gold_refresh_token');
+		cookies().delete('gold_reset_token');
+		return handleResponse(true, 'Password reset successfully');
+	} catch (error) {
+		return handleResponse(false, 'Something went wrong');
+	}
+};
+
+// Check when the password is changed
+export const checkPasswordChangedAt = (passwordChangedAt: Date | null) => {
+	if (!passwordChangedAt) return true;
+	const timeDifference: number =
+		(new Date().getTime() - new Date(passwordChangedAt).getTime()) /
+		(1000 * 60);
+	if (parseInt(timeDifference.toString()) < 20) return false;
+	return true;
 };

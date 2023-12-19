@@ -32,3 +32,12 @@ export const refreshTokenOptions: ITokenOptions = {
 	sameSite: 'lax',
 	secure: process.env.NODE_ENV === 'production' && true,
 };
+
+const verifyResetPasswordTokenExpiresIn = 5 * 60 * 1000;
+export const verifyResetTokenOptions: ITokenOptions = {
+	expires: new Date(Date.now() + verifyResetPasswordTokenExpiresIn),
+	maxAge: verifyResetPasswordTokenExpiresIn,
+	httpOnly: true,
+	sameSite: 'lax',
+	secure: process.env.NODE_ENV === 'production' && true,
+};

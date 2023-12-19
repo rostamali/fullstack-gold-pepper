@@ -1,3 +1,4 @@
+import ServiceCard from '@/components/shared/Cards/ServiceCard';
 import Contact from '@/components/shared/Forms/Contact';
 import { homeContactInfo, featureList } from '@/constants';
 import Image from 'next/image';
@@ -116,27 +117,7 @@ const HomePage = () => {
 					<div className="feature-items mt-[60px]">
 						<div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-[30px]">
 							{featureList.map((feature, index) => (
-								<div
-									key={index}
-									className="flex flex-col gap-[20px] bg-primary-dark-200 rounded-md py-[25px] md:px-[35px] px-[25px]"
-								>
-									{feature.icon && (
-										<feature.icon className="sm:text-[55px] text-[40px]" />
-									)}
-									<h3 className="heading-3">
-										{feature.title}
-									</h3>
-									<p className="text-base-3 dark:text-white">
-										{feature.description}
-									</p>
-									<Link
-										href={feature.url}
-										className="btn-text-icon"
-									>
-										Learn more
-										<FiChevronRight />
-									</Link>
-								</div>
+								<ServiceCard data={feature} link={true} />
 							))}
 						</div>
 					</div>
@@ -196,53 +177,6 @@ const HomePage = () => {
 					</div>
 				</div>
 			</section>
-			{/* <section
-				id="our-benfits"
-				className="md:py-[80px] py-[60px] bg-dark__100-light__white"
-			>
-				<div className="container">
-					<div className="grid md:grid-cols-2 grid-cols-1 gap-[40px] items-center">
-						<Image
-							src={'/images/home-hero-banner.jpg'}
-							alt={'The Genesis of Gold & Pepper'}
-							width={2560}
-							height={1440}
-							priority={true}
-							className="object-cover w-full md:h-[500px] h-[300px] rounded-xl border-2 dark:border-primary-dark-100"
-						/>
-						<div className="flex flex-col gap-[30px]">
-							<h1 className="heading-1">
-								Long heading is what you see here in this
-								feature section
-							</h1>
-							<p className="text-base-1 dark:text-white">
-								Situated at the strategic nexus between the
-								Middle Eastern and European markets, Gold &
-								Pepper was conceived to address the nuanced
-								demands of the hospitality sector. Our
-								foundation is anchored in the principles of
-								professional integrity, precise market insight,
-								and unwavering commitment to client success.
-							</p>
-							<div className="flex items-center gap-[15px]">
-								<Link
-									href="/"
-									className="btn-primary__ghost !h-[45px] !px-[20px]"
-								>
-									About us
-								</Link>
-								<Link
-									href="/"
-									className="btn-primary !h-[45px] !px-[20px]"
-								>
-									Investment portals
-								</Link>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section> */}
-
 			<section
 				id="contact-details"
 				className="md:py-[80px] py-[60px] bg-dark__100-light__white"

@@ -74,6 +74,9 @@
 	.heading-4 {
 		@apply text-[16px] font-semibold text-primary-black-dark dark:text-white;
 	}
+	.heading-5 {
+		@apply text-[15px] font-semibold text-primary-black-dark dark:text-white;
+	}
 	.text-base-1 {
 		@apply md:text-[18px] text-[15px] font-normal text-primary-black-dark;
 	}

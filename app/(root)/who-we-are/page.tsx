@@ -69,10 +69,10 @@ const AboutUsPage = () => {
 						</div>
 					</div>
 					<Image
-						src={'/images/home-hero-banner.jpg'}
+						src={'/images/gold-pepper-vision.jpg'}
 						alt={`Gold & Pepper: A Synthesis of Expertise and Vision`}
-						width={2560}
-						height={1440}
+						width={1280}
+						height={853}
 						className="w-full md:h-[550px] h-[300px] object-cover rounded-lg mt-[60px]"
 					/>
 				</div>
@@ -158,10 +158,10 @@ const AboutUsPage = () => {
 							</p>
 						</div>
 						<Image
-							src={'/images/home-hero-banner.jpg'}
+							src={'/images/business-network.jpg'}
 							alt={'The Genesis of Gold & Pepper'}
-							width={2560}
-							height={1440}
+							width={1280}
+							height={853}
 							priority={true}
 							className="object-cover w-full md:h-[600px] h-[300px] rounded-lg"
 						/>

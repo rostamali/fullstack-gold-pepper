@@ -17,21 +17,37 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import ButtonLoader from '../Spinners/ButtonLoader';
 import { Textarea } from '@/components/ui/textarea';
+import { submitContactForm } from '@/lib/actions/form.action';
+import toast from 'react-hot-toast';
 
 const Contact = () => {
 	const [isPending, setIsPending] = useState(false);
 	const form = useForm<z.infer<typeof ContactFormSchema>>({
 		resolver: zodResolver(ContactFormSchema),
 	});
-	const handleLoginUser = async (data: z.infer<typeof ContactFormSchema>) => {
-		//
+	const handleSubmitForm = async (
+		data: z.infer<typeof ContactFormSchema>,
+	) => {
+		setIsPending(true);
+		try {
+			const result = await submitContactForm(data);
+			setIsPending(false);
+			if (result.success) {
+				toast.success(result.message);
+			} else {
+				toast.error(result.message);
+			}
+		} catch (error: any) {
+			setIsPending(false);
+			toast.error(error.message);
+		}
 	};
 
 	return (
 		<Form {...form}>
 			<form
 				className="auth-form__input-space"
-				onSubmit={form.handleSubmit(handleLoginUser)}
+				onSubmit={form.handleSubmit(handleSubmitForm)}
 			>
 				<FormField
 					control={form.control}
@@ -107,9 +123,10 @@ const Contact = () => {
 							</FormControl>
 							<div className="space-y-1 leading-none">
 								<FormLabel className="auth-input__label dark:text-white">
-									Remember me
+									Accept terms
 								</FormLabel>
 							</div>
+							<FormMessage className="form__error block" />
 						</FormItem>
 					)}
 				/>
@@ -118,14 +135,16 @@ const Contact = () => {
 						className="btn-primary gap-[5px]"
 						disabled={isPending}
 					>
-						<>
-							{isPending && (
+						{isPending ? (
+							<div className="flex items-center gap-[5px]">
 								<ButtonLoader
 									className={'h-[16px] w-[16px] stroke-white'}
 								/>
-							)}
-							Submit
-						</>
+								Sending
+							</div>
+						) : (
+							'Submit'
+						)}
 					</Button>
 				</div>
 			</form>

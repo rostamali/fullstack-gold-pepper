@@ -1,6 +1,11 @@
 import AuthFooter from '@/components/shared/Auth/AuthFooter';
 import AuthHeader from '@/components/shared/Auth/AuthHeader';
 import Signup from '@/components/shared/Forms/Signup';
+export const metadata = {
+	title: 'Create a New Account | Gold & Pepper',
+	description:
+		'Join Gold & Pepper today! Sign up to unlock exclusive features and personalized content. It only takes a few minutes to get started',
+};
 
 const SignupPage = () => {
 	return (

@@ -8,8 +8,6 @@ export default function Error({
 	error: Error & { digest?: string };
 	reset: () => void;
 }) {
-	console.log('Error', error);
-
 	return (
 		<div className="min-h-screen bg-primary-dark-200 flex flex-col items-center justify-center">
 			<div className="sm:w-[550px] w-full flex flex-col items-center justify-center gap-[20px] text-center px-[20px]">

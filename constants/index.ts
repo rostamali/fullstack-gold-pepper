@@ -5,13 +5,16 @@ import {
 	FiMail,
 	FiPhone,
 	FiMapPin,
+	FiTrello,
+	FiUsers,
+	FiAperture,
 } from 'react-icons/fi';
-import { FaFacebook, FaLinkedin, FaSquareInstagram } from 'react-icons/fa6';
 import {
-	FcBusinessContact,
-	FcGenealogy,
-	FcConferenceCall,
-} from 'react-icons/fc';
+	FaCube,
+	FaFacebook,
+	FaLinkedin,
+	FaSquareInstagram,
+} from 'react-icons/fa6';
 export const themes = [
 	{
 		value: 'light',
@@ -36,6 +39,10 @@ export const headerLinks = [
 		url: '/',
 	},
 	{
+		label: 'What we do',
+		url: '/what-we-do',
+	},
+	{
 		label: 'About Us',
 		url: '/who-we-are',
 	},
@@ -44,8 +51,8 @@ export const headerLinks = [
 		url: '/connect-with-us',
 	},
 	{
-		label: 'Contact Us',
-		url: '/contact-us',
+		label: 'Portals',
+		url: '/project',
 	},
 ];
 
@@ -78,20 +85,20 @@ export const socialLinks = [
 ];
 export const featureList = [
 	{
-		icon: FcBusinessContact,
-		title: 'What we do',
+		icon: FiTrello,
+		name: 'What we do',
 		description: `Gold & Pepper provides SMEs with a complete technical and financial consultancy service. It supports the companies at every relationship stage with financial intermediaries, suppliers, and contractors.`,
 		url: '/',
 	},
 	{
-		icon: FcConferenceCall,
-		title: 'Who we are',
+		icon: FiUsers,
+		name: 'Who we are',
 		description: `We invite you to explore the Gold & Pepper difference. Entrust us with your challenges, and together, we will craft strategies that not only address your immediate concerns but position you for long-term success in the global hospitality arena.`,
 		url: '/',
 	},
 	{
-		icon: FcGenealogy,
-		title: 'Connect with us',
+		icon: FiAperture,
+		name: 'Connect with us',
 		description: `We invite you to explore the Gold & Pepper difference. Entrust us with your challenges, and together, we will craft strategies that not only address your immediate concerns but position you for long-term success in the global hospitality arena.`,
 		url: '/',
 	},
@@ -156,4 +163,64 @@ export const globalFootprint = [
 		telephone: '+971 52 542 4638',
 		email: 'Corina.tene@goldandpepper.com',
 	},
+];
+export const advisoryServices = [
+	{
+		icon: FaCube,
+		name: 'Market Entry',
+		description: `Leveraging our intricate knowledge of the UAE business ecosystem and fortified by strong local affiliations, we provide bespoke solutions ensuring seamless business establishment and expansion.`,
+	},
+	{
+		icon: FaCube,
+		name: 'Valuations',
+		description: `Through our vast network of professional affiliations, we present independent, objective valuations, underpinned by globally recognized methodologies, to cater to the diverse needs of investors and stakeholders.`,
+	},
+	{
+		icon: FaCube,
+		name: 'Financial Due Diligence',
+		description: `Our analytical experts delve deep, identifying the strengths and potential vulnerabilities within businesses, safeguarding investments, and ensuring informed decision-making.`,
+	},
+	{
+		icon: FaCube,
+		name: 'Corporate Finance',
+		description: `Gold & Pepper champions the establish-
+		ment and optimization of international finance structures, accentuated by incisive KPI monitoring and stringent budget controls.`,
+	},
+	{
+		icon: FaCube,
+		name: 'Fundraising & M&A',
+		description: `From conceptualizing investor pitches to meticulous data room preparation, we provide end-to-end support, ensuring our clients are equipped to navigate the multifaceted realms of fundraising and mergers & acquisitions.`,
+	},
+	{
+		icon: FaCube,
+		name: 'Management Reporting',
+		description: `With precision and clarity at its core, our management reporting services provide actionable insights, fostering informed decision-making at every organizational level.`,
+	},
+];
+export const managementServices = [
+	{
+		icon: FaCube,
+		name: `Creative Solutions`,
+		description: `Our holistic approach to hospitality focuses on the creation of integrated experiences, ensuring brand resonance, guest satisfaction, and optimal profitability`,
+	},
+	{
+		icon: FaCube,
+		name: `Design + Construction`,
+		description: `In collaboration with industry frontrunners, we provide a gamut of services, from planning and design to technical assistance, ensuring that every project aligns with global benchmarks.`,
+	},
+	{
+		icon: FaCube,
+		name: `Asset Management`,
+		description: `Our asset management offerings span from financial structuring and ROI analytics to renovation planning, ensuring a holistic approach to asset optimization.`,
+	},
+	{
+		icon: FaCube,
+		name: `Planning + Development`,
+		description: `Comprehensive solutions, from site selection to financing, ensure that every venture is strategically aligned and operationally efficient.`,
+	},
+	// {
+	// 	icon: '/images/management-service-thumbnail-5.jpg',
+	// 	name: `Pre-Opening + Operations`,
+	// 	description: `Our expertise extends to operational nuances, ensuring seamless pre-opening preparations and efficient ongoing operations.`,
+	// },
 ];

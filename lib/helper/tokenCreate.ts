@@ -34,6 +34,13 @@ export const getRefreshTokenSecret = () => {
 	}
 	return secret;
 };
+export const getForgotPasswordTokenSecret = () => {
+	const secret = process.env.JWT_FORGOT_PASSWORD_TOKEN_SECRET;
+	if (!secret || secret.length === 0) {
+		throw new Error('Access token secret is required');
+	}
+	return secret;
+};
 
 /* ============================================= */
 // Create all the token using JOSE
@@ -52,7 +59,6 @@ export const createEmailVerifyToken = async (user: RegisterUser) => {
 
 	return { token, code };
 };
-
 export const createAccessToken = async (id: string) => {
 	return await new SignJWT({ id })
 		.setProtectedHeader({ alg })
@@ -71,7 +77,6 @@ export const createRememberAccessToken = async (id: string) => {
 		)
 		.sign(new TextEncoder().encode(getAccessTokenSecret()));
 };
-
 export const createRefreshToken = async (id: string) => {
 	return await new SignJWT({ id })
 		.setProtectedHeader({ alg })
@@ -80,6 +85,15 @@ export const createRefreshToken = async (id: string) => {
 			process.env.JWT_REFRESH_TOKEN_SECRET_EXPIRES_IN as string,
 		)
 		.sign(new TextEncoder().encode(getAccessTokenSecret()));
+};
+export const createForgotPasswordToken = async (email: string) => {
+	return await new SignJWT({ email })
+		.setProtectedHeader({ alg })
+		.setIssuedAt()
+		.setExpirationTime(
+			process.env.JWT_FORGOT_PASSWORD_TOKEN_SECRET_EXPIRES_IN as string,
+		)
+		.sign(new TextEncoder().encode(getForgotPasswordTokenSecret()));
 };
 
 /* ============================================= */

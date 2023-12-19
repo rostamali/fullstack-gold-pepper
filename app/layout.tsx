@@ -30,7 +30,7 @@ export default function MainLayout({
 		<html lang="en">
 			<body className={`${inter.variable} ${spaceGrotesk.variable}`}>
 				<ThemeProvider>{children}</ThemeProvider>
-				<Toaster position="bottom-right" reverseOrder={false} />
+				<Toaster position="bottom-center" reverseOrder={false} />
 			</body>
 		</html>
 	);

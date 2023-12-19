@@ -1,5 +1,8 @@
 import { jwtVerify } from 'jose';
-import { getEmailVerifySecret } from './tokenCreate';
+import {
+	getEmailVerifySecret,
+	getForgotPasswordTokenSecret,
+} from './tokenCreate';
 
 export const getAccessSecrectKey = () => {
 	const secret = process.env.JWT_ACCESS_TOKEN_SECRET;
@@ -41,6 +44,20 @@ export const verifyEmailVerifyToken = async (token: string) => {
 			email: string;
 			password: string;
 			code: string;
+		};
+	} catch (error) {
+		return;
+	}
+};
+export const verifyForgotPasswordToken = async (token: string) => {
+	try {
+		const verified = await jwtVerify(
+			token,
+			new TextEncoder().encode(getForgotPasswordTokenSecret()),
+		);
+		if (!verified) return;
+		return verified.payload as {
+			email: string;
 		};
 	} catch (error) {
 		return;

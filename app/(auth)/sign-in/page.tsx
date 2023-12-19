@@ -1,6 +1,11 @@
 import AuthFooter from '@/components/shared/Auth/AuthFooter';
 import AuthHeader from '@/components/shared/Auth/AuthHeader';
 import Signin from '@/components/shared/Forms/Signin';
+export const metadata = {
+	title: 'Sign In to Your Account | Gold & Pepper',
+	description:
+		'Securely sign in to your account on Gold & Pepper. Access your personalized content and services with just a few clicks',
+};
 
 const SigninPage = () => {
 	return (
