@@ -113,20 +113,27 @@ const Contact = () => {
 					name="acceptTerms"
 					defaultValue={false}
 					render={({ field }) => (
-						<FormItem className="flex flex-row items-start space-x-3 space-y-0">
+						<FormItem className="flex flex-col items-start space-x-3 space-y-0">
 							<FormControl>
-								<Checkbox
-									checked={field.value}
-									onCheckedChange={field.onChange}
-									className="h-[18px] w-[18px] border-primary-black-thin dark:border-white dark:text-primary-orange-light rounded text-primary-black-dark"
-								/>
+								<div className="flex items-center gap-[10px]">
+									<Checkbox
+										checked={field.value}
+										onCheckedChange={field.onChange}
+										id="acceptTerms"
+										className="h-[18px] w-[18px] border-primary-black-thin dark:border-white dark:text-white rounded text-primary-black-dark"
+									/>
+									<div className="space-y-1 leading-none">
+										<FormLabel
+											className="auth-input__label dark:text-white"
+											htmlFor="acceptTerms"
+										>
+											I agree with the terms and
+											condistions
+										</FormLabel>
+									</div>
+								</div>
 							</FormControl>
-							<div className="space-y-1 leading-none">
-								<FormLabel className="auth-input__label dark:text-white">
-									Accept terms
-								</FormLabel>
-							</div>
-							<FormMessage className="form__error block" />
+							<FormMessage className="form__error block pt-[10px] !ml-0" />
 						</FormItem>
 					)}
 				/>

@@ -30,14 +30,14 @@ export const getAccessTokenSecret = () => {
 export const getRefreshTokenSecret = () => {
 	const secret = process.env.JWT_REFRESH_TOKEN_SECRET;
 	if (!secret || secret.length === 0) {
-		throw new Error('Access token secret is required');
+		throw new Error('Refresh token secret is required');
 	}
 	return secret;
 };
 export const getForgotPasswordTokenSecret = () => {
 	const secret = process.env.JWT_FORGOT_PASSWORD_TOKEN_SECRET;
 	if (!secret || secret.length === 0) {
-		throw new Error('Access token secret is required');
+		throw new Error('Forgot password token secret is required');
 	}
 	return secret;
 };
@@ -84,7 +84,7 @@ export const createRefreshToken = async (id: string) => {
 		.setExpirationTime(
 			process.env.JWT_REFRESH_TOKEN_SECRET_EXPIRES_IN as string,
 		)
-		.sign(new TextEncoder().encode(getAccessTokenSecret()));
+		.sign(new TextEncoder().encode(getRefreshTokenSecret()));
 };
 export const createForgotPasswordToken = async (email: string) => {
 	return await new SignJWT({ email })

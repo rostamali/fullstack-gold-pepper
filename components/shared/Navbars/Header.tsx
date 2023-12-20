@@ -7,6 +7,7 @@ import MobileMenu from './MobileMenu';
 
 const Header = async () => {
 	const data = await authProfile();
+
 	return (
 		<header id="header" className="py-[20px] bg-dark__200-light__white">
 			<div className="container">

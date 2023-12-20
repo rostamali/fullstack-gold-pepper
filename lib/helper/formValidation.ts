@@ -93,3 +93,18 @@ export const ResetPasswordSchema = z
 			path: ['confirmPassword'],
 		},
 	);
+export const ProjectInterestFormSchema = z.object({
+	investmentAmount: z
+		.number({
+			required_error: 'Investment amount is required',
+		})
+		.min(1, { message: 'Investment amount must be greater than zero' }),
+	contactPhone: z
+		.string({
+			required_error: 'Phone is required',
+		})
+		.min(1, { message: 'Phone is required' }),
+	acceptTerms: z.boolean().refine((value) => value === true, {
+		message: 'You must agree to the terms and conditions.',
+	}),
+});

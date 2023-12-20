@@ -2,7 +2,7 @@
 import { bcryptPassword, compareCode, comparePassword } from '../helper/bcrypt';
 import { verifyEmailTokenOptions } from '../helper/cookieOptions';
 import {
-	verifyAuth,
+	verifyAccessToken,
 	verifyEmailVerifyToken,
 	verifyForgotPasswordToken,
 } from '../helper/tokenVerify';
@@ -152,7 +152,7 @@ export const authProfile = async () => {
 		const token = cookie.value;
 		if (!token) return;
 
-		const verifiedToken = await verifyAuth(token);
+		const verifiedToken = await verifyAccessToken(token);
 		if (!verifiedToken) return;
 
 		const userExist = await prisma.user.findUnique({

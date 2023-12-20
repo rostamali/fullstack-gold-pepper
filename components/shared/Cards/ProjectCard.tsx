@@ -12,12 +12,14 @@ const ProjectCard = () => {
 				className="h-[250px] lg:w-[250px] md:w-[300px] sm:w-[250px] w-full object-cover rounded-md"
 			/>
 			<div className="flex flex-col gap-[15px]">
-				<p className="text-base-3 !text-primary-orange-dark">
-					Category
-				</p>
-				<h3 className="text-[20px] dark:text-white font-semibold group-hover:text-primary-orange-dark">
-					Blog title heading will go here
-				</h3>
+				<div className="flex flex-col gap-[6px]">
+					<p className="text-base-3 !text-primary-orange-dark">
+						Category
+					</p>
+					<h3 className="text-[20px] dark:text-white font-semibold group-hover:text-white group-hover:text-opacity-60">
+						Blog title heading will go here
+					</h3>
+				</div>
 				<p className="text-base-3 dark:text-white">
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 					Suspendisse varius enim...
@@ -25,25 +27,25 @@ const ProjectCard = () => {
 				<div className="grid grid-cols-2 gap-[10px]">
 					<div className="flex flex-col gap-[2px]">
 						<h5 className="heading-5">Industry</h5>
-						<p className="text-base-3 !text-white !text-opacity-60">
+						<p className="text-base-3 dark:text-white dark:text-opacity-60">
 							Construction
 						</p>
 					</div>
-					<div className="flex flex-col gap-[2px] xl:block lg:hidden">
+					<div className="flex flex-col gap-[2px] xl:flex lg:hidden">
 						<h5 className="heading-5">Target Amount</h5>
-						<p className="text-base-3 !text-white !text-opacity-60">
+						<p className="text-base-3 dark:text-white dark:text-opacity-60">
 							$172.36382
 						</p>
 					</div>
-					<div className="flex flex-col gap-[2px] xl:block lg:hidden">
+					<div className="flex flex-col gap-[2px] xl:flex lg:hidden">
 						<h5 className="heading-5"># of investors</h5>
-						<p className="text-base-3 !text-white !text-opacity-60">
+						<p className="text-base-3 dark:text-white dark:text-opacity-60">
 							3
 						</p>
 					</div>
 					<div className="flex flex-col gap-[2px]">
 						<h5 className="heading-5">Close Date</h5>
-						<p className="text-base-3 !text-white !text-opacity-60">
+						<p className="text-base-3 dark:text-white dark:text-opacity-60">
 							15 Nov, 2023
 						</p>
 					</div>

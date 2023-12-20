@@ -117,7 +117,11 @@ const HomePage = () => {
 					<div className="feature-items mt-[60px]">
 						<div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-[30px]">
 							{featureList.map((feature, index) => (
-								<ServiceCard data={feature} link={true} />
+								<ServiceCard
+									key={index}
+									data={feature}
+									link={true}
+								/>
 							))}
 						</div>
 					</div>

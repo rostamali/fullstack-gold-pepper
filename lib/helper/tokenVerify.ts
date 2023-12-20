@@ -1,36 +1,11 @@
 import { jwtVerify } from 'jose';
 import {
+	getAccessTokenSecret,
 	getEmailVerifySecret,
 	getForgotPasswordTokenSecret,
+	getRefreshTokenSecret,
 } from './tokenCreate';
 
-export const getAccessSecrectKey = () => {
-	const secret = process.env.JWT_ACCESS_TOKEN_SECRET;
-	if (!secret || secret.length === 0) {
-		throw new Error('Access token secret is required');
-	}
-	return secret;
-};
-
-export const verifyAuth = async (token: string) => {
-	try {
-		const verified = await jwtVerify(
-			token,
-			new TextEncoder().encode(getAccessSecrectKey()),
-		);
-		return verified.payload as {
-			id: string;
-			iat: number;
-			exp: number;
-		};
-	} catch (error) {
-		return;
-	}
-};
-
-/* ============================================= */
-// Verify the email verify token
-/* ============================================= */
 export const verifyEmailVerifyToken = async (token: string) => {
 	try {
 		const verified = await jwtVerify(
@@ -58,6 +33,35 @@ export const verifyForgotPasswordToken = async (token: string) => {
 		if (!verified) return;
 		return verified.payload as {
 			email: string;
+		};
+	} catch (error) {
+		return;
+	}
+};
+export const verifyRefreshToken = async (token: string) => {
+	try {
+		const verified = await jwtVerify(
+			token,
+			new TextEncoder().encode(getRefreshTokenSecret()),
+		);
+		if (!verified) return;
+		return verified.payload as {
+			id: string;
+		};
+	} catch (error) {
+		return;
+	}
+};
+export const verifyAccessToken = async (token: string) => {
+	try {
+		const verified = await jwtVerify(
+			token,
+			new TextEncoder().encode(getAccessTokenSecret()),
+		);
+		return verified.payload as {
+			id: string;
+			iat: number;
+			exp: number;
 		};
 	} catch (error) {
 		return;
