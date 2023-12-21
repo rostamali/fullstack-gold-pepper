@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-	verifyEmailVerifyToken,
-	verifyRefreshToken,
-} from './lib/helper/tokenVerify';
+import { verifyEmailVerifyToken } from './lib/helper/tokenVerify';
 
 export async function middleware(req: NextRequest) {
 	// fetch email verify token
@@ -15,8 +12,6 @@ export async function middleware(req: NextRequest) {
 	) {
 		return NextResponse.redirect(new URL('/sign-in', req.url));
 	}
-
-	// update access token
 
 	return;
 }

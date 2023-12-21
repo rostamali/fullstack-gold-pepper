@@ -1,8 +1,12 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 const ProjectCard = () => {
 	return (
-		<div className="flex sm:items-center gap-[25px] sm:flex-row flex-col group cursor-pointer">
+		<Link
+			href="/project/project-slug"
+			className="flex sm:items-center gap-[25px] sm:flex-row flex-col group cursor-pointer"
+		>
 			<Image
 				src={'/images/business-network.jpg'}
 				alt={''}
@@ -51,7 +55,7 @@ const ProjectCard = () => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 };
 

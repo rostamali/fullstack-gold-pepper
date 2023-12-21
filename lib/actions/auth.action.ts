@@ -1,12 +1,16 @@
 'use server';
 import { bcryptPassword, compareCode, comparePassword } from '../helper/bcrypt';
-import { verifyEmailTokenOptions } from '../helper/cookieOptions';
+import {
+	accessTokenOptions,
+	verifyEmailTokenOptions,
+} from '../helper/cookieOptions';
 import {
 	verifyAccessToken,
 	verifyEmailVerifyToken,
 	verifyForgotPasswordToken,
 } from '../helper/tokenVerify';
 import {
+	createAccessToken,
 	createEmailVerifyToken,
 	createForgotPasswordToken,
 	sendToken,
@@ -15,6 +19,7 @@ import sendMail from '../helper/sendMail';
 import { handleResponse } from '../helper/serverResponse';
 import { prisma } from '../prisma';
 import { cookies } from 'next/headers';
+import { verifyRefreshToken } from '../helper/tokenVerify';
 
 export const registerUser = async (params: RegisterUser) => {
 	try {
@@ -289,6 +294,48 @@ export const resetForgotPassword = async (params: {
 		return handleResponse(true, 'Password reset successfully');
 	} catch (error) {
 		return handleResponse(false, 'Something went wrong');
+	}
+};
+export const updateAccessToken = async () => {
+	try {
+		const refreshToken = cookies().get('gold_refresh_token')?.value;
+		const accessToken = cookies().get('gold_access_token')?.value;
+		if (!refreshToken) return;
+
+		const verifiedRefreshToken = await verifyRefreshToken(refreshToken);
+		if (!verifiedRefreshToken) return;
+
+		const userExist = await prisma.user.findUnique({
+			where: {
+				id: verifiedRefreshToken.id,
+				status: 'ACTIVE',
+				isVerified: true,
+			},
+			select: {
+				id: true,
+			},
+		});
+		if (!userExist) {
+			cookies().set('gold_refresh_token', '', { maxAge: 0 });
+			cookies().set('gold_access_token', '', { maxAge: 0 });
+			return;
+		}
+
+		const verifiedAccessToken =
+			accessToken && (await verifyAccessToken(accessToken));
+		if (!verifiedAccessToken) {
+			const newAccessToken = await createAccessToken(userExist.id);
+			cookies().set(
+				'gold_access_token',
+				newAccessToken,
+				accessTokenOptions,
+			);
+			return true;
+		}
+
+		return true;
+	} catch (error) {
+		return;
 	}
 };
 
