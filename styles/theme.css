@@ -127,6 +127,19 @@
 		@apply text-primary-black-dark duration-100 dark:text-white hover:text-primary-orange-dark dark:hover:text-primary-orange-dark;
 	}
 	/* ============================= */
-	/* Form Utilities */
+	/* Pagination Utilities */
 	/* ============================= */
+	.dark-bg__100-light__white {
+		@apply dark:bg-primary-dark-100 dark:text-white bg-white;
+	}
+
+	/* ============================= */
+	/* Shadow Utilities */
+	/* ============================= */
+	.shadow-light-100 {
+		box-shadow: 0px 6px 18px -1px #dfe2e637;
+	}
+	.shadow-light-300 {
+		box-shadow: 0px 6px 17px -1px rgba(223, 226, 230, 0.359);
+	}
 }

@@ -1,16 +1,12 @@
 'use server';
 import { bcryptPassword, compareCode, comparePassword } from '../helper/bcrypt';
+import { verifyEmailTokenOptions } from '../helper/cookieOptions';
 import {
-	accessTokenOptions,
-	verifyEmailTokenOptions,
-} from '../helper/cookieOptions';
-import {
-	verifyAccessToken,
+	isAuthenticated,
 	verifyEmailVerifyToken,
 	verifyForgotPasswordToken,
 } from '../helper/tokenVerify';
 import {
-	createAccessToken,
 	createEmailVerifyToken,
 	createForgotPasswordToken,
 	sendToken,
@@ -19,7 +15,6 @@ import sendMail from '../helper/sendMail';
 import { handleResponse } from '../helper/serverResponse';
 import { prisma } from '../prisma';
 import { cookies } from 'next/headers';
-import { verifyRefreshToken } from '../helper/tokenVerify';
 
 export const registerUser = async (params: RegisterUser) => {
 	try {
@@ -108,6 +103,9 @@ export const verifyUserEmail = async (params: { code: string }) => {
 				status: 'ACTIVE',
 			},
 		});
+
+		cookies().set('gold_verify_email', '', { maxAge: 0 });
+
 		return handleResponse(true, 'Email verified successfully');
 	} catch (error) {
 		return handleResponse(false, 'Email verification failed');
@@ -151,20 +149,23 @@ export const loginUser = async (params: LoginUser) => {
 };
 export const authProfile = async () => {
 	try {
-		const cookie = cookies().get('gold_access_token');
-		if (!cookie) return;
+		const accessToken = cookies().get('gold_access_token')?.value;
+		const refreshToken = cookies().get('gold_refresh_token')?.value;
 
-		const token = cookie.value;
-		if (!token) return;
-
-		const verifiedToken = await verifyAccessToken(token);
-		if (!verifiedToken) return;
+		const authenticated = await isAuthenticated({
+			accessToken: accessToken ? accessToken : null,
+			refreshToken: refreshToken ? refreshToken : null,
+		});
+		if (!authenticated) return;
 
 		const userExist = await prisma.user.findUnique({
 			where: {
-				id: verifiedToken?.id,
+				id: authenticated.id,
+				status: 'ACTIVE',
+				isVerified: true,
 			},
 			select: {
+				id: true,
 				firstName: true,
 				lastName: true,
 				email: true,
@@ -172,6 +173,7 @@ export const authProfile = async () => {
 			},
 		});
 		if (!userExist) return;
+
 		return {
 			...userExist,
 		};
@@ -296,49 +298,40 @@ export const resetForgotPassword = async (params: {
 		return handleResponse(false, 'Something went wrong');
 	}
 };
-export const updateAccessToken = async () => {
+export const isAuthenticatedAdmin = async () => {
 	try {
-		const refreshToken = cookies().get('gold_refresh_token')?.value;
 		const accessToken = cookies().get('gold_access_token')?.value;
-		if (!refreshToken) return;
+		const refreshToken = cookies().get('gold_refresh_token')?.value;
 
-		const verifiedRefreshToken = await verifyRefreshToken(refreshToken);
-		if (!verifiedRefreshToken) return;
+		const authenticated = await isAuthenticated({
+			accessToken: accessToken ? accessToken : null,
+			refreshToken: refreshToken ? refreshToken : null,
+		});
+		if (!authenticated || authenticated.role !== 'ADMIN') return;
 
 		const userExist = await prisma.user.findUnique({
 			where: {
-				id: verifiedRefreshToken.id,
+				id: authenticated.id,
 				status: 'ACTIVE',
 				isVerified: true,
+				role: 'ADMIN',
 			},
 			select: {
 				id: true,
+				status: true,
+				isVerified: true,
+				role: true,
 			},
 		});
-		if (!userExist) {
-			cookies().set('gold_refresh_token', '', { maxAge: 0 });
-			cookies().set('gold_access_token', '', { maxAge: 0 });
-			return;
-		}
+		if (!userExist) return;
 
-		const verifiedAccessToken =
-			accessToken && (await verifyAccessToken(accessToken));
-		if (!verifiedAccessToken) {
-			const newAccessToken = await createAccessToken(userExist.id);
-			cookies().set(
-				'gold_access_token',
-				newAccessToken,
-				accessTokenOptions,
-			);
-			return true;
-		}
-
-		return true;
+		return {
+			id: userExist.id,
+		};
 	} catch (error) {
 		return;
 	}
 };
-
 // Check when the password is changed
 export const checkPasswordChangedAt = (passwordChangedAt: Date | null) => {
 	if (!passwordChangedAt) return true;

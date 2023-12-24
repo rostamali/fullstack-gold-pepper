@@ -6,7 +6,7 @@ import { headerLinks } from '@/constants';
 import MobileMenu from './MobileMenu';
 
 const Header = async () => {
-	const data = await authProfile();
+	const result = await authProfile();
 
 	return (
 		<header id="header" className="py-[20px] bg-dark__200-light__white">
@@ -21,7 +21,6 @@ const Header = async () => {
 							& Pepper
 						</span>
 					</Link>
-					{/* <Navlink /> */}
 					<div className="flex items-center gap-[10px] flex-1 justify-end">
 						<ul className="lg:flex items-center gap-[25px] hidden">
 							{headerLinks.map((link, index) => (
@@ -33,8 +32,15 @@ const Header = async () => {
 							))}
 						</ul>
 						<Theme />
-						{data ? (
-							<Link href="/sign-in" className="btn-primary">
+						{result ? (
+							<Link
+								href={
+									result.role === 'ADMIN'
+										? '/admin/files'
+										: '/what-we-do'
+								}
+								className="btn-primary"
+							>
 								My Account
 							</Link>
 						) : (

@@ -14,8 +14,6 @@ const VerifyEmailPage = async () => {
 				data: RegisterUser;
 		  }
 		| undefined = await fetchVerifyEmailUser();
-	if (!result || !result.success)
-		throw new Error('Auth is required to access this resource');
 
 	return (
 		<div className="auth-page">

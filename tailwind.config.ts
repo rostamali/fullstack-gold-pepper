@@ -36,6 +36,11 @@ const config: Config = {
 					'orange-dark': '#ff7000',
 					'orange-light': '#e2995f',
 				},
+				admin: {
+					'gray-thin': '#FDFDFD',
+					'gray-light': '#F4F6F8',
+					'gray-dark': '#DCE3F1',
+				},
 			},
 			container: {
 				center: true,

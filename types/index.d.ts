@@ -17,3 +17,13 @@ interface ITokenOptions {
 	sameSite: 'lax' | 'strict' | 'none' | undefined;
 	secure?: boolean;
 }
+
+// FILE types
+interface FileType {
+	title: string;
+	id: string;
+	url: string;
+	fileType: string;
+	fileName: string;
+	description: string | null;
+}

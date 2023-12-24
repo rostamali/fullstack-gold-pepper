@@ -1,5 +1,6 @@
 import ProjectCard from '@/components/shared/Cards/ProjectCard';
 import LocalSearch from '@/components/shared/Search/LocalSearch';
+import Pagination from '@/components/shared/Search/Pagination';
 import SelectFilter from '@/components/shared/Search/SelectFilter';
 type SearchParams = {
 	searchParams: {
@@ -8,8 +9,6 @@ type SearchParams = {
 };
 
 const ProjectPage = ({ searchParams }: SearchParams) => {
-	// console.log(searchParams.q);
-	// console.log(searchParams.filter);
 	return (
 		<main>
 			<section
@@ -38,6 +37,14 @@ const ProjectPage = ({ searchParams }: SearchParams) => {
 								<ProjectCard key={index} />
 							))}
 						</div>
+						<Pagination
+							pages={5}
+							containerClass={'justify-end'}
+							prevBtnClass={''}
+							nextBtnClass={''}
+							paginateBtnClass={''}
+							paginateActiveClass={'dark:bg-opacity-40'}
+						/>
 					</div>
 				</div>
 			</section>

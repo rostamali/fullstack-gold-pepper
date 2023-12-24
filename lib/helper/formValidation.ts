@@ -108,3 +108,12 @@ export const ProjectInterestFormSchema = z.object({
 		message: 'You must agree to the terms and conditions.',
 	}),
 });
+export const FileUpdateSchema = z.object({
+	title: z
+		.string()
+		.min(1, { message: 'File name is required' })
+		.max(30, { message: 'File name must not exceed 30 characters' }),
+	description: z
+		.string()
+		.max(150, { message: 'Description must not exceed 150 characters' }),
+});

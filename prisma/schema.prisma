@@ -61,6 +61,7 @@ model User {
   avatar            Avatar?
   projects          Project[]
   investments       Investment[]
+  files             File[]
   isVerified        Boolean       @default(false)
   role              Role          @default(USER)
   status            AccountStatus @default(INACTIVE)
@@ -102,20 +103,24 @@ model Avatar {
 }
 
 model File {
-  id        String     @id @unique @default(uuid())
-  fileType  String
-  name      String     @unique
-  title     String
-  url       String
-  size      String
-  metaInfo  String
-  gallery   Gallery?   @relation(fields: [galleryId], references: [id], onDelete: Cascade)
-  galleryId String?
-  projects  Project[]
-  document  Document[]
-  isActive  Boolean    @default(true)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id              String     @id @unique @default(uuid())
+  fileType        String
+  fileName        String     @unique
+  title           String
+  description     String?
+  url             String
+  size            String
+  gallery         Gallery?   @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  galleryId       String?
+  projects        Project[]
+  document        Document[]
+  isCompress      Boolean    @default(false)
+  compressPercent Float?
+  author          User       @relation(fields: [authorId], references: [id])
+  authorId        String
+  isActive        Boolean    @default(true)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 }
 
 model Gallery {

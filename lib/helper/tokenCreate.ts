@@ -59,8 +59,8 @@ export const createEmailVerifyToken = async (user: RegisterUser) => {
 
 	return { token, code };
 };
-export const createAccessToken = async (id: string) => {
-	return await new SignJWT({ id })
+export const createAccessToken = async (id: string, role: string) => {
+	return await new SignJWT({ id, role })
 		.setProtectedHeader({ alg })
 		.setIssuedAt()
 		.setExpirationTime(
@@ -68,8 +68,8 @@ export const createAccessToken = async (id: string) => {
 		)
 		.sign(new TextEncoder().encode(getAccessTokenSecret()));
 };
-export const createRememberAccessToken = async (id: string) => {
-	return await new SignJWT({ id })
+export const createRememberAccessToken = async (id: string, role: string) => {
+	return await new SignJWT({ id, role })
 		.setProtectedHeader({ alg })
 		.setIssuedAt()
 		.setExpirationTime(
@@ -77,8 +77,8 @@ export const createRememberAccessToken = async (id: string) => {
 		)
 		.sign(new TextEncoder().encode(getAccessTokenSecret()));
 };
-export const createRefreshToken = async (id: string) => {
-	return await new SignJWT({ id })
+export const createRefreshToken = async (id: string, role: string) => {
+	return await new SignJWT({ id, role })
 		.setProtectedHeader({ alg })
 		.setIssuedAt()
 		.setExpirationTime(
@@ -109,10 +109,10 @@ export const sendToken = async (
 	remember: boolean,
 	message: string,
 ) => {
-	const { id } = user;
-	const access_token = await createAccessToken(id);
-	const remember_access_token = await createRememberAccessToken(id);
-	const refresh_token = await createRefreshToken(id);
+	const { id, role } = user;
+	const access_token = await createAccessToken(id, role);
+	const remember_access_token = await createRememberAccessToken(id, role);
+	const refresh_token = await createRefreshToken(id, role);
 
 	cookies().set(
 		'gold_access_token',

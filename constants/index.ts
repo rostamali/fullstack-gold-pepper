@@ -8,6 +8,12 @@ import {
 	FiTrello,
 	FiUsers,
 	FiAperture,
+	FiCommand,
+	FiImage,
+	FiClipboard,
+	FiZap,
+	FiUser,
+	FiLifeBuoy,
 } from 'react-icons/fi';
 import {
 	FaCube,
@@ -55,7 +61,53 @@ export const headerLinks = [
 		url: '/project',
 	},
 ];
+export const adminHeaderLinks = [
+	{
+		label: 'Dashboard',
+		link: '/admin/dashboard',
+		icon: FiCommand,
+	},
+	{
+		label: 'Files',
+		link: '/admin/files',
+		icon: FiImage,
+	},
 
+	{
+		label: 'Projects',
+		link: '/admin/d/project',
+		icon: FiClipboard,
+		submenu: [
+			{
+				label: 'All Projects',
+				link: '/admin/d/project',
+			},
+			{
+				label: 'Trash Projects',
+				link: '/admin/d/project/trash',
+			},
+			{
+				label: 'New Project',
+				link: '/admin/d/project/create',
+			},
+		],
+	},
+	{
+		label: 'Investors',
+		link: '/admin/d/investor',
+		icon: FiZap,
+	},
+	{
+		label: 'Users',
+		link: '/admin/d/user',
+		icon: FiUser,
+	},
+	{
+		label: 'Profile',
+		link: '/admin/d/user/profile',
+		icon: FiLifeBuoy,
+	},
+];
 export const termsLinks = [
 	{
 		label: 'Privacy Policy',
