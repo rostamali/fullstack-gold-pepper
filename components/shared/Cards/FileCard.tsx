@@ -1,25 +1,42 @@
-import { Button } from '@/components/ui/button';
-import { FiDownload } from 'react-icons/fi';
+import Image from 'next/image';
+import { FiFile } from 'react-icons/fi';
+import ReactPlayer from 'react-player';
+import VideoPlayer from './VideoPlayer';
 
-const FileCard = () => {
+type FileCardType = {
+	file: FileType;
+};
+
+const FileCard: React.FC<FileCardType> = ({ file }) => {
 	return (
-		<div className="dark:bg-primary-dark-100 rounded-md p-[20px] border border-primary-black-thin dark:border-transparent">
-			<div className="flex flex-col justify-between gap-[10px]">
-				<div className="flex justify-between gap-[10px]">
-					<h4 className="heading-4">
-						Businesses & Capabilities Document 1
-					</h4>
-					<Button className="bg-primary-dark-200 text-white text-[17px]">
-						<FiDownload />
-					</Button>
+		<div className="file-card w-full">
+			{file.fileType === 'image' && (
+				<div className="bg-white rounded-md overflow-hidden border border-admin-gray-dark border-opacity-50 relative group cursor-pointer">
+					<Image
+						src={`/files/uploads/${file?.url}`}
+						alt={file?.title}
+						priority={true}
+						width={1240}
+						height={750}
+						className="h-[220px] object-cover rounded-md"
+					/>
+					<div className="absolute duration-150 opacity-0 top-0 left-0 w-full h-full bg-primary-black-thin bg-opacity-50 group-hover:opacity-[1]"></div>
 				</div>
-
-				<p className="text-base-3 dark:text-white">
-					Gold & Pepper provides SMEs with a complete technical and
-					financial consultancy service. Gold & Pepper provides SMEs
-					with a complete technical and financial consultancy service.
-				</p>
-			</div>
+			)}
+			{file.fileType === 'video' && (
+				<VideoPlayer
+					url={file.url}
+					className={
+						'!h-[220px] !w-[100%] border bg-white border-admin-gray-dark rounded-md cursor-pointer'
+					}
+				/>
+			)}
+			{file.fileType === 'application' && (
+				<div className="h-[220px] w-full border border-admin-gray-dark rounded-md bg-white flex flex-col gap-[10px] items-center justify-center text-center p-[25px] cursor-pointer">
+					<FiFile className="text-[50px] text-primary-dark-100" />
+					<p className="text-base-3">{file.title}</p>
+				</div>
+			)}
 		</div>
 	);
 };

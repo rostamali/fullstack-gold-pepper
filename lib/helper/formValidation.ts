@@ -2,13 +2,21 @@ import * as z from 'zod';
 
 export const RegisterSchema = z.object({
 	firstName: z
-		.string()
+		.string({
+			required_error: 'Name is required',
+		})
 		.min(1, { message: 'Firstname is required' })
 		.max(30, { message: 'Firstname must not exceed 30 characters' }),
 	lastName: z.string(),
-	email: z.string().min(1, { message: 'Email is required' }).email({
-		message: 'Must be a valid email',
-	}),
+	email: z
+		.string({
+			invalid_type_error: 'Email Must be valid',
+			required_error: 'Email is required',
+		})
+		.min(1, { message: 'Email is required' })
+		.email({
+			message: 'Must be a valid email',
+		}),
 	password: z
 		.string()
 		.min(6, { message: 'Password must be atleast 6 characters' })
@@ -117,3 +125,86 @@ export const FileUpdateSchema = z.object({
 		.string()
 		.max(150, { message: 'Description must not exceed 150 characters' }),
 });
+const FileSchema = z.object({
+	title: z.string(),
+	fileName: z.string(),
+	id: z.string(),
+	url: z.string(),
+	fileType: z.string(),
+	description: z.string().nullable(),
+});
+export const ProjectCategorySchema = z.object({
+	name: z
+		.string({
+			required_error: 'Name is required',
+		})
+		.min(2, { message: 'Name must be atleast 2 characters' })
+		.max(30, { message: 'Name must not exceed 30 characters' }),
+	description: z
+		.string()
+		.max(50, 'Description must not exceed 50 characters'),
+	thumbnail: z.array(FileSchema),
+});
+
+const ProjectStatusOptions = [
+	'COMPLETED',
+	'CANCELED',
+	'ACTIVE',
+	'DRAFT',
+	'CLOSED',
+	'PRIVATE',
+];
+export const ProjectFormSchema = z.object({
+	name: z
+		.string({
+			required_error: 'Name is required',
+		})
+		.min(2, { message: 'Name must be atleast 2 characters' })
+		.max(100, { message: 'Name must not exceed 100 characters' }),
+	location: z.string(),
+	description: z.any(),
+	thumbnail: z.array(FileSchema),
+	status: z
+		.string({
+			required_error: 'Status is required',
+		})
+		.refine((value) => ProjectStatusOptions.includes(value), {
+			message:
+				'Status must be one of the options: ' +
+				ProjectStatusOptions.join(', '),
+		})
+		.refine(
+			(value) => value !== undefined && value !== null && value !== '',
+			{
+				message: 'Status is required',
+			},
+		),
+	category: z.string({
+		required_error: 'Category is required',
+	}),
+	minInvestment: z
+		.number()
+		.min(1, { message: 'Minimum invest amount must be greater' }),
+	capex: z.number(),
+	targetAmount: z.number(),
+	totalRevenue: z.number(),
+	totalCost: z.number(),
+	roi: z.number(),
+	closeDate: z.date({
+		required_error: 'Close date is required',
+	}),
+	documents: z.array(
+		z.object({
+			name: z.string().min(1, 'Name is required'),
+			status: z
+				.string()
+				.min(1, 'Status is required')
+				.refine((value) => ['PUBLIC', 'PRIVATE'].includes(value), {
+					message: 'Status must be either PUBLIC or PRIVATE',
+				}),
+			description: z.string(),
+			file: z.array(FileSchema),
+		}),
+	),
+});
+export type ProjectFormType = z.infer<typeof ProjectFormSchema>;

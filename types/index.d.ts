@@ -27,3 +27,68 @@ interface FileType {
 	fileName: string;
 	description: string | null;
 }
+
+interface CategoryType {
+	id: string;
+	name: string;
+	slug: string;
+	description: string | null;
+	thumbnail: FileType | null;
+	projects:
+		| {
+				id: string;
+		  }[]
+		| null;
+	createdAt: Date;
+}
+interface UpdateCategory {
+	id: string;
+	name: string;
+	description: string | null;
+	thumbnail: FileType | null;
+}
+
+// Project Types
+type ProjectStatus =
+	| 'COMPLETED'
+	| 'CANCELED'
+	| 'ACTIVE'
+	| 'DRAFT'
+	| 'CLOSED'
+	| 'PRIVATE';
+
+interface DocumentType {
+	name: string;
+	status: string;
+	description: string | null;
+	file: FileType;
+}
+interface ProjectType {
+	name: string;
+	location: string;
+	description: string | any;
+	thumbnail: FileType[] | [];
+	status: ProjectStatus;
+	category: string;
+	minInvestment: number;
+	capex: number;
+	targetAmount: number;
+	totalRevenue: number;
+	totalCost: number;
+	roi: number;
+	closeDate: Date;
+	documents: DocumentType[] | [];
+}
+interface ProjectAdminTable {
+	id: string;
+	name: string;
+	slug: string;
+	thumbnail: {
+		url: string;
+	} | null;
+	category: {
+		name: string;
+	} | null;
+	status: ProjectStatus;
+	createdAt: Date;
+}

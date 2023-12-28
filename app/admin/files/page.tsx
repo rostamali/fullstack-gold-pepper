@@ -1,10 +1,12 @@
-import FileLibrary from '@/components/admin/Modals/FileLibrary';
-import FileUploader from '@/components/admin/Modals/FileUploader';
+import FileLibrary from '@/components/shared/Sidebars/FileLibrary';
+import FileUploader from '@/components/shared/Modal/FileUploader';
 import Pagination from '@/components/shared/Search/Pagination';
 import { fetchFilesByAdmin } from '@/lib/actions/file.action';
 type SearchParams = {
 	searchParams: {
 		page: string;
+		type: string | null;
+		q: string | null;
 	};
 };
 
@@ -12,6 +14,8 @@ const FilePage = async ({ searchParams }: SearchParams) => {
 	const result = await fetchFilesByAdmin({
 		pageSize: 9,
 		page: searchParams.page ? parseInt(searchParams.page) : 1,
+		type: searchParams.type ? searchParams.type : null,
+		query: searchParams.q ? searchParams.q : null,
 	});
 
 	return (
@@ -22,17 +26,12 @@ const FilePage = async ({ searchParams }: SearchParams) => {
 				</h2>
 				<FileUploader />
 			</div>
-			{result && <FileLibrary files={result.files} />}
-			<Pagination
-				pages={result ? result.pages : 1}
-				containerClass={'justify-end'}
-				prevBtnClass={'btn-primary'}
-				nextBtnClass={'btn-primary'}
-				paginateBtnClass={
-					'btn-primary__ghost !bg-transparent dark:text-primary-orange-dark text-primary-orange-dark hover:text-white dark:hover:text-white w-[40px]'
-				}
-				paginateActiveClass={'btn-primary dark:text-white'}
-			/>
+			{result && (
+				<FileLibrary
+					pages={result?.pages ? result?.pages : 1}
+					files={result.files}
+				/>
+			)}
 		</div>
 	);
 };

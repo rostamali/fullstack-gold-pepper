@@ -1,4 +1,4 @@
-import FileCard from '@/components/shared/Cards/FileCard';
+import FileDocCard from '@/components/shared/Cards/FileDocCard';
 import ProjectInterest from '@/components/shared/Modal/ProjectInterest';
 import ProjectGallery from '@/components/shared/Slider/ProjectGallery';
 
@@ -100,7 +100,7 @@ const ProjectDetailsPage = () => {
 						<div className="project__files">
 							<div className="grid md:grid-cols-2 lg:gap-[40px] gap-[25px]">
 								{[1, 2, 3, 4].map((file, index) => (
-									<FileCard key={index} />
+									<FileDocCard key={index} />
 								))}
 							</div>
 						</div>

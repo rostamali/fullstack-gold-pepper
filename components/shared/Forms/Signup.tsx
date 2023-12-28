@@ -78,7 +78,7 @@ const Signup = () => {
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel className="auth-input__label">
-									First name
+									Last name
 								</FormLabel>
 								<FormControl>
 									<Input

@@ -8,12 +8,18 @@ type FilterProps = {
 	route: string;
 	iconPosition: 'left' | 'right';
 	placeholder: string;
+	containerClass: string;
+	inputClass: string;
+	iconClass: string;
 };
 
 const LocalSearch: React.FC<FilterProps> = ({
 	route,
 	iconPosition,
 	placeholder,
+	containerClass,
+	inputClass,
+	iconClass,
 }) => {
 	const router = useRouter();
 	const pathname = usePathname();
@@ -46,16 +52,26 @@ const LocalSearch: React.FC<FilterProps> = ({
 
 	return (
 		<div
-			className={`flex items-center dark:bg-primary-dark-100 rounded-md px-[12px] ${
+			className={`flex items-center ${
+				containerClass.length > 0
+					? containerClass
+					: 'dark:bg-primary-dark-100'
+			} rounded-md px-[12px] ${
 				iconPosition === 'left' ? 'flex-row' : 'flex-row-reverse'
 			}`}
 		>
-			<FiSearch className="text-[20px] text-white text-opacity-60" />
+			<FiSearch
+				className={`${
+					iconClass.length > 0
+						? iconClass
+						: 'text-[20px] text-white text-opacity-60'
+				}`}
+			/>
 			<Input
 				value={search}
 				onChange={(e) => setSearch(e.target.value)}
 				placeholder={placeholder.length ? placeholder : 'Search now...'}
-				className="bg-transparent border-0 outline-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none h-[50px] text-white"
+				className={`bg-transparent border-0 outline-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none h-[50px] text-white ${inputClass}`}
 			/>
 		</div>
 	);

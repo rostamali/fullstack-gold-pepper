@@ -14,6 +14,7 @@ import {
 	FiZap,
 	FiUser,
 	FiLifeBuoy,
+	FiBookmark,
 } from 'react-icons/fi';
 import {
 	FaCube,
@@ -64,47 +65,37 @@ export const headerLinks = [
 export const adminHeaderLinks = [
 	{
 		label: 'Dashboard',
-		link: '/admin/dashboard',
+		url: '/admin/dashboard',
 		icon: FiCommand,
 	},
 	{
 		label: 'Files',
-		link: '/admin/files',
+		url: '/admin/files',
 		icon: FiImage,
 	},
-
 	{
 		label: 'Projects',
-		link: '/admin/d/project',
+		url: '/admin/project',
 		icon: FiClipboard,
-		submenu: [
-			{
-				label: 'All Projects',
-				link: '/admin/d/project',
-			},
-			{
-				label: 'Trash Projects',
-				link: '/admin/d/project/trash',
-			},
-			{
-				label: 'New Project',
-				link: '/admin/d/project/create',
-			},
-		],
+	},
+	{
+		label: 'Categories',
+		url: '/admin/project/categories',
+		icon: FiBookmark,
 	},
 	{
 		label: 'Investors',
-		link: '/admin/d/investor',
+		url: '/admin/d/investor',
 		icon: FiZap,
 	},
 	{
 		label: 'Users',
-		link: '/admin/d/user',
+		url: '/admin/d/user',
 		icon: FiUser,
 	},
 	{
 		label: 'Profile',
-		link: '/admin/d/user/profile',
+		url: '/admin/d/user/profile',
 		icon: FiLifeBuoy,
 	},
 ];
@@ -275,4 +266,79 @@ export const managementServices = [
 	// 	name: `Pre-Opening + Operations`,
 	// 	description: `Our expertise extends to operational nuances, ensuring seamless pre-opening preparations and efficient ongoing operations.`,
 	// },
+];
+
+export const FilesFilter = [
+	{
+		label: 'Select All',
+		value: 'all',
+	},
+	{
+		label: 'Images',
+		value: 'image',
+	},
+	{
+		label: 'Videos',
+		value: 'video',
+	},
+	{
+		label: 'Documents',
+		value: 'application',
+	},
+];
+
+export const CategoriesFilter = [
+	{
+		label: 'Select All',
+		value: 'all',
+	},
+	{
+		label: 'Images',
+		value: 'image',
+	},
+	{
+		label: 'Videos',
+		value: 'video',
+	},
+	{
+		label: 'Documents',
+		value: 'application',
+	},
+];
+
+export const ProjectStatus = [
+	{
+		label: 'Active',
+		value: 'ACTIVE',
+	},
+	{
+		label: 'Draft',
+		value: 'DRAFT',
+	},
+	{
+		label: 'Private',
+		value: 'PRIVATE',
+	},
+	{
+		label: 'Closed',
+		value: 'CLOSED',
+	},
+	{
+		label: 'Canceled',
+		value: 'CANCELED',
+	},
+	{
+		label: 'Completed',
+		value: 'COMPLETED',
+	},
+];
+export const DocumentsStatus = [
+	{
+		label: 'Public',
+		value: 'PUBLIC',
+	},
+	{
+		label: 'Private',
+		value: 'PRIVATE',
+	},
 ];

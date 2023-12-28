@@ -56,13 +56,24 @@ export const uploadFilesByAdmin = async (formData: FormData) => {
 export const fetchFilesByAdmin = async (params: {
 	pageSize: number;
 	page: number;
+	type: string | null;
+	query: string | null;
 }) => {
 	try {
 		const isAdmin = await isAuthenticatedAdmin();
 		if (!isAdmin) return;
 
-		const { page = 1, pageSize = 10 } = params;
+		const { page = 1, pageSize = 10, type, query } = params;
 		const files = await prisma.file.findMany({
+			where: {
+				...(query && {
+					OR: [
+						{ title: { contains: query } },
+						{ description: { contains: query } },
+					],
+				}),
+				...(type && type !== 'all' && { fileType: { contains: type } }),
+			},
 			select: {
 				id: true,
 				fileName: true,
@@ -82,6 +93,50 @@ export const fetchFilesByAdmin = async (params: {
 		return {
 			files,
 			pages: Math.ceil(countFiles / pageSize),
+		};
+	} catch (error) {
+		return;
+	}
+};
+export const fetchFilesOnModal = async (params: {
+	type: string;
+	page: number;
+	pageSize: number;
+}) => {
+	try {
+		const isAdmin = await isAuthenticatedAdmin();
+		if (!isAdmin) return;
+
+		const { type = 'all', page = 1, pageSize } = params;
+		const files = await prisma.file.findMany({
+			where: {
+				...(type && type !== 'all' && { fileType: { contains: type } }),
+			},
+			select: {
+				id: true,
+				fileName: true,
+				title: true,
+				url: true,
+				fileType: true,
+				description: true,
+			},
+			take: page * pageSize,
+			orderBy: {
+				createdAt: 'desc',
+			},
+		});
+
+		const totalFiles = await prisma.file.count({
+			where: {
+				...(type && type !== 'all' && { fileType: { contains: type } }),
+			},
+		});
+		const isNext = totalFiles > files?.length;
+
+		return {
+			files,
+			isNext,
+			totalFiles,
 		};
 	} catch (error) {
 		return;

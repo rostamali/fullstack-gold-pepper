@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import queryString from 'query-string';
+import slugify from 'slugify';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -57,4 +58,57 @@ export const fileSizeFormat = (bytes: number, decimals = 2) => {
 	const i = Math.floor(Math.log(bytes) / Math.log(k));
 
 	return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+};
+export const createSlug = async (name: string) => {
+	const slug = await slugify(name, {
+		replacement: '-',
+		lower: true,
+		trim: true,
+	});
+	return slug;
+};
+export const toggleSelectAll = <T extends { id: string }>(
+	data: T[],
+	selectedItems: string[] | null,
+	setSelectedItems: (value: string[] | null) => void,
+) => {
+	const categoryIds = data.map((item: T) => item.id);
+	if (selectedItems) {
+		if (selectedItems?.length === categoryIds?.length) {
+			setSelectedItems(null);
+		} else {
+			setSelectedItems(categoryIds);
+		}
+	} else {
+		setSelectedItems(categoryIds);
+	}
+};
+export const isChecked = (selectedItems: string[] | null, id: string) => {
+	const checked = selectedItems?.includes(id) ? true : false;
+	return checked;
+};
+export const isSelectAll = <T>(data: T[], selectedItems: string[] | null) => {
+	const checked = data
+		? data.length === selectedItems?.length
+			? true
+			: false
+		: false;
+	return checked;
+};
+export const toggleSelectList = (
+	selectedItems: string[] | null,
+	setSelectedItems: (value: string[] | null) => void,
+	itemId: string,
+) => {
+	if (selectedItems) {
+		if (selectedItems.includes(itemId)) {
+			setSelectedItems(
+				selectedItems.filter((id: string) => id !== itemId),
+			);
+		} else {
+			setSelectedItems([...selectedItems, itemId]);
+		}
+	} else {
+		setSelectedItems([itemId]);
+	}
 };

@@ -25,10 +25,25 @@ const ProjectPage = ({ searchParams }: SearchParams) => {
 									placeholder={
 										'Search for specific project...'
 									}
+									containerClass={''}
+									inputClass={''}
+									iconClass={''}
 								/>
 							</div>
-							<SelectFilter filterKey={'filter'} />
-							<SelectFilter filterKey={'years'} />
+							<SelectFilter
+								filterKey={'filter'}
+								placeholder={''}
+								triggerClass={''}
+								contentClass={''}
+								options={[]}
+							/>
+							<SelectFilter
+								filterKey={'years'}
+								placeholder={''}
+								triggerClass={''}
+								contentClass={''}
+								options={[]}
+							/>
 						</div>
 					</div>
 					<div className="project__list pt-[50px]">

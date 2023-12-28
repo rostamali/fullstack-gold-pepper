@@ -118,6 +118,7 @@ model File {
   compressPercent Float?
   author          User       @relation(fields: [authorId], references: [id])
   authorId        String
+  projectCategory Category[]
   isActive        Boolean    @default(true)
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
@@ -146,6 +147,19 @@ model Document {
 }
 
 // Start design Project prisma models
+model Category {
+  id           String    @id @unique @default(uuid())
+  name         String
+  slug         String    @unique
+  description  String?
+  thumbnail    File?     @relation(fields: [thumbnailId], references: [id])
+  thumbnailId  String?
+  thumbnailUrl String?
+  projects     Project[]
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
 
 model Project {
   id            String        @id @unique @default(uuid())
@@ -158,18 +172,17 @@ model Project {
   gallery       Gallery?
   documents     Document[]
   status        ProjectStatus @default(DRAFT)
-  industry      String
-  targetAmount  String?
-  minInvestment String?
-  capex         String?
-  totalRevenue  String?
-  totalCost     String?
-  roi           String?
-  totalTurnover String?
-  year          String
+  targetAmount  Float
+  minInvestment Float
+  capex         Float
+  totalRevenue  Float
+  totalCost     Float
+  roi           Float
   investments   Investment[]
   author        User          @relation(fields: [authorId], references: [id])
   authorId      String
+  category      Category?     @relation(fields: [categoryId], references: [id])
+  categoryId    String?
   closeDate     DateTime
   isActive      Boolean       @default(true)
   createdAt     DateTime      @default(now())

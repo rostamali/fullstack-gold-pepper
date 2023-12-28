@@ -59,6 +59,16 @@
 		@apply pr-[30px];
 	}
 
+	.input-field-md {
+		@apply bg-white border border-admin-gray-dark border-opacity-70 text-primary-black-dark text-opacity-60 h-[48px] font-medium;
+	}
+	.input-label-md {
+		@apply text-[16px] font-medium text-primary-black-light;
+	}
+	.admin-form__space {
+		@apply flex flex-col gap-[25px];
+	}
+
 	/* ============================= */
 	/* Typography */
 	/* ============================= */
@@ -111,6 +121,7 @@
 	.btn-text-icon {
 		@apply text-primary-black-dark dark:text-white dark:text-opacity-50 hover:text-primary-orange-dark dark:hover:text-primary-orange-dark flex items-center text-base-2;
 	}
+
 	/* ============================= */
 	/* Dark Light Utilities */
 	/* ============================= */
@@ -141,5 +152,18 @@
 	}
 	.shadow-light-300 {
 		box-shadow: 0px 6px 17px -1px rgba(223, 226, 230, 0.359);
+	}
+
+	/* ============================= */
+	/* Table Utilities */
+	/* ============================= */
+	.table-header__bg-tl {
+		@apply bg-admin-gray-dark bg-opacity-50 font-semibold rounded-tl-md;
+	}
+	.table-header__bg {
+		@apply bg-admin-gray-dark bg-opacity-50 font-semibold;
+	}
+	.table-header__bg-tr {
+		@apply bg-admin-gray-dark bg-opacity-50 font-semibold rounded-tr-md;
 	}
 }
