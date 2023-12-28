@@ -2,19 +2,18 @@
 import { useState } from 'react';
 import SelectFiles from '../shared/Modal/SelectFiles';
 import { Button } from '../ui/button';
-import Image from 'next/image';
 import FileCard from '../shared/Cards/FileCard';
 
 type DocumentProps = {
-	onFileChange: (val: FileType[]) => void;
-	defaultDocument: FileType[];
+	onFileChange: (val: SelectFileType[]) => void;
+	defaultDocument: SelectFileType[];
 };
 
 const DocumentSelect: React.FC<DocumentProps> = ({
 	onFileChange,
 	defaultDocument,
 }) => {
-	const [value, setValue] = useState<FileType[] | []>(defaultDocument);
+	const [value, setValue] = useState<SelectFileType[] | []>(defaultDocument);
 	return (
 		<div>
 			<SelectFiles
@@ -44,6 +43,7 @@ const DocumentSelect: React.FC<DocumentProps> = ({
 				onInsertFiles={(val) => {
 					onFileChange(val), setValue(val);
 				}}
+				loadType={'application'}
 			/>
 			{value?.length > 0 && (
 				<Button

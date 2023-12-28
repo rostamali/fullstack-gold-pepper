@@ -3,26 +3,30 @@ import SelectFiles from '../shared/Modal/SelectFiles';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 type ThumbnailProps = {
-	onFileChange: (val: FileType[]) => void;
-	defaultThumbnail: FileType[];
+	onFileChange: (val: SelectFileType[]) => void;
+	defaultThumbnail: SelectFileType[];
+	frameClass: string;
 };
 
 const ThumbnailSelect: React.FC<ThumbnailProps> = ({
 	onFileChange,
 	defaultThumbnail,
+	frameClass,
 }) => {
-	const [value, setValue] = useState<FileType[] | []>(defaultThumbnail);
+	const [value, setValue] = useState<SelectFileType[] | []>(defaultThumbnail);
 
 	return (
-		<div className="relative">
+		<div className="relative w-full">
 			<SelectFiles
 				trigger={
-					<div className="border border-admin-gray-dark h-[315px] w-full flex items-center justify-center rounded-md duration-150 bg-white relative overflow-hidden group">
+					<div
+						className={`border border-admin-gray-dark w-full flex items-center justify-center rounded-md duration-150 bg-white relative overflow-hidden group ${frameClass}`}
+					>
 						{value?.length > 0 ? (
 							<>
 								<Image
 									src={`/files/uploads/${value[0].url}`}
-									alt={value[0].fileName}
+									alt={value[0].title}
 									width={400}
 									height={400}
 									className="h-full w-full object-cover"
@@ -54,6 +58,7 @@ const ThumbnailSelect: React.FC<ThumbnailProps> = ({
 				onInsertFiles={(val) => {
 					onFileChange(val), setValue(val);
 				}}
+				loadType={'image'}
 			/>
 			{value?.length > 0 && (
 				<Button

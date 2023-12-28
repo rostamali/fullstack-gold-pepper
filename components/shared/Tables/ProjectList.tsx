@@ -33,7 +33,7 @@ import {
 	MenubarMenu,
 	MenubarTrigger,
 } from '@/components/ui/menubar';
-import { handleDeleteProjectByAdmin } from '@/lib/actions/project.action';
+import { deleteProjectByAdmin } from '@/lib/actions/project.action';
 import toast from 'react-hot-toast';
 type ProjectListProps = {
 	data: ProjectAdminTable[];
@@ -46,7 +46,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ data }) => {
 		setIsPending(true);
 		try {
 			if (selectedItems) {
-				const result = await handleDeleteProjectByAdmin({
+				const result = await deleteProjectByAdmin({
 					projectId: selectedItems,
 				});
 				setIsPending(false);
@@ -157,12 +157,12 @@ const ProjectList: React.FC<ProjectListProps> = ({ data }) => {
 												toggleSelectList(
 													selectedItems,
 													setSelectedItems,
-													project?.id,
+													project.id,
 												)
 											}
 											checked={isChecked(
 												selectedItems,
-												project?.id,
+												project.id,
 											)}
 										/>
 										<div className="flex items-center gap-[10px]">

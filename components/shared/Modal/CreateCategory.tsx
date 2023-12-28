@@ -16,7 +16,7 @@ const createCategoryByAdmin = () => {
 			<DialogTrigger asChild>
 				<Button className="btn-primary !h-[50px]">Add Category</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[450px] bg-white border-none">
+			<DialogContent className="md:max-w-[600px] max-w-[85%] bg-white border-none">
 				<DialogHeader>
 					<DialogTitle>
 						<div className="heading-3 text-primary-black-dark dark:text-primary-black-dark mb-[8px]">

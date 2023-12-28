@@ -15,10 +15,11 @@ import FileCard from '../Cards/FileCard';
 import { FilesFilter } from '@/constants';
 import EmptyError from '../Cards/EmptyError';
 type SelectFilesProps = {
+	loadType: 'image' | 'video' | 'application' | 'all' | string;
 	trigger: React.ReactNode;
 	modalTitle: string;
 	selectType: 'gallery' | 'thumbnail';
-	defaultFile: FileType[] | [];
+	defaultFile: SelectFileType[] | [];
 	onInsertFiles: (file: SelectFileType[]) => void;
 };
 
@@ -28,6 +29,7 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 	modalTitle,
 	defaultFile,
 	onInsertFiles,
+	loadType,
 }) => {
 	// Fetch files
 	const [data, setData] = useState<{
@@ -36,7 +38,7 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 	} | null>();
 
 	const [fileFilter, setFileFilter] = useState({
-		type: 'image',
+		type: loadType,
 		page: 1,
 		pageSize: 9,
 	});

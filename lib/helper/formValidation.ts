@@ -133,6 +133,13 @@ const FileSchema = z.object({
 	fileType: z.string(),
 	description: z.string().nullable(),
 });
+const SelectFileSchema = z.object({
+	id: z.string(),
+	title: z.string(),
+	url: z.string(),
+	fileType: z.string(),
+});
+
 export const ProjectCategorySchema = z.object({
 	name: z
 		.string({
@@ -143,7 +150,7 @@ export const ProjectCategorySchema = z.object({
 	description: z
 		.string()
 		.max(50, 'Description must not exceed 50 characters'),
-	thumbnail: z.array(FileSchema),
+	thumbnail: z.array(SelectFileSchema),
 });
 
 const ProjectStatusOptions = [
@@ -163,8 +170,8 @@ export const ProjectFormSchema = z.object({
 		.max(100, { message: 'Name must not exceed 100 characters' }),
 	location: z.string(),
 	description: z.any(),
-	thumbnail: z.array(FileSchema),
-	gallery: z.array(FileSchema),
+	thumbnail: z.array(SelectFileSchema),
+	gallery: z.array(SelectFileSchema),
 	status: z
 		.string({
 			required_error: 'Status is required',
@@ -204,9 +211,11 @@ export const ProjectFormSchema = z.object({
 					message: 'Status must be either PUBLIC or PRIVATE',
 				}),
 			description: z.string(),
-			file: z.array(FileSchema).refine((files) => files.length > 0, {
-				message: 'File is required for each document',
-			}),
+			file: z
+				.array(SelectFileSchema)
+				.refine((files) => files.length > 0, {
+					message: 'File is required for each document',
+				}),
 		}),
 	),
 });

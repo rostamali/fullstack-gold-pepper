@@ -154,7 +154,6 @@ model Category {
   description  String?
   thumbnail    File?     @relation(fields: [thumbnailId], references: [id])
   thumbnailId  String?
-  thumbnailUrl String?
   projects     Project[]
   isActive     Boolean   @default(true)
   createdAt    DateTime  @default(now())

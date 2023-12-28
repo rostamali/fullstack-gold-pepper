@@ -449,6 +449,7 @@ const ProjectForm: React.FC<ProjectForm> = ({
 											defaultThumbnail={
 												field ? field.value : []
 											}
+											frameClass={'h-[315px]'}
 										/>
 									</FormControl>
 									<FormMessage className="form__error" />
@@ -592,10 +593,8 @@ const ProjectForm: React.FC<ProjectForm> = ({
 																	);
 															}}
 															defaultDocument={
-																field
-																	? [
-																			field.value,
-																	  ]
+																field.value
+																	? field.value
 																	: []
 															}
 														/>

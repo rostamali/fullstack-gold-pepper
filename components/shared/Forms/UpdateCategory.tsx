@@ -5,9 +5,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import ButtonLoader from '../Spinners/ButtonLoader';
-import Image from 'next/image';
-import Placeholder from '../Cards/Placeholder';
-import SelectFiles from '../Modal/SelectFiles';
 import {
 	Form,
 	FormControl,
@@ -20,6 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { updateCategoryByAdmin } from '@/lib/actions/category.action';
 import toast from 'react-hot-toast';
+import ThumbnailSelect from '@/components/ProjectForm/ThumbnailSelect';
 type UpdateFormProps = {
 	data: UpdateCategory | null;
 };
@@ -34,7 +32,6 @@ const UpdateCategory: React.FC<UpdateFormProps> = ({ data }) => {
 			thumbnail: data ? (data.thumbnail ? [data.thumbnail] : []) : [],
 		},
 	});
-
 	const handleUpdateCategory = async (
 		updateValue: z.infer<typeof ProjectCategorySchema>,
 	) => {
@@ -71,60 +68,32 @@ const UpdateCategory: React.FC<UpdateFormProps> = ({ data }) => {
 			>
 				<div className="grid md:grid-cols-4 grid-cols-1 gap-[25px]">
 					<div className="lg:col-span-1 md:col-span-2 flex flex-col items-start">
-						{form.watch('thumbnail') ? (
-							form.watch('thumbnail').length > 0 ? (
-								<Image
-									src={`/files/uploads/${
-										form.watch('thumbnail')[0].url
-									}`}
-									alt={form.watch('thumbnail')[0].title}
-									width={500}
-									height={500}
-									className="md:h-[200px] h-[250px] w-[100%] rounded-md object-cover border border-admin-gray-dark"
-								/>
-							) : (
-								<Placeholder
-									containerClass={
-										'md:h-[200px] h-[250px] w-[100%]'
-									}
-									iconClass={'md:text-[40px] text-[80px]'}
-								/>
-							)
-						) : (
-							<Placeholder
-								containerClass={'text-[30px]'}
-								iconClass={''}
-							/>
-						)}
-						<div className="flex items-center gap-[10px]">
-							<SelectFiles
-								onInsertFiles={(file) =>
-									form.setValue('thumbnail', file)
-								}
-								trigger={
-									<Button
-										type="button"
-										className="p-0 text-primary-orange-dark"
-									>
-										Select File
-									</Button>
-								}
-								modalTitle={'Category Thumbnail'}
-								selectType={'thumbnail'}
-								defaultFile={form.watch('thumbnail')}
-							/>
-							{form.watch('thumbnail') &&
-								form.watch('thumbnail').length > 0 && (
-									<Button
-										type="button"
-										className="p-0 text-primary-black-light underline"
-										onClick={() =>
-											form.setValue('thumbnail', [])
-										}
-									>
-										Remove
-									</Button>
+						<div className="flex items-center gap-[10px] w-full">
+							<FormField
+								control={form.control}
+								name="thumbnail"
+								defaultValue={[]}
+								render={({ field }) => (
+									<FormItem className="w-full">
+										<FormLabel className="auth-input__label">
+											Name
+										</FormLabel>
+										<FormControl>
+											<ThumbnailSelect
+												onFileChange={(val) => {
+													form.setValue(
+														'thumbnail',
+														val,
+													);
+												}}
+												defaultThumbnail={field.value}
+												frameClass={'h-[170px]'}
+											/>
+										</FormControl>
+										<FormMessage className="form__error" />
+									</FormItem>
 								)}
+							/>
 						</div>
 					</div>
 					<div className="lg:col-span-3 md:col-span-2 flex flex-col gap-[20px]">

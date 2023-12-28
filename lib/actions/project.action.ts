@@ -54,7 +54,6 @@ export const createProjectByAdmin = async (params: ProjectType) => {
 				id: null,
 				message: 'Project already exists',
 			};
-
 		const createdProject = await prisma.project.create({
 			data: {
 				...newProject,
@@ -87,6 +86,18 @@ export const createProjectByAdmin = async (params: ProjectType) => {
 							})),
 						},
 					}),
+				...(params.gallery &&
+					params.gallery.length > 0 && {
+						gallery: {
+							create: {
+								files: {
+									connect: params.gallery.map((file) => ({
+										id: file.id,
+									})),
+								},
+							},
+						},
+					}),
 			},
 			select: {
 				id: true,
@@ -95,10 +106,10 @@ export const createProjectByAdmin = async (params: ProjectType) => {
 		return {
 			success: true,
 			id: createdProject.id,
+			// id: null,
 			message: 'Project created successfully',
 		};
 	} catch (error) {
-		console.log(error);
 		return {
 			success: false,
 			id: null,
@@ -138,11 +149,9 @@ export const fetchProjectDetailsById = async (params: { id: string }) => {
 				thumbnail: {
 					select: {
 						id: true,
-						fileName: true,
 						title: true,
 						url: true,
 						fileType: true,
-						description: true,
 					},
 				},
 				documents: {
@@ -159,6 +168,18 @@ export const fetchProjectDetailsById = async (params: { id: string }) => {
 								url: true,
 								fileType: true,
 								description: true,
+							},
+						},
+					},
+				},
+				gallery: {
+					select: {
+						files: {
+							select: {
+								id: true,
+								title: true,
+								url: true,
+								fileType: true,
 							},
 						},
 					},
@@ -225,10 +246,66 @@ export const updateProjectByAdmin = async (params: ProjectType, id: string) => {
 							connect: { id: params.thumbnail[0].id },
 						},
 					}),
+				...(params.documents &&
+					params.documents.length > 0 && {
+						documents: {
+							deleteMany: {},
+							create: params.documents.map((doc) => ({
+								name: doc.name,
+								description: doc.description,
+								status: doc.status,
+								file: {
+									connect: { id: doc.file[0].id },
+								},
+							})),
+						},
+					}),
+				...(params.documents &&
+					params.documents.length === 0 && {
+						documents: {
+							deleteMany: {},
+						},
+					}),
 				...(params.category &&
 					params.category.length > 0 && {
 						category: {
 							connect: { id: catExist?.id },
+						},
+					}),
+				...(params.gallery &&
+					params.gallery.length > 0 && {
+						gallery: {
+							upsert: {
+								create: {
+									files: {
+										connect: params.gallery.map((file) => ({
+											id: file.id,
+										})),
+									},
+								},
+								update: {
+									files: {
+										set: params.gallery.map((file) => ({
+											id: file.id,
+										})),
+									},
+								},
+							},
+						},
+					}),
+				...(params.gallery &&
+					params.gallery.length === 0 && {
+						gallery: {
+							upsert: {
+								update: {
+									files: {
+										set: params.gallery.map((file) => ({
+											id: file.id,
+										})),
+									},
+								},
+								create: {},
+							},
 						},
 					}),
 			},
@@ -291,16 +368,14 @@ export const fetchProjectsByAdmin = async (params: {
 		return;
 	}
 };
-export const handleDeleteProjectByAdmin = async (params: {
-	projectId: string[];
-}) => {
+export const deleteProjectByAdmin = async (params: { projectId: string[] }) => {
 	try {
 		const { projectId } = params;
 		const isAdmin = await isAuthenticatedAdmin();
 		if (!isAdmin)
 			return handleResponse(false, `You don't have a permission`);
 
-		const categoryToDelete = await prisma.project.findMany({
+		const projectToDelete = await prisma.project.findMany({
 			where: {
 				id: { in: projectId },
 			},
@@ -308,14 +383,16 @@ export const handleDeleteProjectByAdmin = async (params: {
 				id: true,
 			},
 		});
-		if (!categoryToDelete.length)
+		if (!projectToDelete.length)
 			return handleResponse(false, `Project does not exist`);
 
-		await prisma.project.deleteMany({
-			where: {
-				id: { in: projectId },
-			},
-		});
+		for (const project in projectToDelete) {
+			await prisma.project.delete({
+				where: {
+					id: project,
+				},
+			});
+		}
 
 		revalidatePath('/admin/project', 'page');
 

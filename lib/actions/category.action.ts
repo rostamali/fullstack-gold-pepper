@@ -9,7 +9,7 @@ import { revalidatePath } from 'next/cache';
 export const createCategoryByAdmin = async (params: {
 	name: string;
 	description: string | null;
-	thumbnail: FileType[] | [];
+	thumbnail: SelectFileType[] | [];
 }) => {
 	try {
 		const isAdmin = await isAuthenticatedAdmin();
@@ -157,7 +157,7 @@ export const updateCategoryByAdmin = async (params: {
 	id: string;
 	name: string;
 	description: string | null;
-	thumbnail: FileType[] | [];
+	thumbnail: SelectFileType[] | [];
 }) => {
 	try {
 		const { id, name, description, thumbnail } = params;

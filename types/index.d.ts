@@ -68,14 +68,14 @@ interface DocumentType {
 	name: string;
 	status: DocumentStatus;
 	description: string | null;
-	file: FileType[];
+	file: SelectFileType[];
 }
 interface ProjectType {
 	name: string;
 	location: string;
 	description: string | any;
-	thumbnail: FileType[] | [];
-	gallery: FileType[] | [];
+	thumbnail: SelectFileType[] | [];
+	gallery: SelectFileType[] | [];
 	status: ProjectStatus;
 	category: string;
 	minInvestment: number;
