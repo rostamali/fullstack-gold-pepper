@@ -27,6 +27,12 @@ interface FileType {
 	fileName: string;
 	description: string | null;
 }
+interface SelectFileType {
+	id: string;
+	title: string;
+	url: string;
+	fileType: string;
+}
 
 interface CategoryType {
 	id: string;
@@ -49,6 +55,7 @@ interface UpdateCategory {
 }
 
 // Project Types
+type DocumentStatus = 'PRIVATE' | 'PUBLIC';
 type ProjectStatus =
 	| 'COMPLETED'
 	| 'CANCELED'
@@ -59,9 +66,9 @@ type ProjectStatus =
 
 interface DocumentType {
 	name: string;
-	status: string;
+	status: DocumentStatus;
 	description: string | null;
-	file: FileType;
+	file: FileType[];
 }
 interface ProjectType {
 	name: string;

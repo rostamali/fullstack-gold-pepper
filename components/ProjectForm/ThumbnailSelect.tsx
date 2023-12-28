@@ -14,10 +14,10 @@ const ThumbnailSelect: React.FC<ThumbnailProps> = ({
 	const [value, setValue] = useState<FileType[] | []>(defaultThumbnail);
 
 	return (
-		<div>
+		<div className="relative">
 			<SelectFiles
 				trigger={
-					<div className="border border-admin-gray-dark h-[180px] w-full flex items-center justify-center rounded-md duration-150 bg-white relative overflow-hidden group">
+					<div className="border border-admin-gray-dark h-[315px] w-full flex items-center justify-center rounded-md duration-150 bg-white relative overflow-hidden group">
 						{value?.length > 0 ? (
 							<>
 								<Image
@@ -25,7 +25,7 @@ const ThumbnailSelect: React.FC<ThumbnailProps> = ({
 									alt={value[0].fileName}
 									width={400}
 									height={400}
-									className="h-[240px] w-full object-cover"
+									className="h-full w-full object-cover"
 								/>
 								<div className="absolute opacity-0 w-full h-full top-0 left-0 bg-primary-dark-100 bg-opacity-40 flex flex-col items-center justify-center gap-[10px] duration-150 group-hover:opacity-[1]">
 									<span className="border border-white text-white py-[8px] px-[14px] text-[14px] font-medium rounded-md cursor-pointer">
@@ -57,7 +57,7 @@ const ThumbnailSelect: React.FC<ThumbnailProps> = ({
 			/>
 			{value?.length > 0 && (
 				<Button
-					className="p-0 text-primary-orange-dark font-normal"
+					className="p-0 text-primary-orange-dark font-normal absolute right-0 top-[-40px]"
 					onClick={() => {
 						setValue([]);
 						onFileChange([]);

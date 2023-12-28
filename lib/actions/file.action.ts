@@ -114,11 +114,9 @@ export const fetchFilesOnModal = async (params: {
 			},
 			select: {
 				id: true,
-				fileName: true,
 				title: true,
 				url: true,
 				fileType: true,
-				description: true,
 			},
 			take: page * pageSize,
 			orderBy: {

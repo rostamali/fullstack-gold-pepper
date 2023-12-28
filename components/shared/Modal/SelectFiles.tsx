@@ -19,7 +19,7 @@ type SelectFilesProps = {
 	modalTitle: string;
 	selectType: 'gallery' | 'thumbnail';
 	defaultFile: FileType[] | [];
-	onInsertFiles: (file: FileType[]) => void;
+	onInsertFiles: (file: SelectFileType[]) => void;
 };
 
 const SelectFiles: React.FC<SelectFilesProps> = ({
@@ -31,9 +31,10 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 }) => {
 	// Fetch files
 	const [data, setData] = useState<{
-		files: FileType[] | null;
+		files: SelectFileType[] | null;
 		isNext: boolean;
 	} | null>();
+
 	const [fileFilter, setFileFilter] = useState({
 		type: 'image',
 		page: 1,
@@ -58,11 +59,11 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 	}, [fileFilter]);
 
 	// Handle files selections
-	const [selectedFiles, setSelectedFiles] = useState<FileType[]>([]);
+	const [selectedFiles, setSelectedFiles] = useState<SelectFileType[]>([]);
 	useEffect(() => {
 		setSelectedFiles(defaultFile);
 	}, [defaultFile]);
-	const toggleFileSelection = (newFile: FileType) => {
+	const toggleFileSelection = (newFile: SelectFileType) => {
 		if (selectType === 'gallery') {
 			const isSelected = selectedFiles.find(
 				(item) => item?.id === newFile?.id,
@@ -82,8 +83,8 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 			}
 		}
 	};
-	const isSelected = (file: FileType) => {
-		return selectedFiles.some(
+	const isSelected = (file: SelectFileType) => {
+		return selectedFiles?.some(
 			(selectedFile) => selectedFile.id === file.id,
 		);
 	};

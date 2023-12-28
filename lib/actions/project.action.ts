@@ -74,6 +74,19 @@ export const createProjectByAdmin = async (params: ProjectType) => {
 							connect: { id: catExist?.id },
 						},
 					}),
+				...(params.documents &&
+					params.documents.length > 0 && {
+						documents: {
+							create: params.documents.map((doc) => ({
+								name: doc.name,
+								description: doc.description,
+								status: doc.status,
+								file: {
+									connect: { id: doc.file[0].id },
+								},
+							})),
+						},
+					}),
 			},
 			select: {
 				id: true,
@@ -85,6 +98,7 @@ export const createProjectByAdmin = async (params: ProjectType) => {
 			message: 'Project created successfully',
 		};
 	} catch (error) {
+		console.log(error);
 		return {
 			success: false,
 			id: null,
@@ -129,6 +143,24 @@ export const fetchProjectDetailsById = async (params: { id: string }) => {
 						url: true,
 						fileType: true,
 						description: true,
+					},
+				},
+				documents: {
+					select: {
+						id: true,
+						name: true,
+						description: true,
+						status: true,
+						file: {
+							select: {
+								id: true,
+								fileName: true,
+								title: true,
+								url: true,
+								fileType: true,
+								description: true,
+							},
+						},
 					},
 				},
 			},

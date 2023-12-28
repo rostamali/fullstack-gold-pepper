@@ -204,7 +204,9 @@ export const ProjectFormSchema = z.object({
 					message: 'Status must be either PUBLIC or PRIVATE',
 				}),
 			description: z.string(),
-			file: z.array(FileSchema),
+			file: z.array(FileSchema).refine((files) => files.length > 0, {
+				message: 'File is required for each document',
+			}),
 		}),
 	),
 });

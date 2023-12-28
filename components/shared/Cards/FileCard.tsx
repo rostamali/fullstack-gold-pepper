@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import { FiFile } from 'react-icons/fi';
-import ReactPlayer from 'react-player';
 import VideoPlayer from './VideoPlayer';
 
 type FileCardType = {
-	file: FileType;
+	file: SelectFileType;
 };
 
 const FileCard: React.FC<FileCardType> = ({ file }) => {

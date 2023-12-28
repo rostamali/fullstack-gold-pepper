@@ -15,6 +15,7 @@ const EditProjectpage = async ({ searchParams }: SearchParams) => {
 	const result = await fetchProjectDetailsById({
 		id: searchParams.project_id,
 	});
+	console.log(result);
 
 	return (
 		<div className="project-edit">
@@ -52,7 +53,10 @@ const EditProjectpage = async ({ searchParams }: SearchParams) => {
 							roi: result?.roi,
 							targetAmount: result?.targetAmount,
 							closeDate: new Date(result?.closeDate),
-							documents: [],
+							documents: result?.documents
+								? result?.documents
+								: [],
+							gallery: [],
 							thumbnail: result?.thumbnail
 								? [result?.thumbnail]
 								: [],

@@ -20,7 +20,7 @@ const Documents: React.FC<DocumentsProps> = ({ title, fields }) => {
 		<Collapsible
 			open={isOpen}
 			onOpenChange={setIsOpen}
-			className="w-full space-y-2"
+			className="w-full space-y-2 mt-[15px]"
 		>
 			<CollapsibleTrigger asChild>
 				<Button
