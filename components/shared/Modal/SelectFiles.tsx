@@ -13,6 +13,7 @@ import { fetchFilesOnModal } from '@/lib/actions/file.action';
 import { useEffect, useState } from 'react';
 import FileCard from '../Cards/FileCard';
 import { FilesFilter } from '@/constants';
+import EmptyError from '../Cards/EmptyError';
 type SelectFilesProps = {
 	trigger: React.ReactNode;
 	modalTitle: string;
@@ -57,7 +58,10 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 	}, [fileFilter]);
 
 	// Handle files selections
-	const [selectedFiles, setSelectedFiles] = useState<FileType[]>(defaultFile);
+	const [selectedFiles, setSelectedFiles] = useState<FileType[]>([]);
+	useEffect(() => {
+		setSelectedFiles(defaultFile);
+	}, [defaultFile]);
 	const toggleFileSelection = (newFile: FileType) => {
 		if (selectType === 'gallery') {
 			const isSelected = selectedFiles.find(
@@ -79,10 +83,9 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 		}
 	};
 	const isSelected = (file: FileType) => {
-		const result =
-			selectedFiles?.length > 0 ? selectedFiles?.includes(file) : false;
-
-		return result || false;
+		return selectedFiles.some(
+			(selectedFile) => selectedFile.id === file.id,
+		);
 	};
 
 	return (
@@ -104,7 +107,7 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 						</span>
 					</DialogDescription>
 				</DialogHeader>
-				<div className="select-file-filter flex items-center gap-[15px]">
+				<div className="select-file-filter flex items-center gap-[15px] flex-wrap">
 					{FilesFilter.map((filter, index) => (
 						<Button
 							className={`text-[14px] ${
@@ -125,44 +128,52 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 						</Button>
 					))}
 				</div>
-				<div className="mt-[10px] xl:max-h-[500px] xm:max-h-[400px] max-h-[500px] overflow-y-scroll py-[20px] px-[10px]">
-					<div className="grid lg:grid-cols-3 xm:grid-cols-2 grid-cols-1 gap-[20px]">
-						{data
-							? data.files
-								? data.files.length > 0
-									? data.files.map((file, index) => (
-											<div
-												className={`file-card-wrap ${
-													isSelected(file)
-														? 'ring-2 rounded-md ring-offset-[3px]'
-														: ''
-												}`}
-												onClick={() =>
-													toggleFileSelection(file)
-												}
-												key={index}
-											>
-												<FileCard file={file} />
-											</div>
-									  ))
-									: null
-								: null
-							: null}
-					</div>
-					{data && data.isNext && (
-						<Button
-							onClick={() =>
-								setFileFilter({
-									...fileFilter,
-									page: fileFilter.page + 1,
-								})
+				{data ? (
+					data.files && data.files.length > 0 ? (
+						<div className="mt-[10px] xl:max-h-[500px] xm:max-h-[400px] max-h-[500px] overflow-y-scroll py-[20px] px-[10px]">
+							<div className="grid lg:grid-cols-3 xm:grid-cols-2 grid-cols-1 gap-[20px]">
+								{data.files.map((file, index) => (
+									<div
+										className={`file-card-wrap ${
+											isSelected(file)
+												? 'ring-2 rounded-md ring-offset-[3px]'
+												: ''
+										}`}
+										onClick={() =>
+											toggleFileSelection(file)
+										}
+										key={index}
+									>
+										<FileCard file={file} />
+									</div>
+								))}
+							</div>
+						</div>
+					) : (
+						<EmptyError
+							containerClass={
+								'sm:max-w-[450px] max-w-[300px] justify-center mx-auto text-center items-center md:py-[60px] py-[20px]'
 							}
-						>
-							Load More
-						</Button>
-					)}
-				</div>
-				<div className="flex items-center justify-between gap-[20px]">
+							thumbnailClass={'sm:w-[70%] w-[80%]'}
+							title={'There are no files to show'}
+							description={`Whoa! It looks like the files directory is currently empty. 📂 No files are present in this location.
+			`}
+							Links={undefined}
+						/>
+					)
+				) : (
+					<EmptyError
+						containerClass={
+							'sm:max-w-[450px] justify-center mx-auto text-center items-center py-[60px]'
+						}
+						thumbnailClass={'sm:w-[70%] w-[80%]'}
+						title={'There are no files to show'}
+						description={`Whoa! It looks like the files directory is currently empty. 📂 No files are present in this location.
+			`}
+						Links={undefined}
+					/>
+				)}
+				<div className="flex items-center justify-between gap-[20px] xm:flex-row flex-col">
 					<div className="flex items-center gap-[20px]">
 						<span className="text-base-2">
 							{selectedFiles.length > 0
@@ -176,7 +187,7 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 					</div>
 					<DialogClose asChild>
 						<Button
-							className="btn-primary !h-[50px] !px-[20px]"
+							className="btn-primary !h-[50px] !px-[20px]  max-xm:w-full"
 							disabled={selectedFiles.length > 0 ? false : true}
 							onClick={() => {
 								onInsertFiles(selectedFiles);

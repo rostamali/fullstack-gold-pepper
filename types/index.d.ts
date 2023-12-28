@@ -68,6 +68,7 @@ interface ProjectType {
 	location: string;
 	description: string | any;
 	thumbnail: FileType[] | [];
+	gallery: FileType[] | [];
 	status: ProjectStatus;
 	category: string;
 	minInvestment: number;

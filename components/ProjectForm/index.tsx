@@ -30,6 +30,7 @@ import {
 } from '@/lib/actions/project.action';
 import DatePicker from './DatePicker';
 import { useRouter } from 'next/navigation';
+import GallerySelect from './GallerySelect';
 type ProjectForm = {
 	type: 'edit' | 'create';
 	defaultValues: z.infer<typeof ProjectFormSchema> | null;
@@ -299,142 +300,142 @@ const ProjectForm: React.FC<ProjectForm> = ({
 									<span>Add File</span>
 								</button>
 							</div>
-							<div className="documents">
+							<div className="documents mt-[25px] flex flex-col gap-[15px]">
 								{fields.map((field, index) => (
-									<div key={index}>
-										<Documents
-											title={form.watch(
-												`documents.${index}.name`,
-											)}
-											fields={
-												<div className="grid grid-cols-2 gap-[20px] relative">
-													<FormField
-														control={form.control}
-														name={`documents.${index}.name`}
-														defaultValue=""
-														render={({ field }) => (
-															<FormItem>
-																<FormLabel className="auth-input__label">
-																	Name
-																</FormLabel>
-																<FormControl>
-																	<Input
-																		type="text"
-																		className="input-field-md"
-																		{...field}
-																	/>
-																</FormControl>
-																<FormMessage className="form__error" />
-															</FormItem>
-														)}
-													/>
-													<FormField
-														control={form.control}
-														name={`documents.${index}.status`}
-														defaultValue=""
-														render={({ field }) => (
-															<FormItem>
-																<FormLabel className="auth-input__label">
-																	Status
-																</FormLabel>
-																<FormControl>
-																	<SelectList
-																		triggerClass={
-																			'bg-white border border-admin-gray-dark border-opacity-70 text-primary-black-light text-opacity-60 h-[48px]'
-																		}
-																		placeholder={
-																			'Select status'
-																		}
-																		contentClass={
-																			'bg-white'
-																		}
-																		defaultValue={
-																			field.value
-																		}
-																		options={
-																			DocumentsStatus
-																		}
-																		onValueChange={(
+									<Documents
+										key={index}
+										title={form.watch(
+											`documents.${index}.name`,
+										)}
+										fields={
+											<div className="grid grid-cols-2 gap-[20px] relative">
+												<FormField
+													control={form.control}
+													name={`documents.${index}.name`}
+													defaultValue=""
+													render={({ field }) => (
+														<FormItem>
+															<FormLabel className="auth-input__label">
+																Name
+															</FormLabel>
+															<FormControl>
+																<Input
+																	type="text"
+																	className="input-field-md"
+																	{...field}
+																/>
+															</FormControl>
+															<FormMessage className="form__error" />
+														</FormItem>
+													)}
+												/>
+												<FormField
+													control={form.control}
+													name={`documents.${index}.status`}
+													defaultValue=""
+													render={({ field }) => (
+														<FormItem>
+															<FormLabel className="auth-input__label">
+																Status
+															</FormLabel>
+															<FormControl>
+																<SelectList
+																	triggerClass={
+																		'bg-white border border-admin-gray-dark border-opacity-70 text-primary-black-light text-opacity-60 h-[48px]'
+																	}
+																	placeholder={
+																		'Select status'
+																	}
+																	contentClass={
+																		'bg-white'
+																	}
+																	defaultValue={
+																		field.value
+																	}
+																	options={
+																		DocumentsStatus
+																	}
+																	onValueChange={(
+																		val,
+																	) => {
+																		form.setValue(
+																			`documents.${index}.status`,
 																			val,
-																		) => {
-																			form.setValue(
-																				`documents.${index}.status`,
-																				val,
-																			),
-																				form.clearErrors(
-																					'status',
-																				);
-																		}}
-																	/>
-																</FormControl>
-																<FormMessage className="form__error" />
-															</FormItem>
-														)}
-													/>
-													<FormField
-														control={form.control}
-														name="thumbnail"
-														defaultValue={[]}
-														render={({ field }) => (
-															<FormItem>
-																<FormLabel className="input-label-md">
-																	Status
-																</FormLabel>
-																<FormControl>
-																	<DocumentSelect
-																		onFileChange={(
+																		),
+																			form.clearErrors(
+																				'status',
+																			);
+																	}}
+																/>
+															</FormControl>
+															<FormMessage className="form__error" />
+														</FormItem>
+													)}
+												/>
+												<FormField
+													control={form.control}
+													name={`documents.${index}.file`}
+													defaultValue={[]}
+													render={({ field }) => (
+														<FormItem>
+															<FormLabel className="input-label-md">
+																Status
+															</FormLabel>
+															<FormControl>
+																<DocumentSelect
+																	onFileChange={(
+																		val,
+																	) => {
+																		form.setValue(
+																			`documents.${index}.file`,
 																			val,
-																		) => {
-																			form.setValue(
+																		),
+																			form.clearErrors(
 																				`documents.${index}.file`,
-																				val,
-																			),
-																				form.clearErrors(
-																					`documents.${index}.file`,
-																				);
-																		}}
-																		defaultDocument={
-																			field
-																				? field.value
-																				: []
-																		}
-																	/>
-																</FormControl>
-																<FormMessage className="form__error" />
-															</FormItem>
-														)}
-													/>
-													<FormField
-														control={form.control}
-														name={`documents.${index}.description`}
-														defaultValue=""
-														render={({ field }) => (
-															<FormItem>
-																<FormLabel className="auth-input__label">
-																	Description
-																</FormLabel>
-																<FormControl>
-																	<Textarea
-																		className="input-field-md !h-[100px]"
-																		{...field}
-																	/>
-																</FormControl>
-																<FormMessage className="form__error" />
-															</FormItem>
-														)}
-													/>
-													<Button
-														className="bg-primary-orange-dark bg-opacity-10 text-primary-orange-dark absolute right-0 -top-[7px] p-0 h-[30px] px-[10px] text-[14px] font-normal"
-														onClick={() =>
-															remove(index)
-														}
-													>
-														Delete
-													</Button>
-												</div>
-											}
-										/>
-									</div>
+																			);
+																	}}
+																	defaultDocument={
+																		field
+																			? field.value
+																			: []
+																	}
+																/>
+															</FormControl>
+															<FormMessage className="form__error" />
+														</FormItem>
+													)}
+												/>
+												<FormField
+													control={form.control}
+													name={`documents.${index}.description`}
+													defaultValue=""
+													render={({ field }) => (
+														<FormItem>
+															<FormLabel className="auth-input__label">
+																Description
+															</FormLabel>
+															<FormControl>
+																<Textarea
+																	className="input-field-md !h-[100px]"
+																	{...field}
+																/>
+															</FormControl>
+															<FormMessage className="form__error" />
+														</FormItem>
+													)}
+												/>
+												<Button
+													type="button"
+													className="bg-primary-orange-dark bg-opacity-10 text-primary-orange-dark absolute right-0 -top-[7px] p-0 h-[30px] px-[10px] text-[14px] font-normal"
+													onClick={() =>
+														remove(index)
+													}
+												>
+													Delete
+												</Button>
+											</div>
+										}
+									/>
 								))}
 							</div>
 						</div>
@@ -569,6 +570,30 @@ const ProjectForm: React.FC<ProjectForm> = ({
 													form.clearErrors(
 														'thumbnail',
 													);
+											}}
+											defaultThumbnail={
+												field ? field.value : []
+											}
+										/>
+									</FormControl>
+									<FormMessage className="form__error" />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="gallery"
+							defaultValue={[]}
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel className="input-label-md">
+										Status
+									</FormLabel>
+									<FormControl>
+										<GallerySelect
+											onFileChange={(val) => {
+												form.setValue('gallery', val),
+													form.clearErrors('gallery');
 											}}
 											defaultThumbnail={
 												field ? field.value : []

@@ -164,6 +164,7 @@ export const ProjectFormSchema = z.object({
 	location: z.string(),
 	description: z.any(),
 	thumbnail: z.array(FileSchema),
+	gallery: z.array(FileSchema),
 	status: z
 		.string({
 			required_error: 'Status is required',

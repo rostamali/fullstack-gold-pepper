@@ -1,20 +1,55 @@
+'use client';
 import Image from 'next/image';
 import SelectFiles from '../shared/Modal/SelectFiles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
-type ThumbnailProps = {
+import { FiTrash2 } from 'react-icons/fi';
+
+type GalleryProps = {
 	onFileChange: (val: FileType[]) => void;
 	defaultThumbnail: FileType[];
 };
 
-const ThumbnailSelect: React.FC<ThumbnailProps> = ({
+const GallerySelect: React.FC<GalleryProps> = ({
 	onFileChange,
 	defaultThumbnail,
 }) => {
-	const [value, setValue] = useState<FileType[] | []>(defaultThumbnail);
+	const [value, setValue] = useState<FileType[] | []>([]);
+
+	const handleRemovedGallery = (file: FileType) => {
+		const filterFile = value.filter((item) => item.id !== file.id);
+		setValue(filterFile);
+		onFileChange(filterFile);
+	};
+	useEffect(() => {
+		setValue(defaultThumbnail);
+	}, [value]);
 
 	return (
 		<div>
+			<div className="grid grid-cols-2 gap-[15px]">
+				{value.length > 0 &&
+					value.map((file, index) => (
+						<div className="relative group rounded-md overflow-hidden">
+							<Image
+								key={index}
+								src={`/files/uploads/${file.url}`}
+								alt={file.fileName}
+								width={400}
+								height={400}
+								className="h-[100px] w-full object-cover"
+							/>
+							<div className="absolute opacity-0 w-full h-full top-0 left-0 bg-primary-dark-100 bg-opacity-40 flex flex-col items-center justify-center gap-[10px] duration-150 group-hover:opacity-[1]">
+								<Button
+									type="button"
+									onClick={() => handleRemovedGallery(file)}
+								>
+									<FiTrash2 className="text-white text-[22px]" />
+								</Button>
+							</div>
+						</div>
+					))}
+			</div>
 			<SelectFiles
 				trigger={
 					<div className="border border-admin-gray-dark h-[180px] w-full flex items-center justify-center rounded-md duration-150 bg-white relative overflow-hidden group">
@@ -29,7 +64,7 @@ const ThumbnailSelect: React.FC<ThumbnailProps> = ({
 								/>
 								<div className="absolute opacity-0 w-full h-full top-0 left-0 bg-primary-dark-100 bg-opacity-40 flex flex-col items-center justify-center gap-[10px] duration-150 group-hover:opacity-[1]">
 									<span className="border border-white text-white py-[8px] px-[14px] text-[14px] font-medium rounded-md cursor-pointer">
-										Choose another
+										Choose more
 									</span>
 									<span className="text-base-2 !text-white text-[14px]">
 										Choose only image types
@@ -39,23 +74,23 @@ const ThumbnailSelect: React.FC<ThumbnailProps> = ({
 						) : (
 							<div className="flex flex-col items-center gap-[15px]">
 								<span className="border border-gray-dark py-[8px] px-[14px] text-[14px] font-medium rounded-md cursor-pointer">
-									Select Thumbnail
+									Select Images
 								</span>
 								<span className="text-body text-[14px]">
-									Choose only image types
+									Chose only image types
 								</span>
 							</div>
 						)}
 					</div>
 				}
-				modalTitle={'Project Thumbnail'}
-				selectType={'thumbnail'}
+				modalTitle={'Project Gallery'}
+				selectType={'gallery'}
 				defaultFile={value}
 				onInsertFiles={(val) => {
 					onFileChange(val), setValue(val);
 				}}
 			/>
-			{value?.length > 0 && (
+			{/* {value?.length > 0 && (
 				<Button
 					className="p-0 text-primary-orange-dark font-normal"
 					onClick={() => {
@@ -65,9 +100,9 @@ const ThumbnailSelect: React.FC<ThumbnailProps> = ({
 				>
 					Removed
 				</Button>
-			)}
+			)} */}
 		</div>
 	);
 };
 
-export default ThumbnailSelect;
+export default GallerySelect;
