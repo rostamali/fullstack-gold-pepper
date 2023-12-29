@@ -1,0 +1,189 @@
+[
+	{
+		"name": "Tech Innovators Inc.",
+		"location": "Silicon Valley, CA",
+		"miniInvestment": 50000,
+		"capex": 20000,
+		"totalRevenue": 120000,
+		"totalCost": 80000,
+		"roi": 0.5,
+		"targetAmount": 150000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Green Energy Solutions",
+		"location": "Austin, TX",
+		"miniInvestment": 75000,
+		"capex": 30000,
+		"totalRevenue": 150000,
+		"totalCost": 100000,
+		"roi": 0.5,
+		"targetAmount": 200000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "BioTech Innovations",
+		"location": "Cambridge, MA",
+		"miniInvestment": 60000,
+		"capex": 25000,
+		"totalRevenue": 130000,
+		"totalCost": 90000,
+		"roi": 0.4,
+		"targetAmount": 180000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Urban Eats Catering",
+		"location": "New York, NY",
+		"miniInvestment": 80000,
+		"capex": 35000,
+		"totalRevenue": 160000,
+		"totalCost": 110000,
+		"roi": 0.45,
+		"targetAmount": 220000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Smart Logistics Solutions",
+		"location": "Seattle, WA",
+		"miniInvestment": 55000,
+		"capex": 22000,
+		"totalRevenue": 110000,
+		"totalCost": 75000,
+		"roi": 0.6,
+		"targetAmount": 170000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "HealthTech Innovators",
+		"location": "San Francisco, CA",
+		"miniInvestment": 70000,
+		"capex": 28000,
+		"totalRevenue": 140000,
+		"totalCost": 95000,
+		"roi": 0.5,
+		"targetAmount": 190000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Renewable Power Solutions",
+		"location": "Denver, CO",
+		"miniInvestment": 65000,
+		"capex": 27000,
+		"totalRevenue": 125000,
+		"totalCost": 85000,
+		"roi": 0.6,
+		"targetAmount": 160000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Financial Services Hub",
+		"location": "Charlotte, NC",
+		"miniInvestment": 90000,
+		"capex": 40000,
+		"totalRevenue": 180000,
+		"totalCost": 120000,
+		"roi": 0.5,
+		"targetAmount": 250000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "GreenTech Solutions",
+		"location": "Portland, OR",
+		"miniInvestment": 50000,
+		"capex": 20000,
+		"totalRevenue": 120000,
+		"totalCost": 80000,
+		"roi": 0.5,
+		"targetAmount": 150000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Innovate Analytics Co.",
+		"location": "Chicago, IL",
+		"miniInvestment": 75000,
+		"capex": 30000,
+		"totalRevenue": 150000,
+		"totalCost": 100000,
+		"roi": 0.5,
+		"targetAmount": 200000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Precision Medicine Labs",
+		"location": "Philadelphia, PA",
+		"miniInvestment": 60000,
+		"capex": 25000,
+		"totalRevenue": 130000,
+		"totalCost": 90000,
+		"roi": 0.4,
+		"targetAmount": 180000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Urban Mobility Solutions",
+		"location": "Los Angeles, CA",
+		"miniInvestment": 80000,
+		"capex": 35000,
+		"totalRevenue": 160000,
+		"totalCost": 110000,
+		"roi": 0.45,
+		"targetAmount": 220000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Organic Food Co-op",
+		"location": "Boulder, CO",
+		"miniInvestment": 55000,
+		"capex": 22000,
+		"totalRevenue": 110000,
+		"totalCost": 75000,
+		"roi": 0.6,
+		"targetAmount": 170000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Smart Home Solutions",
+		"location": "San Diego, CA",
+		"miniInvestment": 70000,
+		"capex": 28000,
+		"totalRevenue": 140000,
+		"totalCost": 95000,
+		"roi": 0.5,
+		"targetAmount": 190000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Sustainable Agriculture Co.",
+		"location": "Austin, TX",
+		"miniInvestment": 65000,
+		"capex": 27000,
+		"totalRevenue": 125000,
+		"totalCost": 85000,
+		"roi": 0.6,
+		"targetAmount": 160000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Digital Marketing Hub",
+		"location": "Seattle, WA",
+		"miniInvestment": 90000,
+		"capex": 40000,
+		"totalRevenue": 180000,
+		"totalCost": 120000,
+		"roi": 0.5,
+		"targetAmount": 250000,
+		"status": "ACTIVE"
+	},
+	{
+		"name": "Eco-Friendly Fashion Co.",
+		"location": "New York, NY",
+		"miniInvestment": 50000,
+		"capex": 20000,
+		"totalRevenue": 120000,
+		"totalCost": 80000,
+		"roi": 0.5,
+		"targetAmount": 150000,
+		"status": "ACTIVE"
+	}
+]

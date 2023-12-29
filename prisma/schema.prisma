@@ -110,7 +110,7 @@ model File {
   description     String?
   url             String
   size            String
-  gallery         Gallery?   @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  gallery         Gallery?   @relation(fields: [galleryId], references: [id])
   galleryId       String?
   projects        Project[]
   document        Document[]
@@ -127,7 +127,7 @@ model File {
 model Gallery {
   id        String   @id @unique @default(uuid())
   files     File[]
-  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  project   Project? @relation(fields: [projectId], references: [id])
   projectId String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -137,7 +137,7 @@ model Document {
   id          String         @id @unique @default(uuid())
   name        String
   description String?
-  file        File           @relation(fields: [fileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  file        File           @relation(fields: [fileId], references: [id])
   fileId      String
   project     Project        @relation(fields: [projectId], references: [id])
   projectId   String
@@ -166,7 +166,7 @@ model Project {
   slug          String        @unique
   location      String?
   description   String?
-  thumbnail     File?         @relation(fields: [thumbnailId], references: [id], onDelete: SetNull)
+  thumbnail     File?         @relation(fields: [thumbnailId], references: [id])
   thumbnailId   String?
   gallery       Gallery?
   documents     Document[]
@@ -194,7 +194,7 @@ model Investment {
   equity          String?
   ownerShip       String?
   status          InvestmentStatus @default(PENDING)
-  project         Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project         Project          @relation(fields: [projectId], references: [id])
   projectId       String
   projectName     String
   projectIndustry String

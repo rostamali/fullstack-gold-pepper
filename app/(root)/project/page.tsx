@@ -2,13 +2,21 @@ import ProjectCard from '@/components/shared/Cards/ProjectCard';
 import LocalSearch from '@/components/shared/Search/LocalSearch';
 import Pagination from '@/components/shared/Search/Pagination';
 import SelectFilter from '@/components/shared/Search/SelectFilter';
+import { fetchProjectsByUser } from '@/lib/actions/project.action';
 type SearchParams = {
 	searchParams: {
-		q: string;
+		page: string;
+		q: string | null;
 	};
 };
 
-const ProjectPage = ({ searchParams }: SearchParams) => {
+const ProjectPage = async ({ searchParams }: SearchParams) => {
+	const result = await fetchProjectsByUser({
+		pageSize: 6,
+		page: searchParams.page ? parseInt(searchParams.page) : 1,
+		query: searchParams.q ? searchParams.q : null,
+	});
+
 	return (
 		<main>
 			<section
@@ -46,21 +54,47 @@ const ProjectPage = ({ searchParams }: SearchParams) => {
 							/>
 						</div>
 					</div>
-					<div className="project__list pt-[50px]">
-						<div className="grid lg:grid-cols-2 grid-cols-1 gap-[40px]">
-							{[1, 2, 3, 4, 5, 6].map((project, index) => (
-								<ProjectCard key={index} />
-							))}
-						</div>
-						<Pagination
-							pages={5}
-							containerClass={'justify-end'}
-							prevBtnClass={''}
-							nextBtnClass={''}
-							paginateBtnClass={''}
-							paginateActiveClass={'dark:bg-opacity-40'}
-						/>
-					</div>
+					{result ? (
+						result.projects.length > 0 ? (
+							<div className="project__list pt-[50px]">
+								<div className="grid lg:grid-cols-2 grid-cols-1 gap-[40px]">
+									{result.projects.map((project, index) => (
+										<ProjectCard
+											key={index}
+											name={project.name}
+											slug={project.slug}
+											closeDate={project.closeDate}
+											targetAmount={project.targetAmount}
+											capex={project.capex}
+											roi={project.roi}
+											category={
+												project.category
+													? project.category.name
+													: null
+											}
+											thumbnail={
+												project.thumbnail
+													? project.thumbnail.url
+													: null
+											}
+										/>
+									))}
+								</div>
+								<Pagination
+									pages={5}
+									containerClass={'justify-end'}
+									prevBtnClass={''}
+									nextBtnClass={''}
+									paginateBtnClass={''}
+									paginateActiveClass={'dark:bg-opacity-40'}
+								/>
+							</div>
+						) : (
+							'Empty'
+						)
+					) : (
+						'Empty'
+					)}
 				</div>
 			</section>
 		</main>

@@ -1,3 +1,4 @@
+import UploadCsv from '@/components/shared/Modal/UploadCsv';
 import ProjectList from '@/components/shared/Tables/ProjectList';
 import { fetchProjectsByAdmin } from '@/lib/actions/project.action';
 import Link from 'next/link';
@@ -24,12 +25,15 @@ const AdminProjectPage = async ({ searchParams }: SearchParams) => {
 				<h2 className="heading-2 text-primary-black-dark dark:text-primary-black-dark">
 					Projects
 				</h2>
-				<Link
-					href="/admin/project/create"
-					className="btn-primary !h-[50px] !px-[25px]"
-				>
-					Add Project
-				</Link>
+				<div className="flex items-center gap-[10px]">
+					<Link
+						href="/admin/project/create"
+						className="btn-primary !h-[50px] !px-[25px]"
+					>
+						Add Project
+					</Link>
+					<UploadCsv type={'project'} />
+				</div>
 			</div>
 			{result && <ProjectList data={result} />}
 		</div>

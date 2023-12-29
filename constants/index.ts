@@ -65,7 +65,7 @@ export const headerLinks = [
 export const adminHeaderLinks = [
 	{
 		label: 'Dashboard',
-		url: '/admin/dashboard',
+		url: '/admin',
 		icon: FiCommand,
 	},
 	{

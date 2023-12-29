@@ -106,7 +106,6 @@ export const createProjectByAdmin = async (params: ProjectType) => {
 		return {
 			success: true,
 			id: createdProject.id,
-			// id: null,
 			message: 'Project created successfully',
 		};
 	} catch (error) {
@@ -189,6 +188,55 @@ export const fetchProjectDetailsById = async (params: { id: string }) => {
 		if (!project) return;
 
 		return project;
+	} catch (error) {
+		return;
+	}
+};
+export const fetchProjectsByUser = async (params: {
+	pageSize: number;
+	page: number;
+	query: string | null;
+}) => {
+	try {
+		const { page = 1, pageSize = 10, query } = params;
+		const projects = await prisma.project.findMany({
+			where: {
+				status: 'ACTIVE',
+				isActive: true,
+				...(query && {
+					OR: [{ name: { contains: query } }],
+				}),
+			},
+			select: {
+				name: true,
+				slug: true,
+				targetAmount: true,
+				capex: true,
+				roi: true,
+				closeDate: true,
+				category: {
+					select: {
+						name: true,
+					},
+				},
+				thumbnail: {
+					select: {
+						url: true,
+					},
+				},
+			},
+			orderBy: {
+				createdAt: 'desc',
+			},
+			skip: (Number(page) - 1) * Number(pageSize),
+			take: pageSize,
+		});
+		const countFiles = await prisma.file.count({});
+
+		return {
+			projects,
+			pages: Math.ceil(countFiles / pageSize),
+		};
 	} catch (error) {
 		return;
 	}
@@ -386,10 +434,10 @@ export const deleteProjectByAdmin = async (params: { projectId: string[] }) => {
 		if (!projectToDelete.length)
 			return handleResponse(false, `Project does not exist`);
 
-		for (const project in projectToDelete) {
+		for (const project of projectToDelete) {
 			await prisma.project.delete({
 				where: {
-					id: project,
+					id: project.id,
 				},
 			});
 		}
@@ -399,5 +447,69 @@ export const deleteProjectByAdmin = async (params: { projectId: string[] }) => {
 		return handleResponse(true, 'Project deleted successfully');
 	} catch (error) {
 		return handleResponse(false, 'Project deletetion failed');
+	}
+};
+export const importProjectFromCSV = async (params: CSVProject[]) => {
+	try {
+		const isAdmin = await isAuthenticatedAdmin();
+		if (!isAdmin)
+			return {
+				success: true,
+				id: null,
+				message: `You don't have permission`,
+			};
+
+		for (const single of params) {
+			const slug = await createSlug(single.name);
+			let modifiedSlug = slug;
+			let counter = 1;
+
+			let projectExist = await prisma.project.findFirst({
+				where: {
+					slug,
+				},
+				select: {
+					id: true,
+					slug: true,
+				},
+			});
+			while (projectExist) {
+				modifiedSlug = `${slug}-${counter}`;
+				counter++;
+				projectExist = await prisma.project.findFirst({
+					where: {
+						slug: modifiedSlug,
+					},
+					select: {
+						id: true,
+						slug: true,
+					},
+				});
+			}
+			await prisma.project.create({
+				data: {
+					name: single.name,
+					slug: modifiedSlug,
+					location: single.location,
+					minInvestment: Number(single.miniInvestment),
+					capex: Number(single.capex),
+					totalRevenue: Number(single.totalRevenue),
+					totalCost: Number(single.totalCost),
+					roi: Number(single.roi),
+					targetAmount: Number(single.targetAmount),
+					status: single.status,
+					closeDate: new Date(),
+					author: {
+						connect: { id: isAdmin.id },
+					},
+				},
+			});
+		}
+
+		revalidatePath('/admin/project', 'page');
+
+		return handleResponse(true, 'Project uploaded successfully');
+	} catch (error) {
+		return handleResponse(false, 'CSV upload failed');
 	}
 };

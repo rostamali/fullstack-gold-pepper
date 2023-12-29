@@ -100,3 +100,19 @@ interface ProjectAdminTable {
 	status: ProjectStatus;
 	createdAt: Date;
 }
+
+interface CSVProject {
+	name: string;
+	location: string;
+	miniInvestment: number;
+	capex: number;
+	totalRevenue: number;
+	totalCost: number;
+	roi: number;
+	targetAmount: number;
+	status: ProjectStatus;
+}
+interface CSVCategory {
+	name: string;
+	description: string;
+}

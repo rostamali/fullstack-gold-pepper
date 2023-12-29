@@ -1,6 +1,7 @@
 import CategoryList from '@/components/shared/Tables/CategoryList';
 import { fetchCategoryByAdmin } from '@/lib/actions/category.action';
 import CreateCategory from '@/components/shared/Modal/CreateCategory';
+import UploadCsv from '@/components/shared/Modal/UploadCsv';
 type SearchParams = {
 	searchParams: {
 		page: string;
@@ -21,7 +22,10 @@ const ProjectCategoriesPage = async ({ searchParams }: SearchParams) => {
 				<h2 className="heading-2 text-primary-black-dark dark:text-primary-black-dark">
 					Categories
 				</h2>
-				<CreateCategory />
+				<div className="flex items-center gap-[10px]">
+					<CreateCategory />
+					<UploadCsv type={'category'} />
+				</div>
 			</div>
 			{result && <CategoryList data={result?.files} />}
 		</div>
