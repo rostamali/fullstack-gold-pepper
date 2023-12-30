@@ -103,10 +103,19 @@ export const ResetPasswordSchema = z
 	);
 export const ProjectInterestFormSchema = z.object({
 	investmentAmount: z
-		.number({
-			required_error: 'Investment amount is required',
+		.string({
+			invalid_type_error: 'Investment amount must be a positive number',
 		})
-		.min(1, { message: 'Investment amount must be greater than zero' }),
+		.refine(
+			(value) => {
+				const numberValue = Number(value);
+				return !isNaN(numberValue) && numberValue > 0;
+			},
+			{
+				message: 'Investment amount must be a positive number',
+			},
+		)
+		.transform((value) => Number(value) || 0),
 	contactPhone: z
 		.string({
 			required_error: 'Phone is required',

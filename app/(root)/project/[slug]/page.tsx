@@ -123,7 +123,9 @@ const ProjectDetailsPage = async ({ params }: SearchParams) => {
 											<h3 className="heading-3">
 												Send us your interest
 											</h3>
-											<ProjectInterest />
+											<ProjectInterest
+												projectId={result.id}
+											/>
 										</div>
 									</div>
 								</div>

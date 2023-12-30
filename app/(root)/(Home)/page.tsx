@@ -135,13 +135,13 @@ const HomePage = () => {
 								<span className="text-base-2 !text-primary-orange-light">
 									Invest
 								</span>
-								<h2 className="heading-2">
+								<h2 className="heading-2 !text-white">
 									Unlock Your Financial Potential with Our
 									Investment Platform
 								</h2>
 							</div>
 							<div className="flex flex-col gap-[20px] items-start">
-								<p className="text-base-2 dark:text-white">
+								<p className="text-base-2 !text-white">
 									We are a leading investment portal,
 									providing individuals with the tools and
 									knowledge to make informed investment
@@ -205,16 +205,16 @@ const HomePage = () => {
 									key={index}
 									className="flex flex-col gap-[15px]"
 								>
-									<info.icon className="text-white text-[40px]" />
+									<info.icon className="dark:text-white text-primary-black-light text-[40px]" />
 									<h3 className="heading-3">{info.title}</h3>
-									<p className="text-base-3 !text-white">
+									<p className="text-base-3 dark:text-white">
 										Lorem ipsum dolor sit amet, consectetur
 										adipiscing elit. Suspendisse varius enim
 										in ero.
 									</p>
 									<Link
 										href={info.link}
-										className="text-base-2 !text-white underline"
+										className="text-base-2 dark:text-white underline"
 									>
 										{info.linkText}
 									</Link>

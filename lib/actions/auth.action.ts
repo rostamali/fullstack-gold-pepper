@@ -332,6 +332,40 @@ export const isAuthenticatedAdmin = async () => {
 		return;
 	}
 };
+export const isAuthenticatedAccess = async () => {
+	try {
+		const accessToken = cookies().get('gold_access_token')?.value;
+		const refreshToken = cookies().get('gold_refresh_token')?.value;
+
+		const authenticated = await isAuthenticated({
+			accessToken: accessToken ? accessToken : null,
+			refreshToken: refreshToken ? refreshToken : null,
+		});
+		if (!authenticated) return;
+
+		const userExist = await prisma.user.findUnique({
+			where: {
+				id: authenticated.id,
+				status: 'ACTIVE',
+				isVerified: true,
+			},
+			select: {
+				id: true,
+				status: true,
+				isVerified: true,
+				role: true,
+			},
+		});
+		if (!userExist) return;
+
+		return {
+			id: userExist.id,
+			role: userExist.role,
+		};
+	} catch (error) {
+		return;
+	}
+};
 // Check when the password is changed
 export const checkPasswordChangedAt = (passwordChangedAt: Date | null) => {
 	if (!passwordChangedAt) return true;

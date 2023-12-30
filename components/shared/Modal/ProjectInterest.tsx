@@ -24,8 +24,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ButtonLoader from '../Spinners/ButtonLoader';
 import { Checkbox } from '@/components/ui/checkbox';
+import toast from 'react-hot-toast';
+import { submitProjectInterested } from '@/lib/actions/investment.action';
 
-const ProjectInterest = () => {
+const ProjectInterest = ({ projectId }: { projectId: string }) => {
 	const [isPending, setIsPending] = useState(false);
 	const form = useForm<z.infer<typeof ProjectInterestFormSchema>>({
 		resolver: zodResolver(ProjectInterestFormSchema),
@@ -35,6 +37,24 @@ const ProjectInterest = () => {
 		data: z.infer<typeof ProjectInterestFormSchema>,
 	) => {
 		setIsPending(true);
+		try {
+			const result = await submitProjectInterested({
+				amount: data.investmentAmount,
+				phoneNumber: data.contactPhone,
+				agreeTerm: data.acceptTerms,
+				projectId: projectId,
+			});
+			setIsPending(false);
+			if (result.success) {
+				toast.success(result.message);
+				form.reset();
+			} else {
+				toast.error(result.message);
+			}
+		} catch (error: any) {
+			setIsPending(false);
+			toast.error(error.message);
+		}
 	};
 
 	return (
