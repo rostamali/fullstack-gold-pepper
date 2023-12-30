@@ -16,8 +16,9 @@ import toast from 'react-hot-toast';
 import Papa from 'papaparse';
 import { importProjectFromCSV } from '@/lib/actions/project.action';
 import { importCategoryFromCSV } from '@/lib/actions/category.action';
+import { importUsersFromCSV } from '@/lib/actions/auth.action';
 type CSVModel = {
-	type: 'project' | 'category';
+	type: 'project' | 'category' | 'user';
 };
 
 const UploadCsv: React.FC<CSVModel> = ({ type }) => {
@@ -60,6 +61,16 @@ const UploadCsv: React.FC<CSVModel> = ({ type }) => {
 					} else if (type === 'category') {
 						const result = await importCategoryFromCSV(
 							value.data as CSVCategory[],
+						);
+						setIsPending(false);
+						if (result.success) {
+							toast.success(result.message);
+						} else {
+							toast.error(result.message);
+						}
+					} else if (type === 'user') {
+						const result = await importUsersFromCSV(
+							value.data as CSVUser[],
 						);
 						setIsPending(false);
 						if (result.success) {

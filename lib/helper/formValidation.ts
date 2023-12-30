@@ -1,5 +1,7 @@
 import * as z from 'zod';
 
+const UserRole = ['ADMIN', 'USER', 'USERPLUS'];
+
 export const RegisterSchema = z.object({
 	firstName: z
 		.string({
@@ -21,6 +23,42 @@ export const RegisterSchema = z.object({
 		.string()
 		.min(6, { message: 'Password must be atleast 6 characters' })
 		.max(12, { message: 'Password must be within 12 characters' }),
+});
+export const CreateUserFormSchema = z.object({
+	firstName: z
+		.string({
+			required_error: 'Name is required',
+		})
+		.min(1, { message: 'Firstname is required' })
+		.max(30, { message: 'Firstname must not exceed 30 characters' }),
+	lastName: z.string(),
+	email: z
+		.string({
+			invalid_type_error: 'Email Must be valid',
+			required_error: 'Email is required',
+		})
+		.min(1, { message: 'Email is required' })
+		.email({
+			message: 'Must be a valid email',
+		}),
+	role: z
+		.string({
+			required_error: 'Role is required',
+		})
+		.refine((value) => UserRole.includes(value), {
+			message: 'Role must be one of the options: ' + UserRole.join(', '),
+		})
+		.refine(
+			(value) => value !== undefined && value !== null && value !== '',
+			{
+				message: 'Role is required',
+			},
+		),
+	password: z
+		.string()
+		.min(6, { message: 'Password must be atleast 6 characters' })
+		.max(12, { message: 'Password must be within 12 characters' }),
+	sendMessage: z.boolean(),
 });
 export const LoginSchema = z.object({
 	email: z
@@ -229,3 +267,42 @@ export const ProjectFormSchema = z.object({
 	),
 });
 export type ProjectFormType = z.infer<typeof ProjectFormSchema>;
+
+export const UserProfileSchema = z.object({
+	firstName: z
+		.string({
+			required_error: 'Name is required',
+		})
+		.min(1, { message: 'Firstname is required' })
+		.max(30, { message: 'Firstname must not exceed 30 characters' }),
+	lastName: z.string(),
+	email: z
+		.string({
+			invalid_type_error: 'Email Must be valid',
+			required_error: 'Email is required',
+		})
+		.min(1, { message: 'Email is required' })
+		.email({
+			message: 'Must be a valid email',
+		}),
+	phoneNumber: z.string(),
+	company: z.string(),
+	country: z.string(),
+	state: z.string(),
+	role: z
+		.string({
+			required_error: 'Role is required',
+		})
+		.refine((value) => UserRole.includes(value), {
+			message: 'Role must be one of the options: ' + UserRole.join(', '),
+		})
+		.refine(
+			(value) => value !== undefined && value !== null && value !== '',
+			{
+				message: 'Role is required',
+			},
+		),
+	bio: z.string().max(50, 'Bio must not exceed 50 characters'),
+});
+
+export type UserProfileType = z.infer<typeof UserProfileSchema>;

@@ -15,6 +15,7 @@ import sendMail from '../helper/sendMail';
 import { handleResponse } from '../helper/serverResponse';
 import { prisma } from '../prisma';
 import { cookies } from 'next/headers';
+import { revalidatePath } from 'next/cache';
 
 export const registerUser = async (params: RegisterUser) => {
 	try {
@@ -364,6 +365,218 @@ export const isAuthenticatedAccess = async () => {
 		};
 	} catch (error) {
 		return;
+	}
+};
+export const fetchUsersByAdmin = async (params: {
+	pageSize: number;
+	page: number;
+	status: UserStatus | null;
+	query: string | null;
+}) => {
+	try {
+		const isAdmin = await isAuthenticatedAdmin();
+		if (!isAdmin) return;
+
+		const { page = 1, pageSize = 10, status, query } = params;
+		const users = await prisma.user.findMany({
+			where: {
+				...(query && {
+					OR: [
+						{ firstName: { contains: query } },
+						{ lastName: { contains: query } },
+						{ email: { contains: query } },
+					],
+				}),
+				...(status && {
+					status: { equals: status },
+				}),
+			},
+			select: {
+				id: true,
+				firstName: true,
+				lastName: true,
+				email: true,
+				status: true,
+				createdAt: true,
+				lastLogin: true,
+				role: true,
+			},
+			orderBy: {
+				createdAt: 'desc',
+			},
+			skip: (Number(page) - 1) * Number(pageSize),
+			take: pageSize,
+		});
+		const countFiles = await prisma.user.count({
+			where: {
+				...(query && {
+					OR: [
+						{ firstName: { contains: query } },
+						{ lastName: { contains: query } },
+						{ email: { contains: query } },
+					],
+				}),
+				...(status && {
+					status: { equals: status },
+				}),
+			},
+		});
+		return {
+			users,
+			pages: Math.ceil(countFiles / pageSize),
+		};
+	} catch (error) {
+		return;
+	}
+};
+export const importUsersFromCSV = async (params: CSVUser[]) => {
+	try {
+		const isAdmin = await isAuthenticatedAdmin();
+		if (!isAdmin)
+			return {
+				success: true,
+				id: null,
+				message: `You don't have permission`,
+			};
+		for (const user of params) {
+			const bcryptPass = await bcryptPassword(user.password);
+			await prisma.user.create({
+				data: {
+					firstName: user.firstName,
+					lastName: user.lastName,
+					email: user.email,
+					password: bcryptPass,
+					bio: user.bio,
+				},
+			});
+		}
+
+		revalidatePath('/admin/user', 'page');
+
+		return handleResponse(true, 'User uploaded successfully');
+	} catch (error) {
+		return handleResponse(false, 'User CSV upload failed');
+	}
+};
+export const fetchUserProfileByAdmin = async (params: { id: string }) => {
+	try {
+		const isAdmin = await isAuthenticatedAdmin();
+		if (!isAdmin) return;
+
+		const user = await prisma.user.findUnique({
+			where: {
+				id: params.id,
+			},
+			select: {
+				id: true,
+				firstName: true,
+				lastName: true,
+				email: true,
+				phoneNumber: true,
+				company: true,
+				country: true,
+				state: true,
+				role: true,
+				bio: true,
+			},
+		});
+		return user;
+	} catch (error) {
+		return;
+	}
+};
+export const updateUserProfileByAdmin = async (params: {
+	id: string;
+	data: UserProfile;
+}) => {
+	try {
+		const isAdmin = await isAuthenticatedAdmin();
+		if (!isAdmin) return handleResponse(false, `You don't have permission`);
+
+		const userExist = await prisma.user.findUnique({
+			where: {
+				id: params.id,
+			},
+			select: {
+				id: true,
+			},
+		});
+		if (!userExist) return handleResponse(false, `User does not exist`);
+		await prisma.user.update({
+			where: {
+				id: userExist.id,
+			},
+			data: {
+				...params.data,
+			},
+		});
+		revalidatePath('/admin/user', 'page');
+		return handleResponse(true, `User profile updated successfully`);
+	} catch (error) {
+		return handleResponse(false, `Profile update failed`);
+	}
+};
+export const createNewUserByAdmin = async (params: {
+	firstName: string;
+	lastName: string | null;
+	email: string;
+	role: string;
+	password: string;
+	sendMessage: boolean;
+}) => {
+	try {
+		const isAdmin = await isAuthenticatedAdmin();
+		if (!isAdmin) return handleResponse(false, `You don't have permission`);
+
+		const { firstName, lastName, email, role, password, sendMessage } =
+			params;
+		const userExist = await prisma.user.findUnique({
+			where: {
+				email,
+			},
+			select: {
+				id: true,
+			},
+		});
+		if (userExist) return handleResponse(false, 'User already exists');
+		const bcryptPass = await bcryptPassword(password);
+
+		await prisma.user.create({
+			data: {
+				firstName,
+				lastName,
+				email,
+				password: bcryptPass,
+				status: 'ACTIVE',
+				isVerified: true,
+				role: role as UserRole,
+			},
+			select: {
+				id: true,
+			},
+		});
+		if (sendMessage) {
+			try {
+				await sendMail({
+					email,
+					subject: 'Account activation email',
+					template: `<h1>Account created successfully</h1>`,
+				});
+				revalidatePath('/admin/user', 'page');
+				return handleResponse(true, `New account created successfully`);
+			} catch (error) {
+				revalidatePath('/admin/user', 'page');
+				return handleResponse(
+					false,
+					`New account created successfully, but email sending failed`,
+				);
+			}
+		} else {
+			revalidatePath('/admin/user', 'page');
+			return handleResponse(true, `New account created successfully`);
+		}
+	} catch (error) {
+		return handleResponse(false, `New user created failed`);
 	}
 };
 // Check when the password is changed

@@ -1,7 +1,7 @@
 'use server';
 
 import { handleResponse } from '../helper/serverResponse';
-import { isAuthenticatedAccess } from './auth.action';
+import { isAuthenticatedAccess, isAuthenticatedAdmin } from './auth.action';
 import { prisma } from '../prisma';
 import sendMail from '../helper/sendMail';
 
@@ -103,5 +103,71 @@ export const submitProjectInterested = async (params: {
 		}
 	} catch (error) {
 		return handleResponse(false, `Investment interest submitted failed`);
+	}
+};
+export const fetchInvestmentsByAdmin = async (params: {
+	pageSize: number;
+	page: number;
+	status: InvestmentStatus | null;
+	query: string | null;
+}) => {
+	try {
+		const isAdmin = await isAuthenticatedAdmin();
+		if (!isAdmin) return;
+
+		const { page = 1, pageSize = 10, status = 'PENDING', query } = params;
+		const investments = await prisma.investment.findMany({
+			where: {
+				...(query && {
+					project: {
+						name: { contains: query },
+					},
+				}),
+				...(status && {
+					status: { equals: status },
+				}),
+			},
+			select: {
+				id: true,
+				name: true,
+				email: true,
+				phoneNumber: true,
+				status: true,
+				createdAt: true,
+				project: {
+					select: {
+						name: true,
+						category: {
+							select: {
+								name: true,
+							},
+						},
+					},
+				},
+				projectName: true,
+				projectIndustry: true,
+			},
+			orderBy: {
+				createdAt: 'desc',
+			},
+			skip: (Number(page) - 1) * Number(pageSize),
+			take: pageSize,
+		});
+		const countFiles = await prisma.investment.count({
+			where: {
+				...(query && {
+					project: {
+						name: { contains: query },
+					},
+				}),
+			},
+		});
+
+		return {
+			investments,
+			pages: Math.ceil(countFiles / pageSize),
+		};
+	} catch (error) {
+		return;
 	}
 };

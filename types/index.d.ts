@@ -55,7 +55,10 @@ interface UpdateCategory {
 }
 
 // Project Types
+type UserRole = 'ADMIN' | 'USER' | 'USERPLUS';
 type DocumentStatus = 'PRIVATE' | 'PUBLIC';
+type UserStatus = 'ACTIVE' | 'INACTIVE';
+type InvestmentStatus = 'ACCEPT' | 'NOT_ACCEPT' | 'PENDING' | 'CANCELED';
 type ProjectStatus =
 	| 'COMPLETED'
 	| 'CANCELED'
@@ -116,7 +119,54 @@ interface CSVCategory {
 	name: string;
 	description: string;
 }
+interface CSVUser {
+	firstName: string;
+	lastName: string;
+	email: string;
+	password: string;
+	bio: string | null;
+}
 interface GalleryFile {
 	url: string;
 	fileType: string;
+}
+interface InvestmentList {
+	id: string;
+	status: InvestmentStatus;
+	projectName: string;
+	projectIndustry: string;
+	name: string;
+	email: string;
+	phoneNumber: string | null;
+	createdAt: Date;
+	project: {
+		name: string;
+		category: {
+			name: string;
+		} | null;
+	};
+	projectName: string;
+	projectIndustry: string;
+}
+interface UserList {
+	id: string;
+	firstName: string;
+	lastName: string | null;
+	email: string;
+	status: UserStatus;
+	lastLogin: Date | null;
+	createdAt: Date;
+	role: UserRole;
+}
+interface UserProfile {
+	id: string;
+	firstName: string;
+	lastName: string | null;
+	email: string;
+	phoneNumber: string | null;
+	company: string | null;
+	country: string | null;
+	state: string | null;
+	bio: string | null;
+	role: UserRole;
 }

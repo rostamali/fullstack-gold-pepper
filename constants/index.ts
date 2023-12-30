@@ -84,13 +84,13 @@ export const adminHeaderLinks = [
 		icon: FiBookmark,
 	},
 	{
-		label: 'Investors',
-		url: '/admin/d/investor',
+		label: 'Investments',
+		url: '/admin/investments',
 		icon: FiZap,
 	},
 	{
 		label: 'Users',
-		url: '/admin/d/user',
+		url: '/admin/user',
 		icon: FiUser,
 	},
 	{
@@ -340,5 +340,47 @@ export const DocumentsStatus = [
 	{
 		label: 'Private',
 		value: 'PRIVATE',
+	},
+];
+export const InvestmentStatus = [
+	{
+		label: 'Accept',
+		value: 'ACCEPT',
+	},
+	{
+		label: 'Not Accepted',
+		value: 'NOT_ACCEPT',
+	},
+	{
+		label: 'Pending',
+		value: 'PENDING',
+	},
+	{
+		label: 'Canceled',
+		value: 'CANCELED',
+	},
+];
+export const UserStatus = [
+	{
+		label: 'Active',
+		value: 'ACTIVE',
+	},
+	{
+		label: 'Inactive',
+		value: 'INACTIVE',
+	},
+];
+export const UserRole = [
+	{
+		label: 'Admin',
+		value: 'ADMIN',
+	},
+	{
+		label: 'User',
+		value: 'USER',
+	},
+	{
+		label: 'User Plus',
+		value: 'USERPLUS',
 	},
 ];
