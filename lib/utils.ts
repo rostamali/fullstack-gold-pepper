@@ -112,3 +112,10 @@ export const toggleSelectList = (
 		setSelectedItems([itemId]);
 	}
 };
+export const filterImages = (files: GalleryFile[] | null): GalleryFile[] => {
+	if (!files) {
+		return [];
+	}
+
+	return files.filter((file) => file.fileType === 'image');
+};

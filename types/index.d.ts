@@ -116,3 +116,7 @@ interface CSVCategory {
 	name: string;
 	description: string;
 }
+interface GalleryFile {
+	url: string;
+	fileType: string;
+}

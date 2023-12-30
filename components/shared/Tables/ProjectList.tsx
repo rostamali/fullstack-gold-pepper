@@ -35,11 +35,13 @@ import {
 } from '@/components/ui/menubar';
 import { deleteProjectByAdmin } from '@/lib/actions/project.action';
 import toast from 'react-hot-toast';
+import Pagination from '../Search/Pagination';
 type ProjectListProps = {
 	data: ProjectAdminTable[];
+	pages: number;
 };
 
-const ProjectList: React.FC<ProjectListProps> = ({ data }) => {
+const ProjectList: React.FC<ProjectListProps> = ({ data, pages }) => {
 	const [isPending, setIsPending] = useState(false);
 	const [selectedItems, setSelectedItems] = useState<string[] | null>(null);
 	const handleDeleteSelectedFile = async () => {
@@ -109,163 +111,183 @@ const ProjectList: React.FC<ProjectListProps> = ({ data }) => {
 				</div>
 			</div>
 			{data.length > 0 ? (
-				<Table className="shadow-light-100">
-					<TableHeader>
-						<TableRow className="border-b border-admin-gray-light border-opacity-25">
-							<TableHead className="table-header__bg-tl">
-								<div className="flex items-center gap-[5px]">
-									<Checkbox
-										id="select-all"
-										className="h-[18px] w-[18px] border-primary-dark-200 rounded"
-										checked={isSelectAll<ProjectAdminTable>(
-											data,
-											selectedItems,
-										)}
-										onClick={() =>
-											toggleSelectAll<ProjectAdminTable>(
+				<>
+					<Table className="shadow-light-100">
+						<TableHeader>
+							<TableRow className="border-b border-admin-gray-light border-opacity-25">
+								<TableHead className="table-header__bg-tl">
+									<div className="flex items-center gap-[5px]">
+										<Checkbox
+											id="select-all"
+											className="h-[18px] w-[18px] border-primary-dark-200 rounded"
+											checked={isSelectAll<ProjectAdminTable>(
 												data,
 												selectedItems,
-												setSelectedItems,
-											)
-										}
-									/>
-									<label htmlFor="select-all">Category</label>
-								</div>
-							</TableHead>
-							<TableHead className="table-header__bg">
-								Status
-							</TableHead>
-							<TableHead className="table-header__bg">
-								Created By
-							</TableHead>
-							<TableHead className="table-header__bg">
-								Created At
-							</TableHead>
-							<TableHead className="table-header__bg-tr">
-								Action
-							</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody className="bg-white">
-						{data.map((project, index: number) => (
-							<TableRow key={index}>
-								<TableCell>
-									<div className="flex items-center gap-[8px]">
-										<Checkbox
-											className="h-[18px] w-[18px] border-primary-dark-200 rounded"
+											)}
 											onClick={() =>
-												toggleSelectList(
+												toggleSelectAll<ProjectAdminTable>(
+													data,
 													selectedItems,
 													setSelectedItems,
-													project.id,
 												)
 											}
-											checked={isChecked(
-												selectedItems,
-												project.id,
-											)}
 										/>
-										<div className="flex items-center gap-[10px]">
-											{project?.thumbnail ? (
-												<Image
-													src={`/files/uploads/${project?.thumbnail?.url}`}
-													alt={project.name}
-													width={400}
-													height={400}
-													className="h-[55px] w-[55px] rounded-md bg-white border border-admin-gray-dark border-opacity-30 object-cover"
-												/>
-											) : (
-												<Placeholder
-													containerClass={
-														'h-[55px] w-[55px] rounded-md'
-													}
-													iconClass={'!text-[25px]'}
-												/>
-											)}
-											<div className="flex flex-col gap-[5px]">
-												<h5 className="heading-5 dark:text-primary-black-light">
-													{project.name}
-												</h5>
-												<span className="text-base-3">
-													{project?.category
-														? project?.category.name
-														: ''}
-												</span>
+										<label htmlFor="select-all">
+											Category
+										</label>
+									</div>
+								</TableHead>
+								<TableHead className="table-header__bg">
+									Status
+								</TableHead>
+								<TableHead className="table-header__bg">
+									Created By
+								</TableHead>
+								<TableHead className="table-header__bg">
+									Created At
+								</TableHead>
+								<TableHead className="table-header__bg-tr">
+									Action
+								</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody className="bg-white">
+							{data.map((project, index: number) => (
+								<TableRow key={index}>
+									<TableCell>
+										<div className="flex items-center gap-[8px]">
+											<Checkbox
+												className="h-[18px] w-[18px] border-primary-dark-200 rounded"
+												onClick={() =>
+													toggleSelectList(
+														selectedItems,
+														setSelectedItems,
+														project.id,
+													)
+												}
+												checked={isChecked(
+													selectedItems,
+													project.id,
+												)}
+											/>
+											<div className="flex items-center gap-[10px]">
+												{project?.thumbnail ? (
+													<Image
+														src={`/files/uploads/${project?.thumbnail?.url}`}
+														alt={project.name}
+														width={400}
+														height={400}
+														className="h-[55px] w-[55px] rounded-md bg-white border border-admin-gray-dark border-opacity-30 object-cover"
+													/>
+												) : (
+													<Placeholder
+														containerClass={
+															'h-[55px] w-[55px] rounded-md'
+														}
+														iconClass={
+															'!text-[25px]'
+														}
+													/>
+												)}
+												<div className="flex flex-col gap-[5px]">
+													<h5 className="heading-5 dark:text-primary-black-light">
+														{project.name}
+													</h5>
+													<span className="text-base-3">
+														{project?.category
+															? project?.category
+																	.name
+															: ''}
+													</span>
+												</div>
 											</div>
 										</div>
-									</div>
-								</TableCell>
-								<TableCell>
-									{project?.status && (
-										<span
-											className={`bg-primary-orange-dark bg-opacity-10 px-2 py-1 rounded-sm text-base-2 ${
-												project?.status === 'COMPLETED'
-													? 'bg-green-500 text-white'
-													: project?.status ===
-													  'CANCELED'
-													? 'bg-red-500 text-white'
-													: project?.status ===
-													  'ACTIVE'
-													? 'bg-blue-500 text-white'
-													: project?.status ===
-													  'DRAFT'
-													? 'bg-yellow-500 text-black'
-													: project?.status ===
-													  'CLOSED'
-													? 'bg-gray-500 text-black'
-													: project?.status ===
-													  'PRIVATE'
-													? 'bg-purple-500 text-white'
-													: ''
-											}`}
-										>
-											{
-												ProjectStatusFormat[
-													project?.status
-												]
-											}
+									</TableCell>
+									<TableCell>
+										{project?.status && (
+											<span
+												className={`bg-primary-orange-dark bg-opacity-10 px-2 py-1 rounded-sm text-base-2 ${
+													project?.status ===
+													'COMPLETED'
+														? 'bg-green-500 text-white'
+														: project?.status ===
+														  'CANCELED'
+														? 'bg-red-500 text-white'
+														: project?.status ===
+														  'ACTIVE'
+														? 'bg-blue-500 text-white'
+														: project?.status ===
+														  'DRAFT'
+														? 'bg-yellow-500 text-black'
+														: project?.status ===
+														  'CLOSED'
+														? 'bg-gray-500 text-black'
+														: project?.status ===
+														  'PRIVATE'
+														? 'bg-purple-500 text-white'
+														: ''
+												}`}
+											>
+												{
+													ProjectStatusFormat[
+														project?.status
+													]
+												}
+											</span>
+										)}
+									</TableCell>
+									<TableCell>
+										<span className="text-base-2">
+											NULL
 										</span>
-									)}
-								</TableCell>
-								<TableCell>
-									<span className="text-base-2">NULL</span>
-								</TableCell>
-								<TableCell>
-									<span className="text-base-2">
-										{dateFormat(project?.createdAt)}
-									</span>
-								</TableCell>
-								<TableCell>
-									<Menubar className="px-0 border-none bg-transparent">
-										<MenubarMenu>
-											<MenubarTrigger className="cursor-pointer">
-												<BsThreeDots />
-											</MenubarTrigger>
-											<MenubarContent className="absolute -right-[30px] bg-white min-w-[140px]">
-												<MenubarItem className="hover:bg-primary-black-light hover:bg-opacity-5">
-													<Link
-														href={`/admin/project/edit?project_id=${project.id}`}
-														className="w-full"
-													>
-														Edit now
-													</Link>
-												</MenubarItem>
-												<MenubarItem className="hover:bg-primary-black-light hover:bg-opacity-5">
-													<Link
-														href={`/admin/project/edit?project_id=${project.id}`}
-														className="w-full"
-													>
-														View detail
-													</Link>
-												</MenubarItem>
-											</MenubarContent>
-										</MenubarMenu>
-									</Menubar>
-								</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
-				</Table>
+									</TableCell>
+									<TableCell>
+										<span className="text-base-2">
+											{dateFormat(project?.createdAt)}
+										</span>
+									</TableCell>
+									<TableCell>
+										<Menubar className="px-0 border-none bg-transparent">
+											<MenubarMenu>
+												<MenubarTrigger className="cursor-pointer">
+													<BsThreeDots />
+												</MenubarTrigger>
+												<MenubarContent className="absolute -right-[30px] bg-white min-w-[140px]">
+													<MenubarItem className="hover:bg-primary-black-light hover:bg-opacity-5">
+														<Link
+															href={`/admin/project/edit?project_id=${project.id}`}
+															className="w-full"
+														>
+															Edit now
+														</Link>
+													</MenubarItem>
+													<MenubarItem className="hover:bg-primary-black-light hover:bg-opacity-5">
+														<Link
+															href={`/admin/project/edit?project_id=${project.id}`}
+															className="w-full"
+														>
+															View detail
+														</Link>
+													</MenubarItem>
+												</MenubarContent>
+											</MenubarMenu>
+										</Menubar>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+					<Pagination
+						pages={pages}
+						containerClass={'justify-center mt-[50px]'}
+						prevBtnClass={'btn-primary'}
+						nextBtnClass={'btn-primary'}
+						paginateBtnClass={
+							'btn-primary__ghost !bg-transparent dark:text-primary-orange-dark text-primary-orange-dark hover:text-white dark:hover:text-white w-[40px]'
+						}
+						paginateActiveClass={'btn-primary !text-white'}
+					/>
+				</>
 			) : (
 				<EmptyError
 					containerClass={
@@ -275,6 +297,8 @@ const ProjectList: React.FC<ProjectListProps> = ({ data }) => {
 					title={'There are no projects to show'}
 					description={`Oops! Currently, there are no projects to display. 🏷️ It seems this space is awaiting your creative touch 🌟`}
 					Links={undefined}
+					titleClass={''}
+					descriptionClass={''}
 				/>
 			)}
 		</div>

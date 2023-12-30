@@ -186,20 +186,20 @@ const FileLibrary: React.FC<FileCardProps> = ({ files, pages }) => {
 					description={`Whoa! It looks like the files directory is currently empty. 📂 No files are present in this location.
 					`}
 					Links={undefined}
+					titleClass={''}
+					descriptionClass={''}
 				/>
 			)}
-			{files.length > 0 && (
-				<Pagination
-					pages={pages}
-					containerClass={'justify-end mt-[30px]'}
-					prevBtnClass={'btn-primary'}
-					nextBtnClass={'btn-primary'}
-					paginateBtnClass={
-						'btn-primary__ghost !bg-transparent dark:text-primary-orange-dark text-primary-orange-dark hover:text-white dark:hover:text-white w-[40px]'
-					}
-					paginateActiveClass={'btn-primary dark:text-white'}
-				/>
-			)}
+			<Pagination
+				pages={pages}
+				containerClass={'justify-center mt-[50px]'}
+				prevBtnClass={'btn-primary'}
+				nextBtnClass={'btn-primary'}
+				paginateBtnClass={
+					'btn-primary__ghost !bg-transparent dark:text-primary-orange-dark text-primary-orange-dark hover:text-white dark:hover:text-white w-[40px]'
+				}
+				paginateActiveClass={'btn-primary !text-white'}
+			/>
 		</div>
 	);
 };

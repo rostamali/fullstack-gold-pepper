@@ -65,7 +65,7 @@ export const fetchCategoryByAdmin = async (params: {
 	try {
 		const { page = 1, pageSize = 10, query } = params;
 
-		const files = await prisma.category.findMany({
+		const categories = await prisma.category.findMany({
 			where: {
 				...(query && {
 					OR: [
@@ -112,9 +112,8 @@ export const fetchCategoryByAdmin = async (params: {
 				}),
 			},
 		});
-
 		return {
-			files,
+			categories,
 			pages: Math.ceil(countFiles / pageSize),
 		};
 	} catch (error) {
@@ -298,7 +297,6 @@ export const exportCategoryToCSV = async () => {
 			skipEmptyLines: true,
 		});
 	} catch (error) {
-		console.log(error);
 		return;
 	}
 };

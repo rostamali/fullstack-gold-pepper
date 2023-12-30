@@ -162,6 +162,8 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 							description={`Whoa! It looks like the files directory is currently empty. 📂 No files are present in this location.
 			`}
 							Links={undefined}
+							titleClass={''}
+							descriptionClass={''}
 						/>
 					)
 				) : (
@@ -174,6 +176,8 @@ const SelectFiles: React.FC<SelectFilesProps> = ({
 						description={`Whoa! It looks like the files directory is currently empty. 📂 No files are present in this location.
 			`}
 						Links={undefined}
+						titleClass={''}
+						descriptionClass={''}
 					/>
 				)}
 				<div className="flex items-center justify-between gap-[20px] xm:flex-row flex-col">

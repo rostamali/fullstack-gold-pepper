@@ -7,7 +7,6 @@ const AdminPage = () => {
 	const handleDownload = async () => {
 		try {
 			const result = await exportCategoryToCSV();
-			console.log(result);
 		} catch (error) {}
 	};
 	return (

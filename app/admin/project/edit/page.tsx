@@ -92,6 +92,8 @@ const EditProjectpage = async ({ searchParams }: SearchParams) => {
 							Go Back Projects
 						</Link>
 					}
+					titleClass={''}
+					descriptionClass={''}
 				/>
 			)}
 		</div>

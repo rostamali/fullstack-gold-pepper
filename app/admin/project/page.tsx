@@ -35,7 +35,9 @@ const AdminProjectPage = async ({ searchParams }: SearchParams) => {
 					<UploadCsv type={'project'} />
 				</div>
 			</div>
-			{result && <ProjectList data={result} />}
+			{result && result.projects && (
+				<ProjectList pages={result.pages} data={result.projects} />
+			)}
 		</div>
 	);
 };

@@ -44,14 +44,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 							'h-[220px] border-[2px] !border-admin-gray-dark !border-opacity-30'
 						}
 						iconClass={
-							'text-[100px] text-admin-gray-dark !text-opacity-25'
+							'!text-[100px] text-admin-gray-dark !text-opacity-25'
 						}
 					/>
 				)}
 			</div>
 			<div className="flex flex-col gap-[15px]">
 				<div className="flex flex-col gap-[6px]">
-					<h3 className="text-[20px] dark:text-white font-semibold group-hover:text-white group-hover:text-opacity-60">
+					<h3 className="text-[20px] dark:text-white font-semibold dark:group-hover:text-white group-hover:text-opacity-60">
 						{name}
 					</h3>
 					<p className="text-base-3 !text-primary-orange-dark">

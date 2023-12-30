@@ -88,7 +88,17 @@ export const fetchFilesByAdmin = async (params: {
 			skip: (Number(page) - 1) * Number(pageSize),
 			take: pageSize,
 		});
-		const countFiles = await prisma.file.count({});
+		const countFiles = await prisma.file.count({
+			where: {
+				...(query && {
+					OR: [
+						{ title: { contains: query } },
+						{ description: { contains: query } },
+					],
+				}),
+				...(type && type !== 'all' && { fileType: { contains: type } }),
+			},
+		});
 
 		return {
 			files,

@@ -3,7 +3,9 @@ type EmptyErrorProps = {
 	containerClass: string;
 	thumbnailClass: string;
 	title: string;
+	titleClass: string;
 	description: string;
+	descriptionClass: string;
 	Links: React.ReactNode;
 };
 
@@ -12,7 +14,9 @@ const EmptyError: React.FC<EmptyErrorProps> = ({
 	thumbnailClass,
 	Links,
 	title,
+	titleClass,
 	description,
+	descriptionClass,
 }) => {
 	return (
 		<div
@@ -28,10 +32,12 @@ const EmptyError: React.FC<EmptyErrorProps> = ({
 				priority={true}
 				className={`object-contain ${thumbnailClass}`}
 			/>
-			<h3 className="text-[22px] text-primary-black-dark font-bold">
+			<h3
+				className={`text-[22px] text-primary-black-dark font-bold ${titleClass}`}
+			>
 				{title}
 			</h3>
-			<p className="text-base-2">{description}</p>
+			<p className={`text-base-2 ${descriptionClass}`}>{description}</p>
 			{Links}
 		</div>
 	);

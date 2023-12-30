@@ -1,3 +1,4 @@
+import EmptyError from '@/components/shared/Cards/EmptyError';
 import ProjectCard from '@/components/shared/Cards/ProjectCard';
 import LocalSearch from '@/components/shared/Search/LocalSearch';
 import Pagination from '@/components/shared/Search/Pagination';
@@ -81,8 +82,8 @@ const ProjectPage = async ({ searchParams }: SearchParams) => {
 									))}
 								</div>
 								<Pagination
-									pages={5}
-									containerClass={'justify-end'}
+									pages={result.pages}
+									containerClass={'justify-center mt-[50px]'}
 									prevBtnClass={''}
 									nextBtnClass={''}
 									paginateBtnClass={''}
@@ -90,10 +91,30 @@ const ProjectPage = async ({ searchParams }: SearchParams) => {
 								/>
 							</div>
 						) : (
-							'Empty'
+							<EmptyError
+								containerClass={
+									'sm:max-w-[450px] justify-center mx-auto text-center items-center py-[60px]'
+								}
+								thumbnailClass={'sm:w-[70%] w-[80%]'}
+								title={'There are no projects to show'}
+								description={`Oops! Currently, there are no projects to display. 🏷️`}
+								Links={undefined}
+								titleClass={'dark:text-white'}
+								descriptionClass={'dark:text-white'}
+							/>
 						)
 					) : (
-						'Empty'
+						<EmptyError
+							containerClass={
+								'sm:max-w-[450px] justify-center mx-auto text-center items-center py-[60px]'
+							}
+							thumbnailClass={'sm:w-[70%] w-[80%]'}
+							title={'There are no projects to show'}
+							description={`Oops! Currently, there are no projects to display. 🏷️`}
+							Links={undefined}
+							titleClass={'dark:text-white'}
+							descriptionClass={'dark:text-white'}
+						/>
 					)}
 				</div>
 			</section>

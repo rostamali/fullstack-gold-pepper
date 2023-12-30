@@ -120,7 +120,6 @@ export const fetchProjectDetailsById = async (params: { id: string }) => {
 	try {
 		const isAdmin = await isAuthenticatedAdmin();
 		if (!isAdmin) return;
-
 		const project = await prisma.project.findUnique({
 			where: {
 				id: params.id,
@@ -192,6 +191,70 @@ export const fetchProjectDetailsById = async (params: { id: string }) => {
 		return;
 	}
 };
+export const fetchProjectDetailsBySlug = async (params: {
+	slug: string | null;
+}) => {
+	try {
+		const { slug } = params;
+		if (!slug) return;
+		const project = await prisma.project.findFirst({
+			where: {
+				slug,
+			},
+			select: {
+				id: true,
+				name: true,
+				location: true,
+				targetAmount: true,
+				totalCost: true,
+				totalRevenue: true,
+				closeDate: true,
+				category: {
+					select: {
+						name: true,
+					},
+				},
+				thumbnail: {
+					select: {
+						url: true,
+						fileType: true,
+					},
+				},
+				gallery: {
+					select: {
+						files: {
+							select: {
+								url: true,
+								fileType: true,
+							},
+						},
+					},
+				},
+				documents: {
+					where: {
+						status: 'PUBLIC',
+					},
+					select: {
+						id: true,
+						name: true,
+						description: true,
+						status: true,
+						file: {
+							select: {
+								id: true,
+								url: true,
+							},
+						},
+					},
+				},
+			},
+		});
+		if (!project) return;
+		return project;
+	} catch (error) {
+		return;
+	}
+};
 export const fetchProjectsByUser = async (params: {
 	pageSize: number;
 	page: number;
@@ -231,7 +294,15 @@ export const fetchProjectsByUser = async (params: {
 			skip: (Number(page) - 1) * Number(pageSize),
 			take: pageSize,
 		});
-		const countFiles = await prisma.file.count({});
+		const countFiles = await prisma.project.count({
+			where: {
+				status: 'ACTIVE',
+				isActive: true,
+				...(query && {
+					OR: [{ name: { contains: query } }],
+				}),
+			},
+		});
 
 		return {
 			projects,
@@ -410,8 +481,34 @@ export const fetchProjectsByAdmin = async (params: {
 					},
 				},
 			},
+			orderBy: {
+				createdAt: 'desc',
+			},
+			skip: (Number(page) - 1) * Number(pageSize),
+			take: pageSize,
 		});
-		return projects;
+		const countFiles = await prisma.project.count({
+			where: {
+				...(query && {
+					OR: [
+						{ name: { contains: query } },
+						{
+							description: {
+								contains: query,
+							},
+						},
+					],
+				}),
+				...(status && {
+					status: { equals: status },
+				}),
+				isActive: true,
+			},
+		});
+		return {
+			projects,
+			pages: Math.ceil(countFiles / pageSize),
+		};
 	} catch (error) {
 		return;
 	}

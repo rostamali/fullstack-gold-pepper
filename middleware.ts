@@ -56,6 +56,20 @@ export async function middleware(req: NextRequest) {
 		}
 	}
 
+	// portals access
+	if (req.nextUrl.pathname.startsWith('/project')) {
+		if (!authenticated) {
+			response.cookies.delete('gold_refresh_token');
+			response.cookies.delete('gold_access_token');
+			response.cookies.delete('gold_verify_email');
+			return NextResponse.redirect(
+				new URL(`/sign-in?redirect=${req.nextUrl.pathname}`, req.url),
+			);
+		} else {
+			return;
+		}
+	}
+
 	return;
 }
 
