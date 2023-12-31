@@ -447,6 +447,8 @@ export const importUsersFromCSV = async (params: CSVUser[]) => {
 					email: user.email,
 					password: bcryptPass,
 					bio: user.bio,
+					status: 'ACTIVE',
+					isVerified: true,
 				},
 			});
 		}

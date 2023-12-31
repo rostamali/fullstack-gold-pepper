@@ -70,7 +70,7 @@ const InvestmentList: React.FC<InvestmentProps> = ({ data }) => {
 						{selectedItems && selectedItems.length > 0
 							? selectedItems.length
 							: 0}{' '}
-						file selected
+						item selected
 					</span>
 					<Button
 						className="btn-primary__ghost !h-[50px] !px-[20px]"

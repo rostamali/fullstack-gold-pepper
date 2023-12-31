@@ -16,6 +16,11 @@ export const UserStatusFormat: Record<UserStatus, string> = {
 	ACTIVE: 'Active',
 	INACTIVE: 'Inactive',
 };
+export const UserRoleFormat: Record<UserRole, string> = {
+	ADMIN: 'Admin',
+	USER: 'User',
+	USERPLUS: 'User Plus',
+};
 export const dateFormat = (date: Date) => {
 	return new Date(date).toLocaleString('en-US', {
 		timeZone: 'UTC',

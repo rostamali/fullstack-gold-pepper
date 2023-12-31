@@ -19,13 +19,13 @@ const CreateUser = () => {
 				<DialogHeader>
 					<DialogTitle>
 						<div className="heading-3 text-primary-black-dark dark:text-primary-black-dark mb-[8px]">
-							Create Category
+							Create User
 						</div>
 					</DialogTitle>
 					<DialogDescription>
 						<span className="text-base-2 text-primary-black-dark dark:text-primary-black-dark">
-							Upload files by dragging or clicking to browse. The
-							system will handle the upload automatically.
+							Fill out the form below to create new account and
+							unlock the full potential of this platform.
 						</span>
 					</DialogDescription>
 				</DialogHeader>

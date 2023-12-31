@@ -17,12 +17,24 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-import { UserStatusFormat, dateFormat } from '@/lib/helper/format';
+import {
+	UserRoleFormat,
+	UserStatusFormat,
+	dateFormat,
+} from '@/lib/helper/format';
 import { FiEdit } from 'react-icons/fi';
 import EmptyError from '../Cards/EmptyError';
 import Link from 'next/link';
 import Pagination from '../Search/Pagination';
 import UserForm from '../Forms/UpdateUserForm';
+import {
+	Menubar,
+	MenubarContent,
+	MenubarItem,
+	MenubarMenu,
+	MenubarTrigger,
+} from '@/components/ui/menubar';
+import { BsThreeDots } from 'react-icons/bs';
 type UserListProps = {
 	data: UserList[];
 	pages: number;
@@ -39,7 +51,7 @@ const UserList: React.FC<UserListProps> = ({ data, pages }) => {
 					<LocalSearch
 						route={'/admin/user'}
 						iconPosition={'left'}
-						placeholder={'Search user'}
+						placeholder={'Search by name, email...'}
 						containerClass={
 							'bg-white border border-admin-gray-dark border-opacity-70 col-span-3'
 						}
@@ -133,22 +145,43 @@ const UserList: React.FC<UserListProps> = ({ data, pages }) => {
 											</TableCell>
 											<TableCell>
 												<span className="text-base-2">
-													{user.role}
+													{UserRoleFormat[user.role]}
 												</span>
 											</TableCell>
 											<TableCell>
-												<CollapsibleTrigger asChild>
-													<Button
-														className="bg-admin-gray-light text-[#7B8ED1]"
-														onClick={() => {
-															setSingleUser(
-																user.id,
-															);
-														}}
-													>
-														<FiEdit className="text-[15px]" />
-													</Button>
-												</CollapsibleTrigger>
+												<Menubar className="px-0 border-none bg-transparent">
+													<MenubarMenu>
+														<MenubarTrigger className="cursor-pointer">
+															<BsThreeDots />
+														</MenubarTrigger>
+														<MenubarContent className="absolute -right-[30px] bg-white min-w-[140px]">
+															<MenubarItem className="hover:bg-primary-black-light hover:bg-opacity-5">
+																<CollapsibleTrigger
+																	asChild
+																>
+																	<span
+																		className="flex w-full cursor-pointer"
+																		onClick={() => {
+																			setSingleUser(
+																				user.id,
+																			);
+																		}}
+																	>
+																		Edit Now
+																	</span>
+																</CollapsibleTrigger>
+															</MenubarItem>
+															<MenubarItem className="hover:bg-primary-black-light hover:bg-opacity-5">
+																<Link
+																	href={`/admin/project/edit`}
+																	className="w-full"
+																>
+																	View detail
+																</Link>
+															</MenubarItem>
+														</MenubarContent>
+													</MenubarMenu>
+												</Menubar>
 											</TableCell>
 										</TableRow>
 										<CollapsibleContent asChild>

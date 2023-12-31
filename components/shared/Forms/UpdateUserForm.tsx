@@ -255,7 +255,7 @@ const UserForm: React.FC<UserFormProps> = ({ userId }) => {
 					<FormField
 						control={form.control}
 						name="role"
-						defaultValue=""
+						defaultValue={profile?.role}
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel className="auth-input__label">
@@ -263,11 +263,9 @@ const UserForm: React.FC<UserFormProps> = ({ userId }) => {
 								</FormLabel>
 								<FormControl>
 									<Select
-										onValueChange={(val) => {
-											form.setValue('role', val);
-											form.clearErrors('role');
-										}}
-										defaultValue={form.watch('role')}
+										onValueChange={field.onChange}
+										defaultValue={field.value}
+										value={field.value}
 									>
 										<SelectTrigger
 											className="auth-input__field"
@@ -279,7 +277,7 @@ const UserForm: React.FC<UserFormProps> = ({ userId }) => {
 											{UserRole.map((role, index) => (
 												<SelectItem
 													className="pl-2"
-													value={role.value}
+													value={role.value.toString()}
 													key={index}
 												>
 													{role.label}

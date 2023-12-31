@@ -76,7 +76,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ data, pages }) => {
 						{selectedItems && selectedItems.length > 0
 							? selectedItems.length
 							: 0}{' '}
-						file selected
+						item selected
 					</span>
 					<Button
 						className="btn-primary__ghost !h-[50px] !px-[20px]"
@@ -90,7 +90,7 @@ const CategoryList: React.FC<CategoryListProps> = ({ data, pages }) => {
 					<LocalSearch
 						route={'/admin/project/categories'}
 						iconPosition={'left'}
-						placeholder={'Search files'}
+						placeholder={'Search by name...'}
 						containerClass={
 							'bg-white border border-admin-gray-dark border-opacity-70 col-span-3'
 						}

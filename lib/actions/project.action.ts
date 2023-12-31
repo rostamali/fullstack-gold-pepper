@@ -127,6 +127,7 @@ export const fetchProjectDetailsById = async (params: { id: string }) => {
 			select: {
 				id: true,
 				name: true,
+				slug: true,
 				location: true,
 				minInvestment: true,
 				capex: true,
@@ -608,5 +609,86 @@ export const importProjectFromCSV = async (params: CSVProject[]) => {
 		return handleResponse(true, 'Project uploaded successfully');
 	} catch (error) {
 		return handleResponse(false, 'CSV upload failed');
+	}
+};
+export const viewProjectDetailsById = async (params: { id: string }) => {
+	try {
+		const isAdmin = await isAuthenticatedAdmin();
+		if (!isAdmin) return;
+		const project = await prisma.project.findUnique({
+			where: {
+				id: params.id,
+			},
+			select: {
+				id: true,
+				name: true,
+				slug: true,
+				location: true,
+				minInvestment: true,
+				capex: true,
+				totalRevenue: true,
+				totalCost: true,
+				roi: true,
+				targetAmount: true,
+				status: true,
+				closeDate: true,
+				category: {
+					select: {
+						id: true,
+						slug: true,
+						name: true,
+					},
+				},
+				thumbnail: {
+					select: {
+						url: true,
+						fileType: true,
+					},
+				},
+				gallery: {
+					select: {
+						files: {
+							select: {
+								url: true,
+								fileType: true,
+							},
+						},
+					},
+				},
+			},
+		});
+		if (!project) return;
+
+		const investors = await prisma.investment.findMany({
+			where: {
+				projectId: project.id,
+			},
+			select: {
+				id: true,
+				name: true,
+				email: true,
+				phoneNumber: true,
+				status: true,
+				projectName: true,
+				projectIndustry: true,
+				project: {
+					select: {
+						name: true,
+						category: {
+							select: {
+								name: true,
+							},
+						},
+					},
+				},
+				createdAt: true,
+			},
+		});
+		return {
+			project,
+			investors,
+		};
+	} catch (error) {
+		return;
 	}
 };

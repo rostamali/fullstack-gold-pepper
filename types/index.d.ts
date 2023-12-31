@@ -170,3 +170,19 @@ interface UserProfile {
 	bio: string | null;
 	role: UserRole;
 }
+interface InvestorList {
+	project: {
+		name: string;
+		category: {
+			name: string;
+		} | null;
+	};
+	id: string;
+	name: string;
+	status: InvestmentStatus;
+	createdAt: Date;
+	email: string;
+	phoneNumber: string | null;
+	projectName: string;
+	projectIndustry: string;
+}

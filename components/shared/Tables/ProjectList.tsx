@@ -263,7 +263,16 @@ const ProjectList: React.FC<ProjectListProps> = ({ data, pages }) => {
 													</MenubarItem>
 													<MenubarItem className="hover:bg-primary-black-light hover:bg-opacity-5">
 														<Link
-															href={`/admin/project/edit?project_id=${project.id}`}
+															target="_blank"
+															href={`/project/${project.slug}`}
+															className="w-full"
+														>
+															Visit now
+														</Link>
+													</MenubarItem>
+													<MenubarItem className="hover:bg-primary-black-light hover:bg-opacity-5">
+														<Link
+															href={`/admin/project/details?project_id=${project.id}`}
 															className="w-full"
 														>
 															View detail

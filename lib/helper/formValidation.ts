@@ -1,6 +1,15 @@
 import * as z from 'zod';
 
 const UserRole = ['ADMIN', 'USER', 'USERPLUS'];
+const InvestmentStatus = ['ACCEPT', 'NOT_ACCEPT', 'PENDING', 'CANCELED'];
+const ProjectStatusOptions = [
+	'COMPLETED',
+	'CANCELED',
+	'ACTIVE',
+	'DRAFT',
+	'CLOSED',
+	'PRIVATE',
+];
 
 export const RegisterSchema = z.object({
 	firstName: z
@@ -186,7 +195,6 @@ const SelectFileSchema = z.object({
 	url: z.string(),
 	fileType: z.string(),
 });
-
 export const ProjectCategorySchema = z.object({
 	name: z
 		.string({
@@ -199,15 +207,6 @@ export const ProjectCategorySchema = z.object({
 		.max(50, 'Description must not exceed 50 characters'),
 	thumbnail: z.array(SelectFileSchema),
 });
-
-const ProjectStatusOptions = [
-	'COMPLETED',
-	'CANCELED',
-	'ACTIVE',
-	'DRAFT',
-	'CLOSED',
-	'PRIVATE',
-];
 export const ProjectFormSchema = z.object({
 	name: z
 		.string({
@@ -267,7 +266,6 @@ export const ProjectFormSchema = z.object({
 	),
 });
 export type ProjectFormType = z.infer<typeof ProjectFormSchema>;
-
 export const UserProfileSchema = z.object({
 	firstName: z
 		.string({
@@ -304,5 +302,64 @@ export const UserProfileSchema = z.object({
 		),
 	bio: z.string().max(50, 'Bio must not exceed 50 characters'),
 });
-
 export type UserProfileType = z.infer<typeof UserProfileSchema>;
+export const InvestorFormSchema = z.object({
+	amount: z
+		.string({
+			invalid_type_error: 'Amount must be a positive number',
+		})
+		.refine(
+			(value) => {
+				const numberValue = Number(value);
+				return !isNaN(numberValue) && numberValue > 0;
+			},
+			{
+				message: 'Amount must be a positive number',
+			},
+		)
+		.transform((value) => Number(value) || 0),
+	equity: z
+		.string({
+			invalid_type_error: 'Equity must be a positive number',
+		})
+		.refine(
+			(value) => {
+				const numberValue = Number(value);
+				return !isNaN(numberValue) && numberValue > 0;
+			},
+			{
+				message: 'Equity must be a positive number',
+			},
+		)
+		.transform((value) => Number(value) || 0),
+	ownerShip: z
+		.string({
+			invalid_type_error: 'Ownership must be a positive number',
+		})
+		.refine(
+			(value) => {
+				const numberValue = Number(value);
+				return !isNaN(numberValue) && numberValue > 0;
+			},
+			{
+				message: 'Ownership must be a positive number',
+			},
+		)
+		.transform((value) => Number(value) || 0),
+	status: z
+		.string({
+			required_error: 'Status is required',
+		})
+		.refine((value) => InvestmentStatus.includes(value), {
+			message:
+				'Status must be one of the options: ' +
+				InvestmentStatus.join(', '),
+		})
+		.refine(
+			(value) => value !== undefined && value !== null && value !== '',
+			{
+				message: 'Status is required',
+			},
+		),
+	phoneNumber: z.string(),
+});

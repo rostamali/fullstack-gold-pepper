@@ -208,7 +208,8 @@ const CreateUserForm = () => {
 							</FormControl>
 							<div className="space-y-1 leading-none">
 								<FormLabel className="auth-input__label">
-									Remember me
+									Send the new user an email about their
+									account
 								</FormLabel>
 							</div>
 						</FormItem>
