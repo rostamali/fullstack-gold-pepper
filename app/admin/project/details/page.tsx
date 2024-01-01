@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { FiChevronLeft } from 'react-icons/fi';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import InvestorList from '@/components/shared/Tables/InvestorList';
+import EmptyError from '@/components/shared/Cards/EmptyError';
 
 type SearchParams = {
 	searchParams: {
@@ -184,10 +185,44 @@ const ProjectDetailsPage = async ({ searchParams }: SearchParams) => {
 							</div>
 						</div>
 					) : (
-						'Empty Nothing'
+						<EmptyError
+							containerClass={
+								'sm:max-w-[450px] justify-center mx-auto text-center items-center py-[60px]'
+							}
+							thumbnailClass={'sm:w-[70%] w-[80%]'}
+							title={'There are no projects to show'}
+							description={`Oops! Currently, there are no projects to display. 🏷️ It seems this space is awaiting your creative touch 🌟`}
+							Links={
+								<Link
+									href="/admin/project"
+									className="btn-primary"
+								>
+									Reload
+								</Link>
+							}
+							titleClass={''}
+							descriptionClass={''}
+						/>
 					)
 				) : (
-					'Empty Nothing'
+					<EmptyError
+						containerClass={
+							'sm:max-w-[450px] justify-center mx-auto text-center items-center py-[60px]'
+						}
+						thumbnailClass={'sm:w-[70%] w-[80%]'}
+						title={'There are no projects to show'}
+						description={`Oops! Currently, there are no projects to display. 🏷️ It seems this space is awaiting your creative touch 🌟`}
+						Links={
+							<Link
+								href="/admin/project"
+								className="btn-primary !h-[45px] !text-[14px] !px-[15px]"
+							>
+								Go Back Projects
+							</Link>
+						}
+						titleClass={''}
+						descriptionClass={''}
+					/>
 				)}
 			</div>
 		</div>

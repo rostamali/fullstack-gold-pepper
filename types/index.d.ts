@@ -186,3 +186,10 @@ interface InvestorList {
 	projectName: string;
 	projectIndustry: string;
 }
+type InvestorFormInfo = {
+	id: string;
+	amount: number | null;
+	equity: number | null;
+	ownerShip: number | null;
+	status: InvestmentStatus;
+};

@@ -30,12 +30,13 @@ import {
 import { BsThreeDots } from 'react-icons/bs';
 import Link from 'next/link';
 import EmptyError from '../Cards/EmptyError';
+import Pagination from '../Search/Pagination';
 type InvestmentProps = {
 	data: InvestmentList[];
 	pages: number;
 };
 
-const InvestmentList: React.FC<InvestmentProps> = ({ data }) => {
+const InvestmentList: React.FC<InvestmentProps> = ({ data, pages }) => {
 	const [isPending, setIsPending] = useState(false);
 	const [selectedItems, setSelectedItems] = useState<string[] | null>(null);
 	const handleDeleteSelectedFile = async () => {
@@ -244,7 +245,7 @@ const InvestmentList: React.FC<InvestmentProps> = ({ data }) => {
 							))}
 						</TableBody>
 					</Table>
-					{/* <Pagination
+					<Pagination
 						pages={pages}
 						containerClass={'justify-center mt-[50px]'}
 						prevBtnClass={'btn-primary'}
@@ -253,7 +254,7 @@ const InvestmentList: React.FC<InvestmentProps> = ({ data }) => {
 							'btn-primary__ghost !bg-transparent dark:text-primary-orange-dark text-primary-orange-dark hover:text-white dark:hover:text-white w-[40px]'
 						}
 						paginateActiveClass={'btn-primary !text-white'}
-					/> */}
+					/>
 				</>
 			) : (
 				<EmptyError
@@ -261,9 +262,16 @@ const InvestmentList: React.FC<InvestmentProps> = ({ data }) => {
 						'sm:max-w-[450px] justify-center mx-auto text-center items-center py-[60px]'
 					}
 					thumbnailClass={'sm:w-[70%] w-[80%]'}
-					title={'There are no projects to show'}
-					description={`Oops! Currently, there are no projects to display. 🏷️ It seems this space is awaiting your creative touch 🌟`}
-					Links={undefined}
+					title={'There are no list to show'}
+					description={`Oops! Currently, there are no one invested yet. 🏷️ It seems this space is awaiting your creative touch 🌟`}
+					Links={
+						<Link
+							href="/admin/investments"
+							className="btn-primary !h-[45px] !text-[14px] !px-[15px]"
+						>
+							Reload
+						</Link>
+					}
 					titleClass={''}
 					descriptionClass={''}
 				/>

@@ -4,6 +4,7 @@ import { handleResponse } from '../helper/serverResponse';
 import { isAuthenticatedAccess, isAuthenticatedAdmin } from './auth.action';
 import { prisma } from '../prisma';
 import sendMail from '../helper/sendMail';
+import { revalidatePath } from 'next/cache';
 
 export const submitProjectInterested = async (params: {
 	amount: number;
@@ -66,7 +67,7 @@ export const submitProjectInterested = async (params: {
 				agreeTerm,
 				isActive: true,
 				status: 'PENDING',
-				amount: String(amount),
+				amount: amount,
 				project: {
 					connect: {
 						id: projectExist.id,
@@ -169,5 +170,57 @@ export const fetchInvestmentsByAdmin = async (params: {
 		};
 	} catch (error) {
 		return;
+	}
+};
+export const fetchInvestmentDetailsById = async (params: { id: string }) => {
+	try {
+		const isAdmin = await isAuthenticatedAdmin();
+		if (!isAdmin) return;
+
+		const investment = await prisma.investment.findUnique({
+			where: {
+				id: params.id,
+			},
+			select: {
+				id: true,
+				amount: true,
+				equity: true,
+				ownerShip: true,
+				status: true,
+			},
+		});
+		return investment;
+	} catch (error) {
+		return;
+	}
+};
+export const updateInvestmentDetailsByAdmin = async (params: {
+	id: string;
+	amount: number;
+	equity: number;
+	ownerShip: number;
+	status: InvestmentStatus;
+}) => {
+	try {
+		const isAdmin = await isAuthenticatedAdmin();
+		if (!isAdmin)
+			return handleResponse(false, `You don't have a permission`);
+
+		const { amount, equity, ownerShip, status } = params;
+		await prisma.investment.update({
+			where: {
+				id: params.id,
+			},
+			data: {
+				amount,
+				equity,
+				ownerShip,
+				status,
+			},
+		});
+		revalidatePath('/admin/project/details');
+		return handleResponse(true, `Investor details updated successfully`);
+	} catch (error) {
+		return handleResponse(false, `Investor details update failed`);
 	}
 };

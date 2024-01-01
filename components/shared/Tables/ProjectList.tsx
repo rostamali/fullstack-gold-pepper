@@ -76,7 +76,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ data, pages }) => {
 						{selectedItems && selectedItems.length > 0
 							? selectedItems.length
 							: 0}{' '}
-						file selected
+						item selected
 					</span>
 					<Button
 						className="btn-primary__ghost !h-[50px] !px-[20px]"
@@ -305,7 +305,14 @@ const ProjectList: React.FC<ProjectListProps> = ({ data, pages }) => {
 					thumbnailClass={'sm:w-[70%] w-[80%]'}
 					title={'There are no projects to show'}
 					description={`Oops! Currently, there are no projects to display. 🏷️ It seems this space is awaiting your creative touch 🌟`}
-					Links={undefined}
+					Links={
+						<Link
+							href="/admin/project"
+							className="btn-primary !h-[45px] !text-[14px] !px-[15px]"
+						>
+							Reload
+						</Link>
+					}
 					titleClass={''}
 					descriptionClass={''}
 				/>

@@ -162,9 +162,9 @@ CREATE TABLE `Project` (
 -- CreateTable
 CREATE TABLE `Investment` (
     `id` VARCHAR(191) NOT NULL,
-    `amount` VARCHAR(191) NULL,
-    `equity` VARCHAR(191) NULL,
-    `ownerShip` VARCHAR(191) NULL,
+    `amount` DOUBLE NULL,
+    `equity` DOUBLE NULL,
+    `ownerShip` DOUBLE NULL,
     `status` ENUM('ACCEPT', 'NOT_ACCEPT', 'PENDING', 'CANCELED') NOT NULL DEFAULT 'PENDING',
     `projectId` VARCHAR(191) NOT NULL,
     `projectName` VARCHAR(191) NOT NULL,

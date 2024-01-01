@@ -185,7 +185,14 @@ const FileLibrary: React.FC<FileCardProps> = ({ files, pages }) => {
 					title={'There are no files to show'}
 					description={`Whoa! It looks like the files directory is currently empty. 📂 No files are present in this location.
 					`}
-					Links={undefined}
+					Links={
+						<Link
+							href="/admin/files"
+							className="btn-primary !h-[45px] !text-[14px] !px-[15px]"
+						>
+							Reload
+						</Link>
+					}
 					titleClass={''}
 					descriptionClass={''}
 				/>

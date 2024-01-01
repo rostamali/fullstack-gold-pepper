@@ -4,6 +4,7 @@ import ProjectInterest from '@/components/shared/Modal/ProjectInterest';
 import ProjectGallery from '@/components/shared/Slider/ProjectGallery';
 import { fetchProjectDetailsBySlug } from '@/lib/actions/project.action';
 import { dateFormat } from '@/lib/helper/format';
+import Link from 'next/link';
 type SearchParams = {
 	params: {
 		slug: string;
@@ -186,7 +187,11 @@ const ProjectDetailsPage = async ({ params }: SearchParams) => {
 							thumbnailClass={'sm:w-[70%] w-[80%]'}
 							title={'There are no projects to show'}
 							description={`Oops! Currently, there are no projects to display. 🏷️`}
-							Links={undefined}
+							Links={
+								<Link href="/" className="btn-primary">
+									Back to Home
+								</Link>
+							}
 							titleClass={'dark:text-white'}
 							descriptionClass={'dark:text-white'}
 						/>

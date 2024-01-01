@@ -17,65 +17,61 @@ const EditProjectpage = async ({ searchParams }: SearchParams) => {
 	});
 	return (
 		<div className="project-edit">
+			<div className="flex items-center justify-between">
+				<div className="flex items-center justify-between">
+					<h2 className="heading-2 text-primary-black-dark dark:text-primary-black-dark flex items-center gap-[5px]">
+						<GoBack
+							trigger={<FiChevronLeft className="text-[20px] " />}
+						/>
+						Edit project
+					</h2>
+				</div>
+				{result && (
+					<Link
+						href=""
+						className="btn-primary sm:h-[48px] !text-[14px]"
+					>
+						View Project
+					</Link>
+				)}
+			</div>
 			{result ? (
-				<>
-					<div className="flex items-center justify-between">
-						<div className="flex items-center justify-between">
-							<h2 className="heading-2 text-primary-black-dark dark:text-primary-black-dark flex items-center gap-[5px]">
-								<GoBack
-									trigger={
-										<FiChevronLeft className="text-[20px] " />
-									}
-								/>
-								Edit project
-							</h2>
-						</div>
-						<Link
-							href=""
-							className="btn-primary sm:h-[48px] !text-[14px]"
-						>
-							View Project
-						</Link>
-					</div>
-					<ProjectForm
-						type={'edit'}
-						project_id={result.id}
-						defaultValues={{
-							name: result?.name,
-							location: result?.location ? result?.location : '',
-							status: result?.status,
-							minInvestment: result?.minInvestment,
-							capex: result?.capex,
-							totalRevenue: result?.totalRevenue,
-							totalCost: result?.totalCost,
-							roi: result?.roi,
-							targetAmount: result?.targetAmount,
-							closeDate: new Date(result?.closeDate),
-							documents: result?.documents
-								? result?.documents.map((doc) => ({
-										id: doc.id,
-										name: doc.name,
-										description: doc.description as string,
-										status: doc.status,
-										file: Array.isArray(doc.file)
-											? doc.file
-											: [doc.file],
-								  }))
-								: [],
-							gallery: result?.gallery
-								? result?.gallery?.files
-									? result?.gallery.files
-									: []
-								: [],
-							thumbnail: result?.thumbnail
-								? [result?.thumbnail]
-								: [],
-							category: result?.category
-								? result?.category?.slug
-								: '',
-						}}
-					/>
-				</>
+				<ProjectForm
+					type={'edit'}
+					project_id={result.id}
+					defaultValues={{
+						name: result?.name,
+						location: result?.location ? result?.location : '',
+						status: result?.status,
+						minInvestment: result?.minInvestment,
+						capex: result?.capex,
+						totalRevenue: result?.totalRevenue,
+						totalCost: result?.totalCost,
+						roi: result?.roi,
+						targetAmount: result?.targetAmount,
+						closeDate: new Date(result?.closeDate),
+						documents: result?.documents
+							? result?.documents.map((doc) => ({
+									id: doc.id,
+									name: doc.name,
+									description: doc.description as string,
+									status: doc.status,
+									file: Array.isArray(doc.file)
+										? doc.file
+										: [doc.file],
+							  }))
+							: [],
+						gallery: result?.gallery
+							? result?.gallery?.files
+								? result?.gallery.files
+								: []
+							: [],
+						thumbnail: result?.thumbnail ? [result?.thumbnail] : [],
+						category: result?.category
+							? result?.category?.slug
+							: '',
+					}}
+				/>
 			) : (
 				<EmptyError
 					containerClass={
@@ -87,7 +83,7 @@ const EditProjectpage = async ({ searchParams }: SearchParams) => {
 					Links={
 						<Link
 							href="/admin/project"
-							className="btn-primary !h-[50px] !text-[15px] !px-[15px]"
+							className="btn-primary !h-[45px] !text-[14px] !px-[15px]"
 						>
 							Go Back Projects
 						</Link>

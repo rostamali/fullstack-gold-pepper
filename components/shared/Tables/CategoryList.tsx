@@ -33,6 +33,7 @@ import UpdateCategory from '../Forms/UpdateCategory';
 import EmptyError from '../Cards/EmptyError';
 import { dateFormat } from '@/lib/helper/format';
 import Pagination from '../Search/Pagination';
+import Link from 'next/link';
 type CategoryListProps = {
 	data: CategoryType[];
 	pages: number;
@@ -276,7 +277,14 @@ const CategoryList: React.FC<CategoryListProps> = ({ data, pages }) => {
 					thumbnailClass={'sm:w-[70%] w-[80%]'}
 					title={'There are no categories to show'}
 					description={`Oops! Currently, there are no categories to display. 🏷️ It seems this space is awaiting your creative touch 🌟`}
-					Links={undefined}
+					Links={
+						<Link
+							href="/admin/project/categories"
+							className="btn-primary !h-[45px] !text-[14px] !px-[15px]"
+						>
+							Reload
+						</Link>
+					}
 					titleClass={''}
 					descriptionClass={''}
 				/>

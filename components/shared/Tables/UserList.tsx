@@ -217,9 +217,16 @@ const UserList: React.FC<UserListProps> = ({ data, pages }) => {
 						'sm:max-w-[450px] justify-center mx-auto text-center items-center py-[60px]'
 					}
 					thumbnailClass={'sm:w-[70%] w-[80%]'}
-					title={'There are no categories to show'}
-					description={`Oops! Currently, there are no categories to display. 🏷️ It seems this space is awaiting your creative touch 🌟`}
-					Links={undefined}
+					title={'No user found to show'}
+					description={`Oops! Currently, there are no users to display. 🏷️ It seems this space is awaiting your creative touch 🌟`}
+					Links={
+						<Link
+							href="/admin/user"
+							className="btn-primary !h-[45px] !text-[14px] !px-[15px]"
+						>
+							Reload
+						</Link>
+					}
 					titleClass={''}
 					descriptionClass={''}
 				/>

@@ -305,8 +305,8 @@ export const UserProfileSchema = z.object({
 export type UserProfileType = z.infer<typeof UserProfileSchema>;
 export const InvestorFormSchema = z.object({
 	amount: z
-		.string({
-			invalid_type_error: 'Amount must be a positive number',
+		.number({
+			invalid_type_error: 'Amount must be a number',
 		})
 		.refine(
 			(value) => {
@@ -320,12 +320,12 @@ export const InvestorFormSchema = z.object({
 		.transform((value) => Number(value) || 0),
 	equity: z
 		.string({
-			invalid_type_error: 'Equity must be a positive number',
+			invalid_type_error: 'Equity must be a number',
 		})
 		.refine(
 			(value) => {
 				const numberValue = Number(value);
-				return !isNaN(numberValue) && numberValue > 0;
+				return !isNaN(numberValue);
 			},
 			{
 				message: 'Equity must be a positive number',
@@ -334,12 +334,12 @@ export const InvestorFormSchema = z.object({
 		.transform((value) => Number(value) || 0),
 	ownerShip: z
 		.string({
-			invalid_type_error: 'Ownership must be a positive number',
+			invalid_type_error: 'Ownership must be a number',
 		})
 		.refine(
 			(value) => {
 				const numberValue = Number(value);
-				return !isNaN(numberValue) && numberValue > 0;
+				return !isNaN(numberValue);
 			},
 			{
 				message: 'Ownership must be a positive number',
@@ -361,5 +361,4 @@ export const InvestorFormSchema = z.object({
 				message: 'Status is required',
 			},
 		),
-	phoneNumber: z.string(),
 });

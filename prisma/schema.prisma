@@ -190,9 +190,9 @@ model Project {
 
 model Investment {
   id              String           @id @unique @default(uuid())
-  amount          String?
-  equity          String?
-  ownerShip       String?
+  amount          Float?
+  equity          Float?
+  ownerShip       Float?
   status          InvestmentStatus @default(PENDING)
   project         Project          @relation(fields: [projectId], references: [id])
   projectId       String

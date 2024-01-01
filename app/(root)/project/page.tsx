@@ -4,6 +4,7 @@ import LocalSearch from '@/components/shared/Search/LocalSearch';
 import Pagination from '@/components/shared/Search/Pagination';
 import SelectFilter from '@/components/shared/Search/SelectFilter';
 import { fetchProjectsByUser } from '@/lib/actions/project.action';
+import Link from 'next/link';
 type SearchParams = {
 	searchParams: {
 		page: string;
@@ -98,7 +99,11 @@ const ProjectPage = async ({ searchParams }: SearchParams) => {
 								thumbnailClass={'sm:w-[70%] w-[80%]'}
 								title={'There are no projects to show'}
 								description={`Oops! Currently, there are no projects to display. 🏷️`}
-								Links={undefined}
+								Links={
+									<Link href="/" className="btn-primary">
+										Back to Home
+									</Link>
+								}
 								titleClass={'dark:text-white'}
 								descriptionClass={'dark:text-white'}
 							/>

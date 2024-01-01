@@ -4,7 +4,7 @@ import Link from 'next/link';
 type SearchParams = {
 	searchParams: {
 		page: string;
-		status: ProjectStatus;
+		status: InvestmentStatus;
 		q: string | null;
 	};
 };
@@ -14,7 +14,7 @@ const InvestmentListPage = async ({ searchParams }: SearchParams) => {
 		pageSize: 9,
 		page: searchParams.page ? parseInt(searchParams.page) : 1,
 		status: searchParams.status
-			? (searchParams.status.toLocaleUpperCase() as ProjectStatus)
+			? (searchParams.status.toLocaleUpperCase() as InvestmentStatus)
 			: null,
 		query: searchParams.q ? searchParams.q : null,
 	});

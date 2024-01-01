@@ -27,7 +27,7 @@ const ProjectCategoriesPage = async ({ searchParams }: SearchParams) => {
 					<UploadCsv type={'category'} />
 				</div>
 			</div>
-			{result && result.categories?.length > 0 && (
+			{result && (
 				<CategoryList pages={result.pages} data={result?.categories} />
 			)}
 		</div>
